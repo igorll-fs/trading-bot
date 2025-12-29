@@ -1,0 +1,35 @@
+{
+  "name": "igor-sentinel",
+  "displayName": "Igor Sentinel",
+  "description": "Bridge between the error watcher and VS Code. Reads logs/last_error_report.md or accepts JSON payloads to surface actionable alerts.",
+  "version": "0.1.0",
+  "publisher": "igor",
+  "engines": {
+    "vscode": "^1.94.0"
+  },
+  "categories": ["Other"],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "igorSentinel.pushError",
+        "title": "Igor Sentinel: Push Error Report",
+        "category": "Igor Sentinel"
+      }
+    ]
+  },
+  "scripts": {
+    "compile": "tsc -p ./",
+    "watch": "tsc -w -p ./",
+    "lint": "eslint src --ext ts --max-warnings=0 || exit 0",
+    "package": "vsce package"
+  },
+  "devDependencies": {
+    "@types/node": "^18.19.0",
+    "@types/vscode": "^1.94.0",
+    "@vscode/test-electron": "^2.4.0",
+    "eslint": "^8.56.0",
+    "typescript": "^5.4.0",
+    "vsce": "^2.15.0"
+  }
+}

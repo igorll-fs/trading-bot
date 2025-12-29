@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste de API - Trading Bot</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #0a0a0a;
+            color: #fff;
+        }
+        button {
+            background: #10b981;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 5px;
+        }
+        button:hover {
+            background: #059669;
+        }
+        #result {
+            background: #1a1a1a;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        .error { color: #ef4444; }
+        .success { color: #10b981; }
+        .info { color: #3b82f6; }
+    </style>
+</head>
+<body>
+    <h1>🧪 Teste de Conectividade - API Trading Bot</h1>
+    
+    <div>
+        <p><strong>Backend URL Detectado:</strong> <span id="backendUrl" class="info">Detectando...</span></p>
+        <p><strong>Hostname:</strong> <span id="hostname" class="info"></span></p>
+    </div>
+
+    <div>
+        <button onclick="testAPI()">Testar API (/api/)</button>
+        <button onclick="testStatus()">Testar Status (/api/bot/status)</button>
+        <button onclick="testPrices()">Testar Prices (/api/market/prices)</button>
+        <button onclick="clearResults()">Limpar</button>
+    </div>
+
+    <div id="result"></div>
+
+    <script>
+        const hostname = window.location.hostname;
+        document.getElementById('hostname').textContent = hostname;
+
+        // Detectar backend URL (mesma lógica do api.js)
+        function getBackendUrl() {
+            if (hostname === 'botrading.uk' || hostname.endsWith('.botrading.uk')) {
+                return 'https://api.botrading.uk';
+            }
+            if (hostname === 'localhost' || hostname === '127.0.0.1') {
+                return 'http://localhost:8000';
+            }
+            return 'http://localhost:8000';
+        }
+
+        const backendUrl = getBackendUrl();
+        document.getElementById('backendUrl').textContent = backendUrl;
+
+        function log(message, type = 'info') {
+            const result = document.getElementById('result');
+            const timestamp = new Date().toLocaleTimeString();
+            result.innerHTML += `<span class="${type}">[${timestamp}] ${message}</span>\n`;
+        }
+
+        async function testAPI() {
+            log('Testando GET /api/...', 'info');
+            try {
+                const response = await fetch(`${backendUrl}/api/`, {
+                    method: 'GET',
+                    headers: { 'Accept': 'application/json' }
+                });
+                
+                log(`Status: ${response.status} ${response.statusText}`, 
+                    response.ok ? 'success' : 'error');
+                
+                const data = await response.json();
+                log(`Resposta: ${JSON.stringify(data, null, 2)}`, 'success');
+            } catch (error) {
+                log(`ERRO: ${error.message}`, 'error');
+                console.error(error);
+            }
+        }
+
+        async function testStatus() {
+            log('Testando GET /api/bot/status...', 'info');
+            try {
+                const response = await fetch(`${backendUrl}/api/bot/status`);
+                log(`Status: ${response.status}`, response.ok ? 'success' : 'error');
+                
+                const data = await response.json();
+                log(`Resposta: ${JSON.stringify(data, null, 2)}`, 'success');
+            } catch (error) {
+                log(`ERRO: ${error.message}`, 'error');
+                console.error(error);
+            }
+        }
+
+        async function testPrices() {
+            log('Testando GET /api/market/prices...', 'info');
+            try {
+                const response = await fetch(`${backendUrl}/api/market/prices`);
+                log(`Status: ${response.status}`, response.ok ? 'success' : 'error');
+                
+                const data = await response.json();
+                const count = Object.keys(data).length;
+                log(`Recebidos ${count} pares de moedas`, 'success');
+                log(`Exemplo: ${JSON.stringify(Object.entries(data)[0], null, 2)}`, 'info');
+            } catch (error) {
+                log(`ERRO: ${error.message}`, 'error');
+                console.error(error);
+            }
+        }
+
+        function clearResults() {
+            document.getElementById('result').innerHTML = '';
+        }
+
+        // Teste automático ao carregar
+        window.onload = () => {
+            log(`Página carregada em: ${hostname}`, 'info');
+            log(`Backend configurado: ${backendUrl}`, 'info');
+        };
+    </script>
+</body>
+</html>

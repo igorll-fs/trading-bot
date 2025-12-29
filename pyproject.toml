@@ -1,0 +1,36 @@
+[tool.black]
+line-length = 100
+target-version = ["py311"]
+
+[tool.isort]
+profile = "black"
+line_length = 100
+multi_line_output = 3
+include_trailing_comma = true
+
+[tool.ruff]
+line-length = 100
+src = ["backend", "tests"]
+target-version = "py311"
+select = [
+  "E",  # pycodestyle errors
+  "F",  # pyflakes
+  "I",  # import sorting
+  "B",  # bugbear
+  "UP", # pyupgrade
+  "ASYNC", # async best practices
+  "RUF", # Ruff-specific
+]
+ignore = [
+  "E203",  # handled by black
+  "E501",  # handled by formatter
+]
+
+[tool.ruff.lint.per-file-ignores]
+"backend/server.py" = ["B008"]
+"backend/bot/trading_bot.py" = ["B008"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+line-ending = "auto"
