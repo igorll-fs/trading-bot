@@ -1,0 +1,1324 @@
+INFO:     Will watch for changes in these directories: ['C:\\Users\\igor\\Desktop\\17-10-2025-main\\backend']
+INFO:     Uvicorn running on http://0.0.0.0:8001 (Press CTRL+C to quit)
+INFO:     Started reloader process [4148] using WatchFiles
+INFO:     Started server process [6964]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+2025-11-08 15:01:13,249 - bot.trading_bot - INFO - Loading config from DB - Testnet: True
+2025-11-08 15:01:13,646 - bot.binance_client - INFO - Using Binance SPOT TESTNET (virtual funds)
+2025-11-08 15:01:14,230 - bot.binance_client - INFO - Timestamp offset: -32503ms
+2025-11-08 15:01:14,244 - bot.binance_client - INFO - Binance client connected successfully
+2025-11-08 15:01:14,245 - bot.trading_bot - INFO - Binance initialization: Success
+2025-11-08 15:01:14,259 - bot.learning_system - INFO - \U0001f4da Nenhum aprendizado anterior encontrado. Iniciando com parâmetros padrão.
+2025-11-08 15:01:14,259 - bot.learning_system - INFO -    O bot vai aprender do zero e salvar seu aprendizado!
+2025-11-08 15:01:14,265 - bot.trading_bot - INFO - Loaded 0 open positions
+2025-11-08 15:01:14,265 - bot.trading_bot - INFO - Trading bot initialized successfully
+2025-11-08 15:01:14,549 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2014): API-key format invalid.
+2025-11-08 15:01:14,639 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2014): API-key format invalid.
+2025-11-08 15:01:19,879 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2014): API-key format invalid.
+2025-11-08 15:01:20,460 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2014): API-key format invalid.
+2025-11-08 15:01:25,175 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2014): API-key format invalid.
+2025-11-08 15:01:25,754 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2014): API-key format invalid.
+2025-11-08 15:01:30,484 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2014): API-key format invalid.
+2025-11-08 15:01:31,068 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2014): API-key format invalid.
+2025-11-08 15:01:35,790 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2014): API-key format invalid.
+2025-11-08 15:01:36,360 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2014): API-key format invalid.
+2025-11-08 15:01:41,097 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2014): API-key format invalid.
+2025-11-08 15:01:41,659 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2014): API-key format invalid.
+2025-11-08 15:01:46,404 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2014): API-key format invalid.
+2025-11-08 15:01:46,945 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2014): API-key format invalid.
+2025-11-08 15:01:51,713 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2014): API-key format invalid.
+2025-11-08 15:01:52,258 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2014): API-key format invalid.
+2025-11-08 15:01:57,028 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2014): API-key format invalid.
+2025-11-08 15:01:57,551 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2014): API-key format invalid.
+2025-11-08 15:02:02,328 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2014): API-key format invalid.
+2025-11-08 15:02:02,862 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2014): API-key format invalid.
+2025-11-08 15:02:07,630 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2014): API-key format invalid.
+2025-11-08 15:02:08,163 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2014): API-key format invalid.
+2025-11-08 15:02:12,948 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2014): API-key format invalid.
+2025-11-08 15:02:13,452 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2014): API-key format invalid.
+2025-11-08 15:02:18,261 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2014): API-key format invalid.
+2025-11-08 15:02:18,753 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2014): API-key format invalid.
+2025-11-08 15:02:23,545 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2014): API-key format invalid.
+2025-11-08 15:02:24,052 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2014): API-key format invalid.
+2025-11-08 15:02:28,842 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2014): API-key format invalid.
+2025-11-08 15:02:29,346 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2014): API-key format invalid.
+2025-11-08 15:02:34,159 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2014): API-key format invalid.
+2025-11-08 15:02:34,540 - bot.trading_bot - INFO - Loading config from DB - Testnet: False
+2025-11-08 15:02:34,650 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2014): API-key format invalid.
+2025-11-08 15:02:34,913 - bot.binance_client - INFO - Using Binance SPOT MAINNET (real funds)
+2025-11-08 15:02:35,480 - bot.binance_client - INFO - Timestamp offset: -32501ms
+2025-11-08 15:02:35,482 - bot.binance_client - INFO - Binance client connected successfully
+2025-11-08 15:02:35,482 - bot.trading_bot - INFO - Binance initialization: Success
+2025-11-08 15:02:35,487 - bot.learning_system - INFO - \U0001f4da Nenhum aprendizado anterior encontrado. Iniciando com parâmetros padrão.
+2025-11-08 15:02:35,488 - bot.learning_system - INFO -    O bot vai aprender do zero e salvar seu aprendizado!
+2025-11-08 15:02:35,491 - bot.trading_bot - INFO - Loaded 0 open positions
+2025-11-08 15:02:35,492 - bot.trading_bot - INFO - Trading bot initialized successfully
+2025-11-08 15:02:39,461 - bot.binance_client - INFO - Spot account balance retrieved: $0.14062 USDT
+2025-11-08 15:02:44,974 - bot.trading_bot - INFO - \U0001f50d Verificando posições existentes na Binance antes de iniciar...
+2025-11-08 15:02:45,901 - bot.telegram_client - INFO - Telegram message sent successfully
+2025-11-08 15:02:45,902 - bot.trading_bot - INFO - \U0001f9f9 Iniciando limpeza de posições existentes...
+2025-11-08 15:02:46,185 - bot.trading_bot - INFO - \u2705 Nenhuma ordem aberta na Binance. Conta limpa!
+2025-11-08 15:02:46,655 - bot.telegram_client - INFO - Telegram message sent successfully
+2025-11-08 15:02:47,119 - bot.telegram_client - INFO - Telegram message sent successfully
+2025-11-08 15:02:47,590 - bot.telegram_client - INFO - Telegram message sent successfully
+2025-11-08 15:02:47,592 - bot.trading_bot - INFO - Trading bot started
+2025-11-08 15:02:47,604 - bot.trading_bot - INFO - \U0001f50d Scanning market for opportunities...
+2025-11-08 15:02:48,010 - bot.selector - INFO - \U0001f525 Atualizando lista de pares em alta: BNBUSDT, UNIUSDT
+2025-11-08 15:02:49,246 - bot.selector - INFO - No trading opportunities found
+2025-11-08 15:02:49,246 - bot.trading_bot - INFO - No trading opportunities found
+2025-11-08 15:03:04,239 - bot.trading_bot - INFO - \U0001f50d Scanning market for opportunities...
+2025-11-08 15:03:05,418 - bot.selector - INFO - No trading opportunities found
+2025-11-08 15:03:05,434 - bot.trading_bot - INFO - No trading opportunities found
+2025-11-08 15:03:10,727 - bot.binance_client - INFO - Spot account balance retrieved: $0.14062 USDT
+2025-11-08 15:03:11,076 - bot.binance_client - INFO - Spot account balance retrieved: $0.14062 USDT
+2025-11-08 15:03:15,720 - bot.trading_bot - INFO - \u26a0\ufe0f Stopping bot - closing all positions safely...
+2025-11-08 15:03:16,637 - bot.telegram_client - INFO - Telegram message sent successfully
+2025-11-08 15:03:16,639 - bot.trading_bot - INFO - \u2705 No open positions to close
+2025-11-08 15:03:17,113 - bot.telegram_client - INFO - Telegram message sent successfully
+2025-11-08 15:03:17,576 - bot.telegram_client - INFO - Telegram message sent successfully
+2025-11-08 15:03:20,452 - bot.trading_bot - INFO - Trading bot stopped safely
+2025-11-08 15:03:41,407 - bot.binance_client - INFO - Spot account balance retrieved: $0.14062 USDT
+2025-11-08 15:04:11,779 - bot.binance_client - INFO - Spot account balance retrieved: $0.14062 USDT
+2025-11-08 15:04:42,090 - bot.binance_client - INFO - Spot account balance retrieved: $0.14062 USDT
+2025-11-08 15:05:12,436 - bot.binance_client - INFO - Spot account balance retrieved: $0.14062 USDT
+2025-11-08 15:05:42,760 - bot.binance_client - INFO - Spot account balance retrieved: $0.14062 USDT
+2025-11-08 15:06:13,125 - bot.binance_client - INFO - Spot account balance retrieved: $0.14062 USDT
+2025-11-08 15:06:43,500 - bot.binance_client - INFO - Spot account balance retrieved: $0.14062 USDT
+2025-11-08 15:07:13,820 - bot.binance_client - INFO - Spot account balance retrieved: $0.14062 USDT
+2025-11-08 15:07:44,205 - bot.binance_client - INFO - Spot account balance retrieved: $0.14062 USDT
+2025-11-08 15:08:14,726 - bot.binance_client - INFO - Spot account balance retrieved: $0.14062 USDT
+2025-11-08 15:08:45,028 - bot.binance_client - INFO - Spot account balance retrieved: $0.14062 USDT
+2025-11-08 15:09:15,366 - bot.binance_client - INFO - Spot account balance retrieved: $0.14062 USDT
+2025-11-08 15:09:45,679 - bot.binance_client - INFO - Spot account balance retrieved: $0.14062 USDT
+2025-11-08 15:10:16,022 - bot.binance_client - INFO - Spot account balance retrieved: $0.14062 USDT
+2025-11-08 15:10:46,318 - bot.binance_client - INFO - Spot account balance retrieved: $0.14062 USDT
+2025-11-08 15:11:16,788 - bot.binance_client - INFO - Spot account balance retrieved: $0.14062 USDT
+2025-11-08 15:11:19,298 - bot.trading_bot - INFO - Loading config from DB - Testnet: True
+2025-11-08 15:11:19,668 - bot.binance_client - INFO - Using Binance SPOT TESTNET (virtual funds)
+2025-11-08 15:11:20,242 - bot.binance_client - INFO - Timestamp offset: -32498ms
+2025-11-08 15:11:20,245 - bot.binance_client - INFO - Binance client connected successfully
+2025-11-08 15:11:20,245 - bot.trading_bot - INFO - Binance initialization: Success
+2025-11-08 15:11:20,249 - bot.learning_system - INFO - \U0001f4da Nenhum aprendizado anterior encontrado. Iniciando com parâmetros padrão.
+2025-11-08 15:11:20,251 - bot.learning_system - INFO -    O bot vai aprender do zero e salvar seu aprendizado!
+2025-11-08 15:11:20,253 - bot.trading_bot - INFO - Loaded 0 open positions
+2025-11-08 15:11:20,254 - bot.trading_bot - INFO - Trading bot initialized successfully
+2025-11-08 15:11:26,292 - bot.trading_bot - INFO - \U0001f50d Verificando posições existentes na Binance antes de iniciar...
+2025-11-08 15:11:27,101 - bot.telegram_client - INFO - Telegram message sent successfully
+2025-11-08 15:11:27,103 - bot.trading_bot - INFO - \U0001f9f9 Iniciando limpeza de posições existentes...
+2025-11-08 15:11:27,396 - bot.binance_client - ERROR - Error getting open orders: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:11:27,399 - bot.trading_bot - INFO - \u2705 Nenhuma ordem aberta na Binance. Conta limpa!
+2025-11-08 15:11:27,768 - bot.telegram_client - INFO - Telegram message sent successfully
+2025-11-08 15:11:28,147 - bot.telegram_client - INFO - Telegram message sent successfully
+2025-11-08 15:11:28,535 - bot.telegram_client - INFO - Telegram message sent successfully
+2025-11-08 15:11:28,536 - bot.trading_bot - INFO - Trading bot started
+2025-11-08 15:11:28,538 - bot.trading_bot - INFO - \U0001f50d Scanning market for opportunities...
+2025-11-08 15:11:29,644 - bot.selector - INFO - \U0001f525 Atualizando lista de pares em alta: BNBUSDT, UNIUSDT
+2025-11-08 15:11:30,829 - bot.selector - INFO - UNIUSDT: Signal=BUY, Score=82.00
+2025-11-08 15:11:30,830 - bot.selector - INFO - Best opportunity: UNIUSDT with score 83.75
+2025-11-08 15:11:30,830 - bot.trading_bot - INFO - \U0001f3af Opportunity found: UNIUSDT | Signal: BUY | Score: 83.75
+2025-11-08 15:11:30,830 - bot.learning_system - INFO - \u2705 Trade aprovado | Score: 0.60 >= 0.60
+2025-11-08 15:11:31,116 - bot.binance_client - ERROR - Error placing order: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:11:31,119 - bot.trading_bot - ERROR - Failed to place order
+2025-11-08 15:11:31,486 - bot.telegram_client - INFO - Telegram message sent successfully
+2025-11-08 15:11:46,510 - bot.trading_bot - INFO - \U0001f50d Scanning market for opportunities...
+2025-11-08 15:11:47,701 - bot.selector - INFO - UNIUSDT: Signal=BUY, Score=82.00
+2025-11-08 15:11:47,702 - bot.selector - INFO - Best opportunity: UNIUSDT with score 83.75
+2025-11-08 15:11:47,703 - bot.trading_bot - INFO - \U0001f3af Opportunity found: UNIUSDT | Signal: BUY | Score: 83.75
+2025-11-08 15:11:47,703 - bot.learning_system - INFO - \u2705 Trade aprovado | Score: 0.60 >= 0.60
+2025-11-08 15:11:47,989 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:11:47,991 - bot.trading_bot - ERROR - Failed to get account balance
+2025-11-08 15:11:48,078 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:11:48,761 - bot.telegram_client - INFO - Telegram message sent successfully
+2025-11-08 15:11:53,387 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:11:58,683 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:12:03,766 - bot.trading_bot - INFO - \U0001f50d Scanning market for opportunities...
+2025-11-08 15:12:03,997 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:12:04,959 - bot.selector - INFO - UNIUSDT: Signal=BUY, Score=82.00
+2025-11-08 15:12:04,961 - bot.selector - INFO - Best opportunity: UNIUSDT with score 83.75
+2025-11-08 15:12:04,962 - bot.trading_bot - INFO - \U0001f3af Opportunity found: UNIUSDT | Signal: BUY | Score: 83.75
+2025-11-08 15:12:04,962 - bot.learning_system - INFO - \u2705 Trade aprovado | Score: 0.60 >= 0.60
+2025-11-08 15:12:05,248 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:12:05,251 - bot.trading_bot - ERROR - Failed to get account balance
+2025-11-08 15:12:06,053 - bot.telegram_client - INFO - Telegram message sent successfully
+2025-11-08 15:12:10,258 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:12:15,543 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:12:20,857 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:12:21,054 - bot.trading_bot - INFO - \U0001f50d Scanning market for opportunities...
+2025-11-08 15:12:22,229 - bot.selector - INFO - UNIUSDT: Signal=BUY, Score=82.00
+2025-11-08 15:12:22,231 - bot.selector - INFO - Best opportunity: UNIUSDT with score 83.75
+2025-11-08 15:12:22,232 - bot.trading_bot - INFO - \U0001f3af Opportunity found: UNIUSDT | Signal: BUY | Score: 83.75
+2025-11-08 15:12:22,232 - bot.learning_system - INFO - \u2705 Trade aprovado | Score: 0.60 >= 0.60
+2025-11-08 15:12:22,517 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:12:22,519 - bot.trading_bot - ERROR - Failed to get account balance
+2025-11-08 15:12:23,330 - bot.telegram_client - INFO - Telegram message sent successfully
+2025-11-08 15:12:26,132 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:12:31,423 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:12:36,733 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:12:38,370 - bot.trading_bot - INFO - \U0001f50d Scanning market for opportunities...
+2025-11-08 15:12:39,572 - bot.selector - INFO - UNIUSDT: Signal=BUY, Score=82.00
+2025-11-08 15:12:39,574 - bot.selector - INFO - Best opportunity: UNIUSDT with score 83.75
+2025-11-08 15:12:39,575 - bot.trading_bot - INFO - \U0001f3af Opportunity found: UNIUSDT | Signal: BUY | Score: 83.75
+2025-11-08 15:12:39,575 - bot.learning_system - INFO - \u2705 Trade aprovado | Score: 0.60 >= 0.60
+2025-11-08 15:12:39,864 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:12:39,866 - bot.trading_bot - ERROR - Failed to get account balance
+2025-11-08 15:12:40,705 - bot.telegram_client - INFO - Telegram message sent successfully
+2025-11-08 15:12:42,035 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:12:47,347 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:12:52,661 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:12:55,738 - bot.trading_bot - INFO - \U0001f50d Scanning market for opportunities...
+2025-11-08 15:12:56,950 - bot.selector - INFO - UNIUSDT: Signal=BUY, Score=82.00
+2025-11-08 15:12:56,952 - bot.selector - INFO - Best opportunity: UNIUSDT with score 83.75
+2025-11-08 15:12:56,953 - bot.trading_bot - INFO - \U0001f3af Opportunity found: UNIUSDT | Signal: BUY | Score: 83.75
+2025-11-08 15:12:56,953 - bot.learning_system - INFO - \u2705 Trade aprovado | Score: 0.60 >= 0.60
+2025-11-08 15:12:57,238 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:12:57,241 - bot.trading_bot - ERROR - Failed to get account balance
+2025-11-08 15:12:57,943 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:12:58,054 - bot.telegram_client - INFO - Telegram message sent successfully
+2025-11-08 15:13:03,250 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:13:08,553 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:13:13,078 - bot.trading_bot - INFO - \U0001f50d Scanning market for opportunities...
+2025-11-08 15:13:14,271 - bot.selector - INFO - UNIUSDT: Signal=BUY, Score=82.00
+2025-11-08 15:13:14,274 - bot.selector - INFO - Best opportunity: UNIUSDT with score 83.75
+2025-11-08 15:13:14,275 - bot.trading_bot - INFO - \U0001f3af Opportunity found: UNIUSDT | Signal: BUY | Score: 83.75
+2025-11-08 15:13:14,275 - bot.learning_system - INFO - \u2705 Trade aprovado | Score: 0.60 >= 0.60
+2025-11-08 15:13:14,561 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:13:14,563 - bot.trading_bot - ERROR - Failed to get account balance
+2025-11-08 15:13:14,568 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:13:15,392 - bot.telegram_client - INFO - Telegram message sent successfully
+2025-11-08 15:13:19,862 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:13:25,170 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:13:30,407 - bot.trading_bot - INFO - \U0001f50d Scanning market for opportunities...
+2025-11-08 15:13:30,475 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:13:31,037 - bot.selector - INFO - \U0001f525 Atualizando lista de pares em alta: BNBUSDT, UNIUSDT
+2025-11-08 15:13:32,214 - bot.selector - INFO - UNIUSDT: Signal=BUY, Score=82.00
+2025-11-08 15:13:32,216 - bot.selector - INFO - Best opportunity: UNIUSDT with score 83.30
+2025-11-08 15:13:32,216 - bot.trading_bot - INFO - \U0001f3af Opportunity found: UNIUSDT | Signal: BUY | Score: 83.30
+2025-11-08 15:13:32,216 - bot.learning_system - INFO - \u2705 Trade aprovado | Score: 0.60 >= 0.60
+2025-11-08 15:13:32,500 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:13:32,502 - bot.trading_bot - ERROR - Failed to get account balance
+2025-11-08 15:13:33,316 - bot.telegram_client - INFO - Telegram message sent successfully
+2025-11-08 15:13:37,510 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:13:42,937 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:13:48,234 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:13:48,323 - bot.trading_bot - INFO - \U0001f50d Scanning market for opportunities...
+2025-11-08 15:13:49,533 - bot.selector - INFO - UNIUSDT: Signal=BUY, Score=82.00
+2025-11-08 15:13:49,540 - bot.selector - INFO - Best opportunity: UNIUSDT with score 83.30
+2025-11-08 15:13:49,540 - bot.trading_bot - INFO - \U0001f3af Opportunity found: UNIUSDT | Signal: BUY | Score: 83.30
+2025-11-08 15:13:49,541 - bot.learning_system - INFO - \u2705 Trade aprovado | Score: 0.60 >= 0.60
+2025-11-08 15:13:49,829 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:13:49,831 - bot.trading_bot - ERROR - Failed to get account balance
+2025-11-08 15:13:50,650 - bot.telegram_client - INFO - Telegram message sent successfully
+2025-11-08 15:13:53,533 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:13:58,811 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:14:04,124 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:14:05,664 - bot.trading_bot - INFO - \U0001f50d Scanning market for opportunities...
+2025-11-08 15:14:06,877 - bot.selector - INFO - UNIUSDT: Signal=BUY, Score=82.00
+2025-11-08 15:14:06,889 - bot.selector - INFO - Best opportunity: UNIUSDT with score 83.30
+2025-11-08 15:14:06,889 - bot.trading_bot - INFO - \U0001f3af Opportunity found: UNIUSDT | Signal: BUY | Score: 83.30
+2025-11-08 15:14:06,889 - bot.learning_system - INFO - \u2705 Trade aprovado | Score: 0.60 >= 0.60
+2025-11-08 15:14:07,177 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:14:07,178 - bot.trading_bot - ERROR - Failed to get account balance
+2025-11-08 15:14:08,021 - bot.telegram_client - INFO - Telegram message sent successfully
+2025-11-08 15:14:09,421 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:14:14,734 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:14:20,037 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:14:23,036 - bot.trading_bot - INFO - \U0001f50d Scanning market for opportunities...
+2025-11-08 15:14:24,208 - bot.selector - INFO - UNIUSDT: Signal=BUY, Score=82.00
+2025-11-08 15:14:24,210 - bot.selector - INFO - Best opportunity: UNIUSDT with score 83.30
+2025-11-08 15:14:24,210 - bot.trading_bot - INFO - \U0001f3af Opportunity found: UNIUSDT | Signal: BUY | Score: 83.30
+2025-11-08 15:14:24,211 - bot.learning_system - INFO - \u2705 Trade aprovado | Score: 0.60 >= 0.60
+2025-11-08 15:14:24,495 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:14:24,498 - bot.trading_bot - ERROR - Failed to get account balance
+2025-11-08 15:14:25,325 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:14:25,397 - bot.telegram_client - INFO - Telegram message sent successfully
+2025-11-08 15:14:30,618 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:14:35,927 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:14:40,410 - bot.trading_bot - INFO - \U0001f50d Scanning market for opportunities...
+2025-11-08 15:14:41,587 - bot.selector - INFO - UNIUSDT: Signal=BUY, Score=82.00
+2025-11-08 15:14:41,590 - bot.selector - INFO - Best opportunity: UNIUSDT with score 83.30
+2025-11-08 15:14:41,590 - bot.trading_bot - INFO - \U0001f3af Opportunity found: UNIUSDT | Signal: BUY | Score: 83.30
+2025-11-08 15:14:41,591 - bot.learning_system - INFO - \u2705 Trade aprovado | Score: 0.60 >= 0.60
+2025-11-08 15:14:41,878 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:14:41,880 - bot.trading_bot - ERROR - Failed to get account balance
+2025-11-08 15:14:41,881 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:14:42,745 - bot.telegram_client - INFO - Telegram message sent successfully
+2025-11-08 15:14:47,166 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:14:52,617 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:14:57,754 - bot.trading_bot - INFO - \U0001f50d Scanning market for opportunities...
+2025-11-08 15:14:57,900 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:14:58,934 - bot.selector - INFO - UNIUSDT: Signal=BUY, Score=82.00
+2025-11-08 15:14:58,936 - bot.selector - INFO - Best opportunity: UNIUSDT with score 83.30
+2025-11-08 15:14:58,936 - bot.trading_bot - INFO - \U0001f3af Opportunity found: UNIUSDT | Signal: BUY | Score: 83.30
+2025-11-08 15:14:58,937 - bot.learning_system - INFO - \u2705 Trade aprovado | Score: 0.60 >= 0.60
+2025-11-08 15:14:59,226 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:14:59,228 - bot.trading_bot - ERROR - Failed to get account balance
+2025-11-08 15:15:00,110 - bot.telegram_client - INFO - Telegram message sent successfully
+2025-11-08 15:15:04,258 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:15:09,561 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:15:14,862 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:15:15,127 - bot.trading_bot - INFO - \U0001f50d Scanning market for opportunities...
+2025-11-08 15:15:16,318 - bot.selector - INFO - UNIUSDT: Signal=BUY, Score=82.00
+2025-11-08 15:15:16,333 - bot.selector - INFO - Best opportunity: UNIUSDT with score 83.30
+2025-11-08 15:15:16,333 - bot.trading_bot - INFO - \U0001f3af Opportunity found: UNIUSDT | Signal: BUY | Score: 83.30
+2025-11-08 15:15:16,334 - bot.learning_system - INFO - \u2705 Trade aprovado | Score: 0.60 >= 0.60
+2025-11-08 15:15:16,622 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:15:16,625 - bot.trading_bot - ERROR - Failed to get account balance
+2025-11-08 15:15:17,399 - bot.telegram_client - INFO - Telegram message sent successfully
+2025-11-08 15:15:20,150 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:15:25,452 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:15:30,751 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:15:32,404 - bot.trading_bot - INFO - \U0001f50d Scanning market for opportunities...
+2025-11-08 15:15:32,991 - bot.selector - INFO - \U0001f525 Atualizando lista de pares em alta: BNBUSDT, UNIUSDT
+2025-11-08 15:15:34,165 - bot.selector - INFO - UNIUSDT: Signal=BUY, Score=82.00
+2025-11-08 15:15:34,168 - bot.selector - INFO - Best opportunity: UNIUSDT with score 83.30
+2025-11-08 15:15:34,168 - bot.trading_bot - INFO - \U0001f3af Opportunity found: UNIUSDT | Signal: BUY | Score: 83.30
+2025-11-08 15:15:34,168 - bot.learning_system - INFO - \u2705 Trade aprovado | Score: 0.60 >= 0.60
+2025-11-08 15:15:34,453 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:15:34,456 - bot.trading_bot - ERROR - Failed to get account balance
+2025-11-08 15:15:35,244 - bot.telegram_client - INFO - Telegram message sent successfully
+2025-11-08 15:15:36,052 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:15:41,364 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:15:46,659 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:15:50,255 - bot.trading_bot - INFO - \U0001f50d Scanning market for opportunities...
+2025-11-08 15:15:50,854 - bot.selector - INFO - BNBUSDT: Signal=BUY, Score=46.88
+2025-11-08 15:15:51,484 - bot.selector - INFO - Best opportunity: BNBUSDT with score 49.23
+2025-11-08 15:15:51,485 - bot.trading_bot - INFO - \U0001f3af Opportunity found: BNBUSDT | Signal: BUY | Score: 49.23
+2025-11-08 15:15:51,486 - bot.learning_system - INFO - \u274c Trade rejeitado | Score: 0.40 < 0.60
+2025-11-08 15:15:51,486 - bot.trading_bot - INFO - \U0001f6ab Trade rejeitado por ML - Score baixo: 0.40
+2025-11-08 15:15:51,964 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:15:55,749 - bot.trading_bot - INFO - \u26a0\ufe0f Stopping bot - closing all positions safely...
+2025-11-08 15:15:56,505 - bot.telegram_client - INFO - Telegram message sent successfully
+2025-11-08 15:15:56,507 - bot.trading_bot - INFO - \u2705 No open positions to close
+2025-11-08 15:15:56,852 - bot.telegram_client - INFO - Telegram message sent successfully
+2025-11-08 15:15:57,191 - bot.telegram_client - INFO - Telegram message sent successfully
+2025-11-08 15:15:57,247 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:16:02,402 - bot.trading_bot - INFO - \U0001f50d Verificando posições existentes na Binance antes de iniciar...
+2025-11-08 15:16:02,543 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:16:03,199 - bot.telegram_client - INFO - Telegram message sent successfully
+2025-11-08 15:16:03,201 - bot.trading_bot - INFO - \U0001f9f9 Iniciando limpeza de posições existentes...
+2025-11-08 15:16:03,482 - bot.binance_client - ERROR - Error getting open orders: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:16:03,484 - bot.trading_bot - INFO - \u2705 Nenhuma ordem aberta na Binance. Conta limpa!
+2025-11-08 15:16:03,835 - bot.telegram_client - INFO - Telegram message sent successfully
+2025-11-08 15:16:04,189 - bot.telegram_client - INFO - Telegram message sent successfully
+2025-11-08 15:16:04,539 - bot.telegram_client - INFO - Telegram message sent successfully
+2025-11-08 15:16:04,541 - bot.trading_bot - INFO - Trading bot started
+2025-11-08 15:16:04,543 - bot.trading_bot - INFO - \U0001f50d Scanning market for opportunities...
+2025-11-08 15:16:05,128 - bot.selector - INFO - BNBUSDT: Signal=BUY, Score=46.88
+2025-11-08 15:16:05,718 - bot.selector - INFO - Best opportunity: BNBUSDT with score 49.23
+2025-11-08 15:16:05,721 - bot.trading_bot - INFO - \U0001f3af Opportunity found: BNBUSDT | Signal: BUY | Score: 49.23
+2025-11-08 15:16:05,721 - bot.learning_system - INFO - \u274c Trade rejeitado | Score: 0.40 < 0.60
+2025-11-08 15:16:05,722 - bot.trading_bot - INFO - \U0001f6ab Trade rejeitado por ML - Score baixo: 0.40
+2025-11-08 15:16:06,017 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:16:06,491 - bot.trading_bot - INFO - \U0001f50d Scanning market for opportunities...
+2025-11-08 15:16:06,497 - bot.selector - INFO - BNBUSDT: Signal=BUY, Score=46.88
+2025-11-08 15:16:06,503 - bot.selector - INFO - Best opportunity: BNBUSDT with score 49.23
+2025-11-08 15:16:06,503 - bot.trading_bot - INFO - \U0001f3af Opportunity found: BNBUSDT | Signal: BUY | Score: 49.23
+2025-11-08 15:16:06,504 - bot.learning_system - INFO - \u274c Trade rejeitado | Score: 0.40 < 0.60
+2025-11-08 15:16:06,504 - bot.trading_bot - INFO - \U0001f6ab Trade rejeitado por ML - Score baixo: 0.40
+2025-11-08 15:16:07,838 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:16:13,133 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:16:18,442 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:16:20,721 - bot.trading_bot - INFO - \U0001f50d Scanning market for opportunities...
+2025-11-08 15:16:21,314 - bot.selector - INFO - BNBUSDT: Signal=BUY, Score=46.88
+2025-11-08 15:16:21,907 - bot.selector - INFO - Best opportunity: BNBUSDT with score 49.23
+2025-11-08 15:16:21,909 - bot.trading_bot - INFO - \U0001f3af Opportunity found: BNBUSDT | Signal: BUY | Score: 49.23
+2025-11-08 15:16:21,910 - bot.learning_system - INFO - \u274c Trade rejeitado | Score: 0.40 < 0.60
+2025-11-08 15:16:21,910 - bot.trading_bot - INFO - \U0001f6ab Trade rejeitado por ML - Score baixo: 0.40
+2025-11-08 15:16:21,911 - bot.trading_bot - INFO - \U0001f50d Scanning market for opportunities...
+2025-11-08 15:16:21,915 - bot.selector - INFO - BNBUSDT: Signal=BUY, Score=46.88
+2025-11-08 15:16:21,920 - bot.selector - INFO - Best opportunity: BNBUSDT with score 49.23
+2025-11-08 15:16:21,921 - bot.trading_bot - INFO - \U0001f3af Opportunity found: BNBUSDT | Signal: BUY | Score: 49.23
+2025-11-08 15:16:21,921 - bot.learning_system - INFO - \u274c Trade rejeitado | Score: 0.40 < 0.60
+2025-11-08 15:16:21,922 - bot.trading_bot - INFO - \U0001f6ab Trade rejeitado por ML - Score baixo: 0.40
+2025-11-08 15:16:23,730 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:16:29,034 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:16:34,320 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:16:36,913 - bot.trading_bot - INFO - \U0001f50d Scanning market for opportunities...
+2025-11-08 15:16:37,520 - bot.selector - INFO - BNBUSDT: Signal=BUY, Score=46.88
+2025-11-08 15:16:38,154 - bot.selector - INFO - Best opportunity: BNBUSDT with score 49.23
+2025-11-08 15:16:38,156 - bot.trading_bot - INFO - \U0001f3af Opportunity found: BNBUSDT | Signal: BUY | Score: 49.23
+2025-11-08 15:16:38,156 - bot.learning_system - INFO - \u274c Trade rejeitado | Score: 0.40 < 0.60
+2025-11-08 15:16:38,156 - bot.trading_bot - INFO - \U0001f6ab Trade rejeitado por ML - Score baixo: 0.40
+2025-11-08 15:16:38,157 - bot.trading_bot - INFO - \U0001f50d Scanning market for opportunities...
+2025-11-08 15:16:38,166 - bot.selector - INFO - BNBUSDT: Signal=BUY, Score=46.88
+2025-11-08 15:16:38,170 - bot.selector - INFO - Best opportunity: BNBUSDT with score 49.23
+2025-11-08 15:16:38,171 - bot.trading_bot - INFO - \U0001f3af Opportunity found: BNBUSDT | Signal: BUY | Score: 49.23
+2025-11-08 15:16:38,171 - bot.learning_system - INFO - \u274c Trade rejeitado | Score: 0.40 < 0.60
+2025-11-08 15:16:38,172 - bot.trading_bot - INFO - \U0001f6ab Trade rejeitado por ML - Score baixo: 0.40
+2025-11-08 15:16:38,176 - bot.trading_bot - INFO - \U0001f9f9 Iniciando limpeza de posições existentes...
+2025-11-08 15:16:38,467 - bot.binance_client - ERROR - Error getting open orders: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:16:38,468 - bot.trading_bot - INFO - \u2705 Nenhuma ordem aberta na Binance. Conta limpa!
+2025-11-08 15:16:39,246 - bot.telegram_client - INFO - Telegram message sent successfully
+2025-11-08 15:16:39,548 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:16:39,602 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:16:44,907 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:16:50,197 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:16:53,166 - bot.trading_bot - INFO - \U0001f50d Scanning market for opportunities...
+2025-11-08 15:16:53,788 - bot.selector - INFO - BNBUSDT: Signal=BUY, Score=46.88
+2025-11-08 15:16:54,393 - bot.selector - INFO - Best opportunity: BNBUSDT with score 49.23
+2025-11-08 15:16:54,395 - bot.trading_bot - INFO - \U0001f3af Opportunity found: BNBUSDT | Signal: BUY | Score: 49.23
+2025-11-08 15:16:54,395 - bot.learning_system - INFO - \u274c Trade rejeitado | Score: 0.40 < 0.60
+2025-11-08 15:16:54,395 - bot.trading_bot - INFO - \U0001f6ab Trade rejeitado por ML - Score baixo: 0.40
+2025-11-08 15:16:54,396 - bot.trading_bot - INFO - \U0001f50d Scanning market for opportunities...
+2025-11-08 15:16:54,401 - bot.selector - INFO - BNBUSDT: Signal=BUY, Score=46.88
+2025-11-08 15:16:54,406 - bot.selector - INFO - Best opportunity: BNBUSDT with score 49.23
+2025-11-08 15:16:54,406 - bot.trading_bot - INFO - \U0001f3af Opportunity found: BNBUSDT | Signal: BUY | Score: 49.23
+2025-11-08 15:16:54,407 - bot.learning_system - INFO - \u274c Trade rejeitado | Score: 0.40 < 0.60
+2025-11-08 15:16:54,407 - bot.trading_bot - INFO - \U0001f6ab Trade rejeitado por ML - Score baixo: 0.40
+2025-11-08 15:16:55,494 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:17:00,780 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:17:06,095 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:17:09,392 - bot.trading_bot - INFO - \U0001f50d Scanning market for opportunities...
+2025-11-08 15:17:09,993 - bot.selector - INFO - BNBUSDT: Signal=BUY, Score=46.88
+2025-11-08 15:17:10,592 - bot.selector - INFO - Best opportunity: BNBUSDT with score 49.23
+2025-11-08 15:17:10,596 - bot.trading_bot - INFO - \U0001f3af Opportunity found: BNBUSDT | Signal: BUY | Score: 49.23
+2025-11-08 15:17:10,596 - bot.learning_system - INFO - \u274c Trade rejeitado | Score: 0.40 < 0.60
+2025-11-08 15:17:10,596 - bot.trading_bot - INFO - \U0001f6ab Trade rejeitado por ML - Score baixo: 0.40
+2025-11-08 15:17:10,597 - bot.trading_bot - INFO - \U0001f50d Scanning market for opportunities...
+2025-11-08 15:17:10,601 - bot.selector - INFO - BNBUSDT: Signal=BUY, Score=46.88
+2025-11-08 15:17:10,606 - bot.selector - INFO - Best opportunity: BNBUSDT with score 49.23
+2025-11-08 15:17:10,607 - bot.trading_bot - INFO - \U0001f3af Opportunity found: BNBUSDT | Signal: BUY | Score: 49.23
+2025-11-08 15:17:10,607 - bot.learning_system - INFO - \u274c Trade rejeitado | Score: 0.40 < 0.60
+2025-11-08 15:17:10,607 - bot.trading_bot - INFO - \U0001f6ab Trade rejeitado por ML - Score baixo: 0.40
+2025-11-08 15:17:11,404 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:17:16,679 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:17:21,975 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:17:25,610 - bot.trading_bot - INFO - \U0001f50d Scanning market for opportunities...
+2025-11-08 15:17:26,227 - bot.selector - INFO - BNBUSDT: Signal=BUY, Score=46.88
+2025-11-08 15:17:26,831 - bot.selector - INFO - Best opportunity: BNBUSDT with score 49.23
+2025-11-08 15:17:26,833 - bot.trading_bot - INFO - \U0001f3af Opportunity found: BNBUSDT | Signal: BUY | Score: 49.23
+2025-11-08 15:17:26,833 - bot.learning_system - INFO - \u274c Trade rejeitado | Score: 0.40 < 0.60
+2025-11-08 15:17:26,834 - bot.trading_bot - INFO - \U0001f6ab Trade rejeitado por ML - Score baixo: 0.40
+2025-11-08 15:17:26,834 - bot.trading_bot - INFO - \U0001f50d Scanning market for opportunities...
+2025-11-08 15:17:26,847 - bot.selector - INFO - BNBUSDT: Signal=BUY, Score=46.88
+2025-11-08 15:17:26,860 - bot.selector - INFO - Best opportunity: BNBUSDT with score 49.23
+2025-11-08 15:17:26,860 - bot.trading_bot - INFO - \U0001f3af Opportunity found: BNBUSDT | Signal: BUY | Score: 49.23
+2025-11-08 15:17:26,861 - bot.learning_system - INFO - \u274c Trade rejeitado | Score: 0.40 < 0.60
+2025-11-08 15:17:26,862 - bot.trading_bot - INFO - \U0001f6ab Trade rejeitado por ML - Score baixo: 0.40
+2025-11-08 15:17:27,310 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:17:32,601 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:17:34,032 - bot.trading_bot - INFO - \u26a0\ufe0f Stopping bot - closing all positions safely...
+2025-11-08 15:17:34,855 - bot.telegram_client - INFO - Telegram message sent successfully
+2025-11-08 15:17:34,857 - bot.trading_bot - INFO - \u2705 No open positions to close
+2025-11-08 15:17:35,208 - bot.telegram_client - INFO - Telegram message sent successfully
+2025-11-08 15:17:35,549 - bot.telegram_client - INFO - Telegram message sent successfully
+2025-11-08 15:17:38,417 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:17:41,847 - bot.trading_bot - INFO - Trading bot stopped safely
+2025-11-08 15:17:41,852 - bot.trading_bot - INFO - Trading bot stopped safely
+2025-11-08 15:17:42,148 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:17:43,701 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:17:49,019 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:17:54,312 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:17:59,610 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:18:05,433 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:18:10,751 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:18:16,053 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:18:21,360 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:18:26,673 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:18:31,978 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:18:37,270 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:18:42,559 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:18:47,856 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:18:53,182 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:18:58,483 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:19:03,778 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:19:09,081 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:19:14,380 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:19:19,669 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:19:24,974 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:19:30,264 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:19:35,559 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:19:40,863 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:19:46,155 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:19:51,470 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:19:56,779 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:20:02,070 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:20:07,379 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:20:12,690 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:20:17,980 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:20:23,282 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:20:28,599 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:20:33,893 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:20:39,200 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:20:44,498 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:20:49,801 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:20:55,099 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:20:57,273 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:20:57,613 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:21:02,563 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:21:07,862 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:21:13,178 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:21:18,462 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:21:23,749 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:21:29,050 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:21:34,343 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:21:39,636 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:21:44,954 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:21:48,269 - bot.trading_bot - INFO - Loading config from DB - Testnet: True
+2025-11-08 15:21:48,646 - bot.binance_client - INFO - Using Binance SPOT TESTNET (virtual funds)
+2025-11-08 15:21:49,235 - bot.binance_client - INFO - Timestamp offset: -32500ms
+2025-11-08 15:21:49,238 - bot.binance_client - INFO - Binance client connected successfully
+2025-11-08 15:21:49,238 - bot.trading_bot - INFO - Binance initialization: Success
+2025-11-08 15:21:49,243 - bot.learning_system - INFO - \U0001f4da Nenhum aprendizado anterior encontrado. Iniciando com parâmetros padrão.
+2025-11-08 15:21:49,244 - bot.learning_system - INFO -    O bot vai aprender do zero e salvar seu aprendizado!
+2025-11-08 15:21:49,247 - bot.trading_bot - INFO - Loaded 0 open positions
+2025-11-08 15:21:49,248 - bot.trading_bot - INFO - Trading bot initialized successfully
+2025-11-08 15:21:50,253 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:21:55,554 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:22:00,873 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:22:02,362 - bot.trading_bot - INFO - \U0001f50d Verificando posições existentes na Binance antes de iniciar...
+2025-11-08 15:22:03,137 - bot.telegram_client - INFO - Telegram message sent successfully
+2025-11-08 15:22:03,138 - bot.trading_bot - INFO - \U0001f9f9 Iniciando limpeza de posições existentes...
+2025-11-08 15:22:03,426 - bot.binance_client - ERROR - Error getting open orders: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:22:03,429 - bot.trading_bot - INFO - \u2705 Nenhuma ordem aberta na Binance. Conta limpa!
+2025-11-08 15:22:03,760 - bot.telegram_client - INFO - Telegram message sent successfully
+2025-11-08 15:22:04,086 - bot.telegram_client - INFO - Telegram message sent successfully
+2025-11-08 15:22:04,417 - bot.telegram_client - INFO - Telegram message sent successfully
+2025-11-08 15:22:04,419 - bot.trading_bot - INFO - Trading bot started
+2025-11-08 15:22:04,420 - bot.trading_bot - INFO - \U0001f50d Scanning market for opportunities...
+2025-11-08 15:22:04,996 - bot.selector - INFO - \U0001f525 Atualizando lista de pares em alta: BNBUSDT, UNIUSDT
+2025-11-08 15:22:06,178 - bot.selector - INFO - No trading opportunities found
+2025-11-08 15:22:06,179 - bot.trading_bot - INFO - No trading opportunities found
+2025-11-08 15:22:06,472 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:22:06,590 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:22:11,767 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:22:15,076 - bot.trading_bot - INFO - \U0001f9f9 Iniciando limpeza de posições existentes...
+2025-11-08 15:22:15,360 - bot.binance_client - ERROR - Error getting open orders: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:22:15,363 - bot.trading_bot - INFO - \u2705 Nenhuma ordem aberta na Binance. Conta limpa!
+2025-11-08 15:22:15,701 - bot.telegram_client - INFO - Telegram message sent successfully
+2025-11-08 15:22:15,995 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:22:17,085 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:22:21,183 - bot.trading_bot - INFO - \U0001f50d Scanning market for opportunities...
+2025-11-08 15:22:22,382 - bot.selector - INFO - No trading opportunities found
+2025-11-08 15:22:22,384 - bot.trading_bot - INFO - No trading opportunities found
+2025-11-08 15:22:22,670 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:22:27,963 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:22:30,084 - bot.trading_bot - INFO - \U0001f9f9 Iniciando limpeza de posições existentes...
+2025-11-08 15:22:30,373 - bot.binance_client - ERROR - Error getting open orders: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:22:30,377 - bot.trading_bot - INFO - \u2705 Nenhuma ordem aberta na Binance. Conta limpa!
+2025-11-08 15:22:30,745 - bot.telegram_client - INFO - Telegram message sent successfully
+2025-11-08 15:22:31,037 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:22:33,263 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:22:37,380 - bot.trading_bot - INFO - \U0001f50d Scanning market for opportunities...
+2025-11-08 15:22:38,577 - bot.selector - INFO - No trading opportunities found
+2025-11-08 15:22:38,579 - bot.trading_bot - INFO - No trading opportunities found
+2025-11-08 15:22:38,867 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:22:44,193 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:22:49,483 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:22:53,580 - bot.trading_bot - INFO - \U0001f50d Scanning market for opportunities...
+2025-11-08 15:22:54,774 - bot.selector - INFO - No trading opportunities found
+2025-11-08 15:22:54,790 - bot.trading_bot - INFO - No trading opportunities found
+2025-11-08 15:22:55,074 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:23:00,370 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:23:05,694 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:23:09,780 - bot.trading_bot - INFO - \U0001f50d Scanning market for opportunities...
+2025-11-08 15:23:10,384 - bot.selector - INFO - BNBUSDT: Signal=BUY, Score=47.24
+2025-11-08 15:23:10,983 - bot.selector - INFO - Best opportunity: BNBUSDT with score 49.42
+2025-11-08 15:23:10,986 - bot.trading_bot - INFO - \U0001f3af Opportunity found: BNBUSDT | Signal: BUY | Score: 49.42
+2025-11-08 15:23:10,986 - bot.learning_system - INFO - \u274c Trade rejeitado | Score: 0.40 < 0.60
+2025-11-08 15:23:10,987 - bot.trading_bot - INFO - \U0001f6ab Trade rejeitado por ML - Score baixo: 0.40
+2025-11-08 15:23:11,279 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:23:16,587 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:23:21,887 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:23:25,980 - bot.trading_bot - INFO - \U0001f50d Scanning market for opportunities...
+2025-11-08 15:23:26,570 - bot.selector - INFO - BNBUSDT: Signal=BUY, Score=47.24
+2025-11-08 15:23:27,183 - bot.selector - INFO - Best opportunity: BNBUSDT with score 49.42
+2025-11-08 15:23:27,185 - bot.trading_bot - INFO - \U0001f3af Opportunity found: BNBUSDT | Signal: BUY | Score: 49.42
+2025-11-08 15:23:27,185 - bot.learning_system - INFO - \u274c Trade rejeitado | Score: 0.40 < 0.60
+2025-11-08 15:23:27,186 - bot.trading_bot - INFO - \U0001f6ab Trade rejeitado por ML - Score baixo: 0.40
+2025-11-08 15:23:27,477 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:23:32,766 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:23:38,091 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:23:42,194 - bot.trading_bot - INFO - \U0001f50d Scanning market for opportunities...
+2025-11-08 15:23:42,807 - bot.selector - INFO - BNBUSDT: Signal=BUY, Score=41.25
+2025-11-08 15:23:43,421 - bot.selector - INFO - Best opportunity: BNBUSDT with score 43.43
+2025-11-08 15:23:43,423 - bot.trading_bot - INFO - \U0001f3af Opportunity found: BNBUSDT | Signal: BUY | Score: 43.43
+2025-11-08 15:23:43,423 - bot.learning_system - INFO - \u274c Trade rejeitado | Score: 0.40 < 0.60
+2025-11-08 15:23:43,424 - bot.trading_bot - INFO - \U0001f6ab Trade rejeitado por ML - Score baixo: 0.40
+2025-11-08 15:23:43,709 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:23:48,979 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:23:54,282 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:23:58,439 - bot.trading_bot - INFO - \U0001f50d Scanning market for opportunities...
+2025-11-08 15:23:59,038 - bot.selector - INFO - BNBUSDT: Signal=BUY, Score=47.28
+2025-11-08 15:23:59,631 - bot.selector - INFO - Best opportunity: BNBUSDT with score 49.47
+2025-11-08 15:23:59,633 - bot.trading_bot - INFO - \U0001f3af Opportunity found: BNBUSDT | Signal: BUY | Score: 49.47
+2025-11-08 15:23:59,634 - bot.learning_system - INFO - \u274c Trade rejeitado | Score: 0.40 < 0.60
+2025-11-08 15:23:59,634 - bot.trading_bot - INFO - \U0001f6ab Trade rejeitado por ML - Score baixo: 0.40
+2025-11-08 15:23:59,922 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:24:05,229 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:24:10,539 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:24:14,632 - bot.trading_bot - INFO - \U0001f50d Scanning market for opportunities...
+2025-11-08 15:24:15,220 - bot.selector - INFO - \U0001f525 Atualizando lista de pares em alta: BNBUSDT, UNIUSDT
+2025-11-08 15:24:16,400 - bot.selector - INFO - No trading opportunities found
+2025-11-08 15:24:16,406 - bot.trading_bot - INFO - No trading opportunities found
+2025-11-08 15:24:16,706 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:24:22,000 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:24:27,292 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:24:31,412 - bot.trading_bot - INFO - \U0001f50d Scanning market for opportunities...
+2025-11-08 15:24:32,591 - bot.selector - INFO - No trading opportunities found
+2025-11-08 15:24:32,592 - bot.trading_bot - INFO - No trading opportunities found
+2025-11-08 15:24:32,875 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:24:38,170 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:24:43,488 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:24:47,569 - bot.trading_bot - INFO - \U0001f50d Scanning market for opportunities...
+2025-11-08 15:24:48,756 - bot.selector - INFO - No trading opportunities found
+2025-11-08 15:24:48,765 - bot.trading_bot - INFO - No trading opportunities found
+2025-11-08 15:24:49,057 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:24:54,356 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:24:59,671 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:25:01,865 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:25:03,759 - bot.trading_bot - INFO - \U0001f50d Scanning market for opportunities...
+2025-11-08 15:25:04,964 - bot.selector - INFO - No trading opportunities found
+2025-11-08 15:25:04,965 - bot.trading_bot - INFO - No trading opportunities found
+2025-11-08 15:25:05,261 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:25:10,544 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:25:15,836 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:25:19,956 - bot.trading_bot - INFO - \U0001f50d Scanning market for opportunities...
+2025-11-08 15:25:21,146 - bot.selector - INFO - No trading opportunities found
+2025-11-08 15:25:21,148 - bot.trading_bot - INFO - No trading opportunities found
+2025-11-08 15:25:21,438 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:25:26,750 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:25:32,039 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:25:36,163 - bot.trading_bot - INFO - \U0001f50d Scanning market for opportunities...
+2025-11-08 15:25:37,362 - bot.selector - INFO - No trading opportunities found
+2025-11-08 15:25:37,365 - bot.trading_bot - INFO - No trading opportunities found
+2025-11-08 15:25:37,656 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:25:42,971 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:25:48,278 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:25:52,379 - bot.trading_bot - INFO - \U0001f50d Scanning market for opportunities...
+2025-11-08 15:25:53,561 - bot.selector - INFO - No trading opportunities found
+2025-11-08 15:25:53,568 - bot.trading_bot - INFO - No trading opportunities found
+2025-11-08 15:25:53,857 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:25:57,350 - bot.trading_bot - INFO - \u26a0\ufe0f Stopping bot - closing all positions safely...
+2025-11-08 15:25:58,174 - bot.telegram_client - INFO - Telegram message sent successfully
+2025-11-08 15:25:58,176 - bot.trading_bot - INFO - \u2705 No open positions to close
+2025-11-08 15:25:58,569 - bot.telegram_client - INFO - Telegram message sent successfully
+2025-11-08 15:25:58,968 - bot.telegram_client - INFO - Telegram message sent successfully
+2025-11-08 15:25:59,165 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:26:04,460 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:26:08,573 - bot.trading_bot - INFO - Trading bot stopped safely
+2025-11-08 15:26:08,866 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:26:09,742 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:26:15,019 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:26:20,323 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:26:25,632 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:26:30,938 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:26:36,229 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:26:41,537 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:26:46,845 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:26:52,166 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:26:57,464 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:27:02,768 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:27:08,061 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:27:13,525 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:27:18,823 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:27:24,133 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:27:28,263 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:27:28,634 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:27:33,575 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:27:38,868 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:27:44,185 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:27:49,479 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:27:54,801 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:28:00,118 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:28:05,561 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:28:06,907 - bot.trading_bot - INFO - Loading config from DB - Testnet: True
+2025-11-08 15:28:07,309 - bot.binance_client - INFO - Using Binance SPOT TESTNET (virtual funds)
+2025-11-08 15:28:07,889 - bot.binance_client - INFO - Timestamp offset: -32485ms
+2025-11-08 15:28:07,891 - bot.binance_client - INFO - Binance client connected successfully
+2025-11-08 15:28:07,891 - bot.trading_bot - INFO - Binance initialization: Success
+2025-11-08 15:28:07,896 - bot.learning_system - INFO - \U0001f4da Nenhum aprendizado anterior encontrado. Iniciando com parâmetros padrão.
+2025-11-08 15:28:07,896 - bot.learning_system - INFO -    O bot vai aprender do zero e salvar seu aprendizado!
+2025-11-08 15:28:07,899 - bot.trading_bot - INFO - Loaded 0 open positions
+2025-11-08 15:28:07,900 - bot.trading_bot - INFO - Trading bot initialized successfully
+2025-11-08 15:28:10,900 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:28:16,220 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:28:16,467 - bot.trading_bot - INFO - \U0001f50d Verificando posições existentes na Binance antes de iniciar...
+2025-11-08 15:28:17,328 - bot.telegram_client - INFO - Telegram message sent successfully
+2025-11-08 15:28:17,344 - bot.trading_bot - INFO - \U0001f9f9 Iniciando limpeza de posições existentes...
+2025-11-08 15:28:17,634 - bot.binance_client - ERROR - Error getting open orders: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:28:17,637 - bot.trading_bot - INFO - \u2705 Nenhuma ordem aberta na Binance. Conta limpa!
+2025-11-08 15:28:18,030 - bot.telegram_client - INFO - Telegram message sent successfully
+2025-11-08 15:28:18,424 - bot.telegram_client - INFO - Telegram message sent successfully
+2025-11-08 15:28:18,822 - bot.telegram_client - INFO - Telegram message sent successfully
+2025-11-08 15:28:18,824 - bot.trading_bot - INFO - Trading bot started
+2025-11-08 15:28:18,825 - bot.trading_bot - INFO - \U0001f50d Scanning market for opportunities...
+2025-11-08 15:28:19,920 - bot.selector - INFO - \U0001f525 Atualizando lista de pares em alta: BNBUSDT, UNIUSDT
+2025-11-08 15:28:21,102 - bot.selector - INFO - No trading opportunities found
+2025-11-08 15:28:21,104 - bot.trading_bot - INFO - No trading opportunities found
+2025-11-08 15:28:21,394 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:28:21,622 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:28:26,916 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:28:32,192 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:28:32,545 - bot.trading_bot - INFO - \U0001f9f9 Iniciando limpeza de posições existentes...
+2025-11-08 15:28:32,833 - bot.binance_client - ERROR - Error getting open orders: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:28:32,835 - bot.trading_bot - INFO - \u2705 Nenhuma ordem aberta na Binance. Conta limpa!
+2025-11-08 15:28:33,241 - bot.telegram_client - INFO - Telegram message sent successfully
+2025-11-08 15:28:33,540 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:28:36,115 - bot.trading_bot - INFO - \U0001f50d Scanning market for opportunities...
+2025-11-08 15:28:37,337 - bot.selector - INFO - No trading opportunities found
+2025-11-08 15:28:37,340 - bot.trading_bot - INFO - No trading opportunities found
+2025-11-08 15:28:37,630 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:28:42,916 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:28:48,217 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:28:52,337 - bot.trading_bot - INFO - \U0001f50d Scanning market for opportunities...
+2025-11-08 15:28:53,529 - bot.selector - INFO - No trading opportunities found
+2025-11-08 15:28:53,532 - bot.trading_bot - INFO - No trading opportunities found
+2025-11-08 15:28:53,817 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:28:59,123 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:29:04,429 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:29:08,531 - bot.trading_bot - INFO - \U0001f50d Scanning market for opportunities...
+2025-11-08 15:29:09,738 - bot.selector - INFO - No trading opportunities found
+2025-11-08 15:29:09,740 - bot.trading_bot - INFO - No trading opportunities found
+2025-11-08 15:29:10,032 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:29:15,334 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:29:20,684 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:29:24,751 - bot.trading_bot - INFO - \U0001f50d Scanning market for opportunities...
+2025-11-08 15:29:25,933 - bot.selector - INFO - No trading opportunities found
+2025-11-08 15:29:25,953 - bot.trading_bot - INFO - No trading opportunities found
+2025-11-08 15:29:26,238 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:29:31,530 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:29:36,836 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:29:40,962 - bot.trading_bot - INFO - \U0001f50d Scanning market for opportunities...
+2025-11-08 15:29:42,181 - bot.selector - INFO - No trading opportunities found
+2025-11-08 15:29:42,190 - bot.trading_bot - INFO - No trading opportunities found
+2025-11-08 15:29:42,477 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:29:47,780 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:29:53,085 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:29:57,215 - bot.trading_bot - INFO - \U0001f50d Scanning market for opportunities...
+2025-11-08 15:29:58,505 - bot.selector - INFO - No trading opportunities found
+2025-11-08 15:29:58,515 - bot.trading_bot - INFO - No trading opportunities found
+2025-11-08 15:29:58,802 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:30:04,106 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:30:09,401 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:30:13,525 - bot.trading_bot - INFO - \U0001f50d Scanning market for opportunities...
+2025-11-08 15:30:15,235 - bot.selector - INFO - No trading opportunities found
+2025-11-08 15:30:15,238 - bot.trading_bot - INFO - No trading opportunities found
+2025-11-08 15:30:15,531 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:30:20,827 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:30:26,148 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:30:30,246 - bot.trading_bot - INFO - \U0001f50d Scanning market for opportunities...
+2025-11-08 15:30:30,637 - bot.selector - INFO - \U0001f525 Atualizando lista de pares em alta: BNBUSDT, UNIUSDT
+2025-11-08 15:30:31,859 - bot.selector - INFO - No trading opportunities found
+2025-11-08 15:30:31,861 - bot.trading_bot - INFO - No trading opportunities found
+2025-11-08 15:30:32,144 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:30:37,446 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:30:42,755 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:30:46,868 - bot.trading_bot - INFO - \U0001f50d Scanning market for opportunities...
+2025-11-08 15:30:47,459 - bot.selector - INFO - BNBUSDT: Signal=BUY, Score=40.72
+2025-11-08 15:30:48,044 - bot.selector - INFO - Best opportunity: BNBUSDT with score 42.63
+2025-11-08 15:30:48,046 - bot.trading_bot - INFO - \U0001f3af Opportunity found: BNBUSDT | Signal: BUY | Score: 42.63
+2025-11-08 15:30:48,046 - bot.learning_system - INFO - \u274c Trade rejeitado | Score: 0.40 < 0.60
+2025-11-08 15:30:48,047 - bot.trading_bot - INFO - \U0001f6ab Trade rejeitado por ML - Score baixo: 0.40
+2025-11-08 15:30:48,343 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:30:53,722 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:30:59,021 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:31:03,040 - bot.trading_bot - INFO - \U0001f50d Scanning market for opportunities...
+2025-11-08 15:31:03,635 - bot.selector - INFO - BNBUSDT: Signal=BUY, Score=40.72
+2025-11-08 15:31:04,224 - bot.selector - INFO - Best opportunity: BNBUSDT with score 42.63
+2025-11-08 15:31:04,227 - bot.trading_bot - INFO - \U0001f3af Opportunity found: BNBUSDT | Signal: BUY | Score: 42.63
+2025-11-08 15:31:04,227 - bot.learning_system - INFO - \u274c Trade rejeitado | Score: 0.40 < 0.60
+2025-11-08 15:31:04,228 - bot.trading_bot - INFO - \U0001f6ab Trade rejeitado por ML - Score baixo: 0.40
+2025-11-08 15:31:04,522 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:31:09,811 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:31:15,119 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:31:19,243 - bot.trading_bot - INFO - \U0001f50d Scanning market for opportunities...
+2025-11-08 15:31:19,839 - bot.selector - INFO - BNBUSDT: Signal=BUY, Score=40.72
+2025-11-08 15:31:20,436 - bot.selector - INFO - Best opportunity: BNBUSDT with score 42.63
+2025-11-08 15:31:20,455 - bot.trading_bot - INFO - \U0001f3af Opportunity found: BNBUSDT | Signal: BUY | Score: 42.63
+2025-11-08 15:31:20,466 - bot.learning_system - INFO - \u274c Trade rejeitado | Score: 0.40 < 0.60
+2025-11-08 15:31:20,467 - bot.trading_bot - INFO - \U0001f6ab Trade rejeitado por ML - Score baixo: 0.40
+2025-11-08 15:31:20,760 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:31:26,060 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:31:31,368 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:31:35,458 - bot.trading_bot - INFO - \U0001f50d Scanning market for opportunities...
+2025-11-08 15:31:36,054 - bot.selector - INFO - BNBUSDT: Signal=BUY, Score=40.74
+2025-11-08 15:31:36,651 - bot.selector - INFO - Best opportunity: BNBUSDT with score 42.65
+2025-11-08 15:31:36,653 - bot.trading_bot - INFO - \U0001f3af Opportunity found: BNBUSDT | Signal: BUY | Score: 42.65
+2025-11-08 15:31:36,653 - bot.learning_system - INFO - \u274c Trade rejeitado | Score: 0.40 < 0.60
+2025-11-08 15:31:36,654 - bot.trading_bot - INFO - \U0001f6ab Trade rejeitado por ML - Score baixo: 0.40
+2025-11-08 15:31:36,941 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:31:42,246 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:31:47,546 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:31:51,670 - bot.trading_bot - INFO - \U0001f50d Scanning market for opportunities...
+2025-11-08 15:31:52,266 - bot.selector - INFO - BNBUSDT: Signal=BUY, Score=50.77
+2025-11-08 15:31:52,861 - bot.selector - INFO - Best opportunity: BNBUSDT with score 52.68
+2025-11-08 15:31:52,863 - bot.trading_bot - INFO - \U0001f3af Opportunity found: BNBUSDT | Signal: BUY | Score: 52.68
+2025-11-08 15:31:52,863 - bot.learning_system - INFO - \u274c Trade rejeitado | Score: 0.30 < 0.60
+2025-11-08 15:31:52,864 - bot.trading_bot - INFO - \U0001f6ab Trade rejeitado por ML - Score baixo: 0.30
+2025-11-08 15:31:53,147 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:31:58,452 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:32:03,765 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:32:07,859 - bot.trading_bot - INFO - \U0001f50d Scanning market for opportunities...
+2025-11-08 15:32:08,460 - bot.selector - INFO - BNBUSDT: Signal=BUY, Score=53.92
+2025-11-08 15:32:09,049 - bot.selector - INFO - Best opportunity: BNBUSDT with score 55.82
+2025-11-08 15:32:09,051 - bot.trading_bot - INFO - \U0001f3af Opportunity found: BNBUSDT | Signal: BUY | Score: 55.82
+2025-11-08 15:32:09,052 - bot.learning_system - INFO - \u274c Trade rejeitado | Score: 0.40 < 0.60
+2025-11-08 15:32:09,052 - bot.trading_bot - INFO - \U0001f6ab Trade rejeitado por ML - Score baixo: 0.40
+2025-11-08 15:32:09,337 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:32:15,146 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:32:20,984 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:32:24,065 - bot.trading_bot - INFO - \U0001f50d Scanning market for opportunities...
+2025-11-08 15:32:24,668 - bot.selector - INFO - BNBUSDT: Signal=BUY, Score=55.97
+2025-11-08 15:32:25,270 - bot.selector - INFO - Best opportunity: BNBUSDT with score 57.87
+2025-11-08 15:32:25,272 - bot.trading_bot - INFO - \U0001f3af Opportunity found: BNBUSDT | Signal: BUY | Score: 57.87
+2025-11-08 15:32:25,272 - bot.learning_system - INFO - \u274c Trade rejeitado | Score: 0.40 < 0.60
+2025-11-08 15:32:25,273 - bot.trading_bot - INFO - \U0001f6ab Trade rejeitado por ML - Score baixo: 0.40
+2025-11-08 15:32:26,284 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:32:31,572 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:32:36,894 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:32:40,295 - bot.trading_bot - INFO - \U0001f50d Scanning market for opportunities...
+2025-11-08 15:32:41,132 - bot.selector - INFO - \U0001f525 Atualizando lista de pares em alta: BNBUSDT, UNIUSDT, NEARUSDT
+2025-11-08 15:32:41,748 - bot.selector - INFO - BNBUSDT: Signal=BUY, Score=56.19
+2025-11-08 15:32:42,937 - bot.selector - INFO - Best opportunity: BNBUSDT with score 57.71
+2025-11-08 15:32:42,941 - bot.trading_bot - INFO - \U0001f3af Opportunity found: BNBUSDT | Signal: BUY | Score: 57.71
+2025-11-08 15:32:42,942 - bot.learning_system - INFO - \u274c Trade rejeitado | Score: 0.40 < 0.60
+2025-11-08 15:32:42,942 - bot.trading_bot - INFO - \U0001f6ab Trade rejeitado por ML - Score baixo: 0.40
+2025-11-08 15:32:43,228 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:32:48,530 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:32:54,344 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:32:57,955 - bot.trading_bot - INFO - \U0001f50d Scanning market for opportunities...
+2025-11-08 15:32:58,551 - bot.selector - INFO - BNBUSDT: Signal=BUY, Score=56.19
+2025-11-08 15:32:59,730 - bot.selector - INFO - Best opportunity: BNBUSDT with score 57.72
+2025-11-08 15:32:59,744 - bot.trading_bot - INFO - \U0001f3af Opportunity found: BNBUSDT | Signal: BUY | Score: 57.72
+2025-11-08 15:32:59,744 - bot.learning_system - INFO - \u274c Trade rejeitado | Score: 0.40 < 0.60
+2025-11-08 15:32:59,744 - bot.trading_bot - INFO - \U0001f6ab Trade rejeitado por ML - Score baixo: 0.40
+2025-11-08 15:33:00,034 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:33:05,327 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:33:10,648 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:33:14,759 - bot.trading_bot - INFO - \U0001f50d Scanning market for opportunities...
+2025-11-08 15:33:15,374 - bot.selector - INFO - BNBUSDT: Signal=BUY, Score=56.19
+2025-11-08 15:33:16,557 - bot.selector - INFO - Best opportunity: BNBUSDT with score 57.72
+2025-11-08 15:33:16,563 - bot.trading_bot - INFO - \U0001f3af Opportunity found: BNBUSDT | Signal: BUY | Score: 57.72
+2025-11-08 15:33:16,563 - bot.learning_system - INFO - \u274c Trade rejeitado | Score: 0.40 < 0.60
+2025-11-08 15:33:16,563 - bot.trading_bot - INFO - \U0001f6ab Trade rejeitado por ML - Score baixo: 0.40
+2025-11-08 15:33:16,852 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:33:22,139 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:33:27,455 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:33:31,594 - bot.trading_bot - INFO - \U0001f50d Scanning market for opportunities...
+2025-11-08 15:33:32,198 - bot.selector - INFO - BNBUSDT: Signal=BUY, Score=56.20
+2025-11-08 15:33:33,401 - bot.selector - INFO - Best opportunity: BNBUSDT with score 57.72
+2025-11-08 15:33:33,403 - bot.trading_bot - INFO - \U0001f3af Opportunity found: BNBUSDT | Signal: BUY | Score: 57.72
+2025-11-08 15:33:33,404 - bot.learning_system - INFO - \u274c Trade rejeitado | Score: 0.40 < 0.60
+2025-11-08 15:33:33,404 - bot.trading_bot - INFO - \U0001f6ab Trade rejeitado por ML - Score baixo: 0.40
+2025-11-08 15:33:33,697 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:33:34,189 - bot.telegram_client - INFO - Telegram message sent successfully
+2025-11-08 15:33:38,999 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:33:44,297 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:33:49,210 - bot.trading_bot - INFO - \U0001f50d Scanning market for opportunities...
+2025-11-08 15:33:49,807 - bot.selector - INFO - BNBUSDT: Signal=BUY, Score=56.20
+2025-11-08 15:33:50,984 - bot.selector - INFO - NEARUSDT: Signal=BUY, Score=52.46
+2025-11-08 15:33:50,987 - bot.selector - INFO - Best opportunity: BNBUSDT with score 57.72
+2025-11-08 15:33:50,987 - bot.trading_bot - INFO - \U0001f3af Opportunity found: BNBUSDT | Signal: BUY | Score: 57.72
+2025-11-08 15:33:50,988 - bot.learning_system - INFO - \u274c Trade rejeitado | Score: 0.40 < 0.60
+2025-11-08 15:33:50,989 - bot.trading_bot - INFO - \U0001f6ab Trade rejeitado por ML - Score baixo: 0.40
+2025-11-08 15:33:51,273 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:33:56,583 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:34:01,877 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:34:06,011 - bot.trading_bot - INFO - \U0001f50d Scanning market for opportunities...
+2025-11-08 15:34:06,601 - bot.selector - INFO - BNBUSDT: Signal=BUY, Score=56.20
+2025-11-08 15:34:07,193 - bot.selector - INFO - UNIUSDT: Signal=BUY, Score=82.00
+2025-11-08 15:34:07,786 - bot.selector - INFO - NEARUSDT: Signal=BUY, Score=53.18
+2025-11-08 15:34:07,788 - bot.selector - INFO - Best opportunity: UNIUSDT with score 83.47
+2025-11-08 15:34:07,788 - bot.trading_bot - INFO - \U0001f3af Opportunity found: UNIUSDT | Signal: BUY | Score: 83.47
+2025-11-08 15:34:07,789 - bot.learning_system - INFO - \u2705 Trade aprovado | Score: 0.60 >= 0.60
+2025-11-08 15:34:08,081 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:34:08,083 - bot.trading_bot - ERROR - Failed to get account balance
+2025-11-08 15:34:08,166 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:34:08,828 - bot.telegram_client - INFO - Telegram message sent successfully
+2025-11-08 15:34:13,449 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:34:18,753 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:34:23,844 - bot.trading_bot - INFO - \U0001f50d Scanning market for opportunities...
+2025-11-08 15:34:24,069 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:34:24,434 - bot.selector - INFO - BNBUSDT: Signal=BUY, Score=56.35
+2025-11-08 15:34:25,032 - bot.selector - INFO - UNIUSDT: Signal=BUY, Score=82.00
+2025-11-08 15:34:25,641 - bot.selector - INFO - NEARUSDT: Signal=BUY, Score=53.18
+2025-11-08 15:34:25,643 - bot.selector - INFO - Best opportunity: UNIUSDT with score 83.47
+2025-11-08 15:34:25,644 - bot.trading_bot - INFO - \U0001f3af Opportunity found: UNIUSDT | Signal: BUY | Score: 83.47
+2025-11-08 15:34:25,645 - bot.learning_system - INFO - \u2705 Trade aprovado | Score: 0.60 >= 0.60
+2025-11-08 15:34:25,933 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:34:25,935 - bot.trading_bot - ERROR - Failed to get account balance
+2025-11-08 15:34:26,704 - bot.telegram_client - INFO - Telegram message sent successfully
+2025-11-08 15:34:30,944 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:34:36,235 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:34:41,702 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:34:41,710 - bot.trading_bot - INFO - \U0001f50d Scanning market for opportunities...
+2025-11-08 15:34:42,037 - bot.selector - INFO - \U0001f525 Atualizando lista de pares em alta: BNBUSDT, UNIUSDT, NEARUSDT
+2025-11-08 15:34:42,631 - bot.selector - INFO - BNBUSDT: Signal=BUY, Score=56.35
+2025-11-08 15:34:43,223 - bot.selector - INFO - UNIUSDT: Signal=BUY, Score=82.00
+2025-11-08 15:34:43,814 - bot.selector - INFO - NEARUSDT: Signal=BUY, Score=53.18
+2025-11-08 15:34:43,816 - bot.selector - INFO - Best opportunity: UNIUSDT with score 83.32
+2025-11-08 15:34:43,816 - bot.trading_bot - INFO - \U0001f3af Opportunity found: UNIUSDT | Signal: BUY | Score: 83.32
+2025-11-08 15:34:43,817 - bot.learning_system - INFO - \u2705 Trade aprovado | Score: 0.60 >= 0.60
+2025-11-08 15:34:44,109 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:34:44,112 - bot.trading_bot - ERROR - Failed to get account balance
+2025-11-08 15:34:44,876 - bot.telegram_client - INFO - Telegram message sent successfully
+2025-11-08 15:34:49,110 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:34:54,401 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:34:57,907 - bot.trading_bot - INFO - \u26a0\ufe0f Stopping bot - closing all positions safely...
+2025-11-08 15:34:58,268 - bot.telegram_client - INFO - Telegram message sent successfully
+2025-11-08 15:34:58,270 - bot.trading_bot - INFO - \u2705 No open positions to close
+2025-11-08 15:34:58,605 - bot.telegram_client - INFO - Telegram message sent successfully
+2025-11-08 15:34:58,935 - bot.telegram_client - INFO - Telegram message sent successfully
+2025-11-08 15:34:59,693 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:34:59,878 - bot.trading_bot - INFO - Trading bot stopped safely
+2025-11-08 15:35:00,176 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:35:04,995 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:35:10,276 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:35:15,599 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:35:20,894 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:35:26,197 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:35:31,497 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:35:36,799 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:35:42,113 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:35:47,427 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:35:52,723 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:35:58,027 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:36:03,333 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:36:08,636 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:36:13,932 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:36:19,373 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:36:24,687 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:36:30,007 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:36:35,301 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:36:40,610 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:36:45,918 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:36:51,227 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:36:56,539 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:37:01,804 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:37:07,126 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+WARNING:  WatchFiles detected changes in 'server.py'. Reloading...
+2025-11-08 15:37:12,421 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:37:17,761 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:37:23,075 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:37:28,379 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:37:33,690 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:37:39,002 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:37:44,288 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:37:49,576 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:37:54,878 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:38:00,188 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:38:05,497 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:38:10,813 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:38:16,112 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:38:21,415 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:38:23,253 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:38:23,763 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:38:28,536 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:38:33,819 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:38:39,145 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:38:44,455 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:38:49,755 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:38:55,048 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:39:00,331 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:39:05,771 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:39:08,459 - bot.trading_bot - INFO - Loading config from DB - Testnet: True
+2025-11-08 15:39:08,829 - bot.binance_client - INFO - Using Binance SPOT TESTNET (virtual funds)
+2025-11-08 15:39:09,408 - bot.binance_client - INFO - Timestamp offset: -32475ms
+2025-11-08 15:39:09,410 - bot.binance_client - INFO - Binance client connected successfully
+2025-11-08 15:39:09,410 - bot.trading_bot - INFO - Binance initialization: Success
+2025-11-08 15:39:09,414 - bot.learning_system - INFO - \U0001f4da Nenhum aprendizado anterior encontrado. Iniciando com parâmetros padrão.
+2025-11-08 15:39:09,415 - bot.learning_system - INFO -    O bot vai aprender do zero e salvar seu aprendizado!
+2025-11-08 15:39:09,418 - bot.trading_bot - INFO - Loaded 0 open positions
+2025-11-08 15:39:09,418 - bot.trading_bot - INFO - Trading bot initialized successfully
+2025-11-08 15:39:11,087 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:39:16,395 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:39:16,948 - bot.trading_bot - INFO - \U0001f50d Verificando posições existentes na Binance antes de iniciar...
+INFO:     Shutting down
+INFO:     Waiting for connections to close. (CTRL+C to force quit)
+2025-11-08 15:39:17,732 - bot.telegram_client - INFO - Telegram message sent successfully
+2025-11-08 15:39:17,734 - bot.trading_bot - INFO - \U0001f9f9 Iniciando limpeza de posições existentes...
+2025-11-08 15:39:18,017 - bot.binance_client - ERROR - Error getting open orders: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:39:18,019 - bot.trading_bot - INFO - \u2705 Nenhuma ordem aberta na Binance. Conta limpa!
+2025-11-08 15:39:18,350 - bot.telegram_client - INFO - Telegram message sent successfully
+2025-11-08 15:39:18,680 - bot.telegram_client - INFO - Telegram message sent successfully
+2025-11-08 15:39:19,016 - bot.telegram_client - INFO - Telegram message sent successfully
+2025-11-08 15:39:19,017 - bot.trading_bot - INFO - Trading bot started
+2025-11-08 15:39:19,018 - bot.trading_bot - INFO - \U0001f50d Scanning market for opportunities...
+2025-11-08 15:39:19,601 - bot.selector - INFO - \U0001f525 Atualizando lista de pares em alta: BNBUSDT, NEARUSDT, UNIUSDT
+2025-11-08 15:39:20,205 - bot.selector - INFO - BNBUSDT: Signal=BUY, Score=56.65
+2025-11-08 15:39:21,436 - bot.selector - INFO - Best opportunity: BNBUSDT with score 58.32
+2025-11-08 15:39:21,438 - bot.trading_bot - INFO - \U0001f3af Opportunity found: BNBUSDT | Signal: BUY | Score: 58.32
+2025-11-08 15:39:21,438 - bot.learning_system - INFO - \u274c Trade rejeitado | Score: 0.40 < 0.60
+2025-11-08 15:39:21,438 - bot.trading_bot - INFO - \U0001f6ab Trade rejeitado por ML - Score baixo: 0.40
+2025-11-08 15:39:21,729 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:39:27,033 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:39:32,335 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:39:36,448 - bot.trading_bot - INFO - \U0001f50d Scanning market for opportunities...
+2025-11-08 15:39:37,048 - bot.selector - INFO - BNBUSDT: Signal=BUY, Score=56.65
+2025-11-08 15:39:38,752 - bot.selector - INFO - Best opportunity: BNBUSDT with score 58.32
+2025-11-08 15:39:38,753 - bot.trading_bot - INFO - \U0001f3af Opportunity found: BNBUSDT | Signal: BUY | Score: 58.32
+2025-11-08 15:39:38,754 - bot.learning_system - INFO - \u274c Trade rejeitado | Score: 0.40 < 0.60
+2025-11-08 15:39:38,754 - bot.trading_bot - INFO - \U0001f6ab Trade rejeitado por ML - Score baixo: 0.40
+2025-11-08 15:39:39,041 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:39:44,345 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:39:49,646 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:39:53,778 - bot.trading_bot - INFO - \U0001f50d Scanning market for opportunities...
+2025-11-08 15:39:54,372 - bot.selector - INFO - BNBUSDT: Signal=BUY, Score=58.13
+2025-11-08 15:39:55,555 - bot.selector - INFO - Best opportunity: BNBUSDT with score 59.80
+2025-11-08 15:39:55,556 - bot.trading_bot - INFO - \U0001f3af Opportunity found: BNBUSDT | Signal: BUY | Score: 59.80
+2025-11-08 15:39:55,557 - bot.learning_system - INFO - \u274c Trade rejeitado | Score: 0.30 < 0.60
+2025-11-08 15:39:55,557 - bot.trading_bot - INFO - \U0001f6ab Trade rejeitado por ML - Score baixo: 0.30
+2025-11-08 15:39:55,847 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:40:01,154 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:40:06,454 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [6964]
+2025-11-08 15:40:07,361 - asyncio - ERROR - Unclosed client session
+client_session: <aiohttp.client.ClientSession object at 0x00000258E6B0E710>
+INFO:     Started server process [8176]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+2025-11-08 15:40:09,979 - bot.trading_bot - INFO - Loading config from DB - Testnet: True
+2025-11-08 15:40:10,370 - bot.binance_client - INFO - Using Binance SPOT TESTNET (virtual funds)
+2025-11-08 15:40:10,947 - bot.binance_client - INFO - Timestamp offset: -32472ms
+2025-11-08 15:40:10,948 - bot.binance_client - INFO - Binance client connected successfully
+2025-11-08 15:40:10,949 - bot.trading_bot - INFO - Binance initialization: Success
+2025-11-08 15:40:10,953 - bot.learning_system - INFO - \U0001f4da Nenhum aprendizado anterior encontrado. Iniciando com parâmetros padrão.
+2025-11-08 15:40:10,954 - bot.learning_system - INFO -    O bot vai aprender do zero e salvar seu aprendizado!
+2025-11-08 15:40:10,958 - bot.trading_bot - INFO - Loaded 0 open positions
+2025-11-08 15:40:10,958 - bot.trading_bot - INFO - Trading bot initialized successfully
+2025-11-08 15:40:11,239 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:40:11,386 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:40:16,535 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:40:18,280 - bot.trading_bot - INFO - Loading config from DB - Testnet: True
+2025-11-08 15:40:18,655 - bot.binance_client - INFO - Using Binance SPOT TESTNET (virtual funds)
+2025-11-08 15:40:19,232 - bot.binance_client - INFO - Timestamp offset: -32473ms
+2025-11-08 15:40:19,234 - bot.binance_client - INFO - Binance client connected successfully
+2025-11-08 15:40:19,234 - bot.trading_bot - INFO - Binance initialization: Success
+2025-11-08 15:40:19,238 - bot.learning_system - INFO - \U0001f4da Nenhum aprendizado anterior encontrado. Iniciando com parâmetros padrão.
+2025-11-08 15:40:19,238 - bot.learning_system - INFO -    O bot vai aprender do zero e salvar seu aprendizado!
+2025-11-08 15:40:19,241 - bot.trading_bot - INFO - Loaded 0 open positions
+2025-11-08 15:40:19,242 - bot.trading_bot - INFO - Trading bot initialized successfully
+2025-11-08 15:40:21,820 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:40:23,120 - bot.trading_bot - INFO - \U0001f50d Verificando posições existentes na Binance antes de iniciar...
+2025-11-08 15:40:23,917 - bot.telegram_client - INFO - Telegram message sent successfully
+2025-11-08 15:40:23,920 - bot.trading_bot - INFO - \U0001f9f9 Iniciando limpeza de posições existentes...
+2025-11-08 15:40:24,201 - bot.binance_client - ERROR - Error getting open orders: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:40:24,203 - bot.trading_bot - INFO - \u2705 Nenhuma ordem aberta na Binance. Conta limpa!
+2025-11-08 15:40:24,536 - bot.telegram_client - INFO - Telegram message sent successfully
+2025-11-08 15:40:24,872 - bot.telegram_client - INFO - Telegram message sent successfully
+2025-11-08 15:40:25,224 - bot.telegram_client - INFO - Telegram message sent successfully
+2025-11-08 15:40:25,226 - bot.trading_bot - INFO - Trading bot started
+2025-11-08 15:40:25,227 - bot.trading_bot - INFO - \U0001f50d Scanning market for opportunities...
+2025-11-08 15:40:25,812 - bot.selector - INFO - \U0001f525 Atualizando lista de pares em alta: BNBUSDT, NEARUSDT, UNIUSDT
+2025-11-08 15:40:26,416 - bot.selector - INFO - BNBUSDT: Signal=BUY, Score=58.18
+2025-11-08 15:40:27,017 - bot.selector - INFO - NEARUSDT: Signal=BUY, Score=54.03
+2025-11-08 15:40:27,611 - bot.selector - INFO - Best opportunity: BNBUSDT with score 60.02
+2025-11-08 15:40:27,613 - bot.trading_bot - INFO - \U0001f3af Opportunity found: BNBUSDT | Signal: BUY | Score: 60.02
+2025-11-08 15:40:27,614 - bot.learning_system - INFO - \u274c Trade rejeitado | Score: 0.30 < 0.60
+2025-11-08 15:40:27,614 - bot.trading_bot - INFO - \U0001f6ab Trade rejeitado por ML - Score baixo: 0.30
+2025-11-08 15:40:27,906 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:40:27,985 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:40:31,764 - bot.trading_bot - INFO - \U0001f9f9 Iniciando limpeza de posições existentes...
+2025-11-08 15:40:32,049 - bot.binance_client - ERROR - Error getting open orders: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:40:32,051 - bot.trading_bot - INFO - \u2705 Nenhuma ordem aberta na Binance. Conta limpa!
+2025-11-08 15:40:32,385 - bot.telegram_client - INFO - Telegram message sent successfully
+2025-11-08 15:40:32,690 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:40:33,288 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:40:38,583 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:40:42,625 - bot.trading_bot - INFO - \U0001f50d Scanning market for opportunities...
+2025-11-08 15:40:43,218 - bot.selector - INFO - BNBUSDT: Signal=BUY, Score=58.22
+2025-11-08 15:40:43,812 - bot.selector - INFO - NEARUSDT: Signal=BUY, Score=54.03
+2025-11-08 15:40:44,407 - bot.selector - INFO - Best opportunity: BNBUSDT with score 60.06
+2025-11-08 15:40:44,410 - bot.trading_bot - INFO - \U0001f3af Opportunity found: BNBUSDT | Signal: BUY | Score: 60.06
+2025-11-08 15:40:44,411 - bot.learning_system - INFO - \u274c Trade rejeitado | Score: 0.30 < 0.60
+2025-11-08 15:40:44,411 - bot.trading_bot - INFO - \U0001f6ab Trade rejeitado por ML - Score baixo: 0.30
+2025-11-08 15:40:44,701 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:40:50,001 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:40:55,312 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:40:59,429 - bot.trading_bot - INFO - \U0001f50d Scanning market for opportunities...
+2025-11-08 15:41:00,023 - bot.selector - INFO - BNBUSDT: Signal=BUY, Score=58.26
+2025-11-08 15:41:00,618 - bot.selector - INFO - NEARUSDT: Signal=BUY, Score=54.03
+2025-11-08 15:41:01,213 - bot.selector - INFO - Best opportunity: BNBUSDT with score 60.11
+2025-11-08 15:41:01,215 - bot.trading_bot - INFO - \U0001f3af Opportunity found: BNBUSDT | Signal: BUY | Score: 60.11
+2025-11-08 15:41:01,215 - bot.learning_system - INFO - \u274c Trade rejeitado | Score: 0.30 < 0.60
+2025-11-08 15:41:01,215 - bot.trading_bot - INFO - \U0001f6ab Trade rejeitado por ML - Score baixo: 0.30
+2025-11-08 15:41:01,503 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:41:06,806 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:41:12,095 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:41:16,205 - bot.trading_bot - INFO - \U0001f50d Scanning market for opportunities...
+2025-11-08 15:41:16,876 - bot.selector - INFO - BNBUSDT: Signal=BUY, Score=58.26
+2025-11-08 15:41:18,004 - bot.selector - INFO - NEARUSDT: Signal=BUY, Score=54.03
+2025-11-08 15:41:18,607 - bot.selector - INFO - Best opportunity: BNBUSDT with score 60.11
+2025-11-08 15:41:18,610 - bot.trading_bot - INFO - \U0001f3af Opportunity found: BNBUSDT | Signal: BUY | Score: 60.11
+2025-11-08 15:41:18,610 - bot.learning_system - INFO - \u274c Trade rejeitado | Score: 0.30 < 0.60
+2025-11-08 15:41:18,612 - bot.trading_bot - INFO - \U0001f6ab Trade rejeitado por ML - Score baixo: 0.30
+2025-11-08 15:41:18,895 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:41:24,207 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:41:29,514 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:41:33,617 - bot.trading_bot - INFO - \U0001f50d Scanning market for opportunities...
+2025-11-08 15:41:34,219 - bot.selector - INFO - BNBUSDT: Signal=BUY, Score=58.27
+2025-11-08 15:41:34,813 - bot.selector - INFO - NEARUSDT: Signal=BUY, Score=54.03
+2025-11-08 15:41:35,403 - bot.selector - INFO - Best opportunity: BNBUSDT with score 60.12
+2025-11-08 15:41:35,406 - bot.trading_bot - INFO - \U0001f3af Opportunity found: BNBUSDT | Signal: BUY | Score: 60.12
+2025-11-08 15:41:35,406 - bot.learning_system - INFO - \u274c Trade rejeitado | Score: 0.30 < 0.60
+2025-11-08 15:41:35,407 - bot.trading_bot - INFO - \U0001f6ab Trade rejeitado por ML - Score baixo: 0.30
+2025-11-08 15:41:35,700 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:41:40,978 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:41:46,289 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:41:50,413 - bot.trading_bot - INFO - \U0001f50d Scanning market for opportunities...
+2025-11-08 15:41:51,028 - bot.selector - INFO - BNBUSDT: Signal=BUY, Score=58.28
+2025-11-08 15:41:51,631 - bot.selector - INFO - NEARUSDT: Signal=BUY, Score=54.03
+2025-11-08 15:41:52,221 - bot.selector - INFO - Best opportunity: BNBUSDT with score 60.12
+2025-11-08 15:41:52,223 - bot.trading_bot - INFO - \U0001f3af Opportunity found: BNBUSDT | Signal: BUY | Score: 60.12
+2025-11-08 15:41:52,223 - bot.learning_system - INFO - \u274c Trade rejeitado | Score: 0.30 < 0.60
+2025-11-08 15:41:52,224 - bot.trading_bot - INFO - \U0001f6ab Trade rejeitado por ML - Score baixo: 0.30
+2025-11-08 15:41:52,514 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:41:57,816 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:42:03,119 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:42:07,238 - bot.trading_bot - INFO - \U0001f50d Scanning market for opportunities...
+2025-11-08 15:42:07,838 - bot.selector - INFO - BNBUSDT: Signal=BUY, Score=58.28
+2025-11-08 15:42:08,434 - bot.selector - INFO - NEARUSDT: Signal=BUY, Score=54.03
+2025-11-08 15:42:09,019 - bot.selector - INFO - Best opportunity: BNBUSDT with score 60.12
+2025-11-08 15:42:09,021 - bot.trading_bot - INFO - \U0001f3af Opportunity found: BNBUSDT | Signal: BUY | Score: 60.12
+2025-11-08 15:42:09,022 - bot.learning_system - INFO - \u274c Trade rejeitado | Score: 0.30 < 0.60
+2025-11-08 15:42:09,022 - bot.trading_bot - INFO - \U0001f6ab Trade rejeitado por ML - Score baixo: 0.30
+2025-11-08 15:42:09,304 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:42:14,589 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:42:19,894 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:42:24,030 - bot.trading_bot - INFO - \U0001f50d Scanning market for opportunities...
+2025-11-08 15:42:24,635 - bot.selector - INFO - BNBUSDT: Signal=BUY, Score=58.43
+2025-11-08 15:42:25,220 - bot.selector - INFO - NEARUSDT: Signal=BUY, Score=54.03
+2025-11-08 15:42:25,814 - bot.selector - INFO - Best opportunity: BNBUSDT with score 60.27
+2025-11-08 15:42:25,816 - bot.trading_bot - INFO - \U0001f3af Opportunity found: BNBUSDT | Signal: BUY | Score: 60.27
+2025-11-08 15:42:25,816 - bot.learning_system - INFO - \u274c Trade rejeitado | Score: 0.30 < 0.60
+2025-11-08 15:42:25,817 - bot.trading_bot - INFO - \U0001f6ab Trade rejeitado por ML - Score baixo: 0.30
+2025-11-08 15:42:26,106 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:42:31,403 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:42:36,696 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:42:38,001 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:42:38,258 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:42:40,834 - bot.trading_bot - INFO - \U0001f50d Scanning market for opportunities...
+2025-11-08 15:42:41,941 - bot.selector - INFO - \U0001f525 Atualizando lista de pares em alta: BNBUSDT, NEARUSDT, UNIUSDT
+2025-11-08 15:42:42,542 - bot.selector - INFO - BNBUSDT: Signal=BUY, Score=58.43
+2025-11-08 15:42:43,134 - bot.selector - INFO - NEARUSDT: Signal=BUY, Score=54.03
+2025-11-08 15:42:43,724 - bot.selector - INFO - Best opportunity: BNBUSDT with score 60.33
+2025-11-08 15:42:43,726 - bot.trading_bot - INFO - \U0001f3af Opportunity found: BNBUSDT | Signal: BUY | Score: 60.33
+2025-11-08 15:42:43,727 - bot.learning_system - INFO - \u274c Trade rejeitado | Score: 0.30 < 0.60
+2025-11-08 15:42:43,727 - bot.trading_bot - INFO - \U0001f6ab Trade rejeitado por ML - Score baixo: 0.30
+2025-11-08 15:42:44,020 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:42:44,021 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:42:49,308 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:42:54,611 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:42:58,735 - bot.trading_bot - INFO - \U0001f50d Scanning market for opportunities...
+2025-11-08 15:42:59,332 - bot.selector - INFO - BNBUSDT: Signal=BUY, Score=59.88
+2025-11-08 15:42:59,922 - bot.selector - INFO - NEARUSDT: Signal=BUY, Score=54.12
+2025-11-08 15:43:00,527 - bot.selector - INFO - Best opportunity: BNBUSDT with score 61.78
+2025-11-08 15:43:00,528 - bot.trading_bot - INFO - \U0001f3af Opportunity found: BNBUSDT | Signal: BUY | Score: 61.78
+2025-11-08 15:43:00,529 - bot.learning_system - INFO - \u274c Trade rejeitado | Score: 0.30 < 0.60
+2025-11-08 15:43:00,529 - bot.trading_bot - INFO - \U0001f6ab Trade rejeitado por ML - Score baixo: 0.30
+2025-11-08 15:43:00,819 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:43:06,128 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:43:11,434 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:43:15,535 - bot.trading_bot - INFO - \U0001f50d Scanning market for opportunities...
+2025-11-08 15:43:16,138 - bot.selector - INFO - BNBUSDT: Signal=BUY, Score=59.88
+2025-11-08 15:43:16,733 - bot.selector - INFO - NEARUSDT: Signal=BUY, Score=54.12
+2025-11-08 15:43:17,332 - bot.selector - INFO - Best opportunity: BNBUSDT with score 61.78
+2025-11-08 15:43:17,333 - bot.trading_bot - INFO - \U0001f3af Opportunity found: BNBUSDT | Signal: BUY | Score: 61.78
+2025-11-08 15:43:17,334 - bot.learning_system - INFO - \u274c Trade rejeitado | Score: 0.30 < 0.60
+2025-11-08 15:43:17,334 - bot.trading_bot - INFO - \U0001f6ab Trade rejeitado por ML - Score baixo: 0.30
+2025-11-08 15:43:17,618 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:43:22,894 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:43:28,195 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:43:32,354 - bot.trading_bot - INFO - \U0001f50d Scanning market for opportunities...
+2025-11-08 15:43:32,936 - bot.selector - INFO - BNBUSDT: Signal=BUY, Score=59.91
+2025-11-08 15:43:33,535 - bot.selector - INFO - NEARUSDT: Signal=BUY, Score=54.12
+2025-11-08 15:43:34,123 - bot.selector - INFO - Best opportunity: BNBUSDT with score 61.80
+2025-11-08 15:43:34,126 - bot.trading_bot - INFO - \U0001f3af Opportunity found: BNBUSDT | Signal: BUY | Score: 61.80
+2025-11-08 15:43:34,126 - bot.learning_system - INFO - \u274c Trade rejeitado | Score: 0.30 < 0.60
+2025-11-08 15:43:34,127 - bot.trading_bot - INFO - \U0001f6ab Trade rejeitado por ML - Score baixo: 0.30
+2025-11-08 15:43:34,413 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:43:39,705 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:43:45,004 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:43:49,136 - bot.trading_bot - INFO - \U0001f50d Scanning market for opportunities...
+2025-11-08 15:43:49,732 - bot.selector - INFO - BNBUSDT: Signal=BUY, Score=59.91
+2025-11-08 15:43:50,319 - bot.selector - INFO - NEARUSDT: Signal=BUY, Score=54.12
+2025-11-08 15:43:50,906 - bot.selector - INFO - Best opportunity: BNBUSDT with score 61.80
+2025-11-08 15:43:50,908 - bot.trading_bot - INFO - \U0001f3af Opportunity found: BNBUSDT | Signal: BUY | Score: 61.80
+2025-11-08 15:43:50,909 - bot.learning_system - INFO - \u274c Trade rejeitado | Score: 0.30 < 0.60
+2025-11-08 15:43:50,909 - bot.trading_bot - INFO - \U0001f6ab Trade rejeitado por ML - Score baixo: 0.30
+2025-11-08 15:43:51,195 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:43:57,006 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:44:02,290 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:44:05,922 - bot.trading_bot - INFO - \U0001f50d Scanning market for opportunities...
+2025-11-08 15:44:06,521 - bot.selector - INFO - BNBUSDT: Signal=BUY, Score=59.91
+2025-11-08 15:44:07,122 - bot.selector - INFO - NEARUSDT: Signal=BUY, Score=54.12
+2025-11-08 15:44:07,715 - bot.selector - INFO - Best opportunity: BNBUSDT with score 61.80
+2025-11-08 15:44:07,717 - bot.trading_bot - INFO - \U0001f3af Opportunity found: BNBUSDT | Signal: BUY | Score: 61.80
+2025-11-08 15:44:07,717 - bot.learning_system - INFO - \u274c Trade rejeitado | Score: 0.30 < 0.60
+2025-11-08 15:44:07,718 - bot.trading_bot - INFO - \U0001f6ab Trade rejeitado por ML - Score baixo: 0.30
+2025-11-08 15:44:07,999 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:44:13,289 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:44:18,751 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:44:22,703 - bot.trading_bot - INFO - \U0001f50d Scanning market for opportunities...
+2025-11-08 15:44:23,296 - bot.selector - INFO - BNBUSDT: Signal=BUY, Score=59.91
+2025-11-08 15:44:23,884 - bot.selector - INFO - NEARUSDT: Signal=BUY, Score=54.12
+2025-11-08 15:44:24,468 - bot.selector - INFO - Best opportunity: BNBUSDT with score 61.80
+2025-11-08 15:44:24,471 - bot.trading_bot - INFO - \U0001f3af Opportunity found: BNBUSDT | Signal: BUY | Score: 61.80
+2025-11-08 15:44:24,472 - bot.learning_system - INFO - \u274c Trade rejeitado | Score: 0.30 < 0.60
+2025-11-08 15:44:24,472 - bot.trading_bot - INFO - \U0001f6ab Trade rejeitado por ML - Score baixo: 0.30
+2025-11-08 15:44:24,752 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:44:30,036 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:44:35,342 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:44:39,481 - bot.trading_bot - INFO - \U0001f50d Scanning market for opportunities...
+2025-11-08 15:44:40,076 - bot.selector - INFO - BNBUSDT: Signal=BUY, Score=59.93
+2025-11-08 15:44:40,664 - bot.selector - INFO - NEARUSDT: Signal=BUY, Score=54.22
+2025-11-08 15:44:41,250 - bot.selector - INFO - Best opportunity: BNBUSDT with score 61.83
+2025-11-08 15:44:41,253 - bot.trading_bot - INFO - \U0001f3af Opportunity found: BNBUSDT | Signal: BUY | Score: 61.83
+2025-11-08 15:44:41,253 - bot.learning_system - INFO - \u274c Trade rejeitado | Score: 0.30 < 0.60
+2025-11-08 15:44:41,254 - bot.trading_bot - INFO - \U0001f6ab Trade rejeitado por ML - Score baixo: 0.30
+2025-11-08 15:44:41,535 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:44:46,838 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:44:52,147 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:44:56,258 - bot.trading_bot - INFO - \U0001f50d Scanning market for opportunities...
+2025-11-08 15:44:57,352 - bot.selector - INFO - \U0001f525 Atualizando lista de pares em alta: BNBUSDT, NEARUSDT, UNIUSDT
+2025-11-08 15:44:57,959 - bot.selector - INFO - BNBUSDT: Signal=BUY, Score=59.96
+2025-11-08 15:44:58,546 - bot.selector - INFO - NEARUSDT: Signal=BUY, Score=54.22
+2025-11-08 15:44:59,134 - bot.selector - INFO - Best opportunity: BNBUSDT with score 61.95
+2025-11-08 15:44:59,136 - bot.trading_bot - INFO - \U0001f3af Opportunity found: BNBUSDT | Signal: BUY | Score: 61.95
+2025-11-08 15:44:59,136 - bot.learning_system - INFO - \u274c Trade rejeitado | Score: 0.30 < 0.60
+2025-11-08 15:44:59,137 - bot.trading_bot - INFO - \U0001f6ab Trade rejeitado por ML - Score baixo: 0.30
+2025-11-08 15:44:59,423 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:45:04,725 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:45:10,020 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:45:14,128 - bot.trading_bot - INFO - \U0001f50d Scanning market for opportunities...
+2025-11-08 15:45:14,720 - bot.selector - INFO - BNBUSDT: Signal=BUY, Score=59.99
+2025-11-08 15:45:15,833 - bot.selector - INFO - NEARUSDT: Signal=BUY, Score=54.22
+2025-11-08 15:45:16,423 - bot.selector - INFO - Best opportunity: BNBUSDT with score 61.99
+2025-11-08 15:45:16,426 - bot.trading_bot - INFO - \U0001f3af Opportunity found: BNBUSDT | Signal: BUY | Score: 61.99
+2025-11-08 15:45:16,426 - bot.learning_system - INFO - \u274c Trade rejeitado | Score: 0.30 < 0.60
+2025-11-08 15:45:16,427 - bot.trading_bot - INFO - \U0001f6ab Trade rejeitado por ML - Score baixo: 0.30
+2025-11-08 15:45:16,714 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:45:21,992 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:45:27,285 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:45:31,448 - bot.trading_bot - INFO - \U0001f50d Scanning market for opportunities...
+2025-11-08 15:45:32,038 - bot.selector - INFO - BNBUSDT: Signal=BUY, Score=59.99
+2025-11-08 15:45:32,631 - bot.selector - INFO - NEARUSDT: Signal=BUY, Score=54.22
+2025-11-08 15:45:33,224 - bot.selector - INFO - Best opportunity: BNBUSDT with score 61.99
+2025-11-08 15:45:33,226 - bot.trading_bot - INFO - \U0001f3af Opportunity found: BNBUSDT | Signal: BUY | Score: 61.99
+2025-11-08 15:45:33,227 - bot.learning_system - INFO - \u274c Trade rejeitado | Score: 0.30 < 0.60
+2025-11-08 15:45:33,227 - bot.trading_bot - INFO - \U0001f6ab Trade rejeitado por ML - Score baixo: 0.30
+2025-11-08 15:45:33,514 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:45:34,007 - bot.telegram_client - INFO - Telegram message sent successfully
+2025-11-08 15:45:38,835 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:45:44,118 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:45:49,012 - bot.trading_bot - INFO - \U0001f50d Scanning market for opportunities...
+2025-11-08 15:45:50,836 - bot.selector - INFO - No trading opportunities found
+2025-11-08 15:45:50,838 - bot.trading_bot - INFO - No trading opportunities found
+2025-11-08 15:45:51,127 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:45:56,417 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:46:01,710 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:46:05,833 - bot.trading_bot - INFO - \U0001f50d Scanning market for opportunities...
+2025-11-08 15:46:07,621 - bot.selector - INFO - No trading opportunities found
+2025-11-08 15:46:07,623 - bot.trading_bot - INFO - No trading opportunities found
+2025-11-08 15:46:07,915 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:46:13,202 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:46:18,506 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:46:22,613 - bot.trading_bot - INFO - \U0001f50d Scanning market for opportunities...
+2025-11-08 15:46:24,391 - bot.selector - INFO - No trading opportunities found
+2025-11-08 15:46:24,398 - bot.trading_bot - INFO - No trading opportunities found
+2025-11-08 15:46:24,688 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:46:29,995 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:46:35,452 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:46:39,421 - bot.trading_bot - INFO - \U0001f50d Scanning market for opportunities...
+2025-11-08 15:46:41,193 - bot.selector - INFO - No trading opportunities found
+2025-11-08 15:46:41,203 - bot.trading_bot - INFO - No trading opportunities found
+2025-11-08 15:46:41,493 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:46:46,803 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:46:52,110 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:46:56,204 - bot.trading_bot - INFO - \U0001f50d Scanning market for opportunities...
+2025-11-08 15:46:57,983 - bot.selector - INFO - No trading opportunities found
+2025-11-08 15:46:57,990 - bot.trading_bot - INFO - No trading opportunities found
+2025-11-08 15:46:58,277 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:47:03,585 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:47:08,883 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:47:12,996 - bot.trading_bot - INFO - \U0001f50d Scanning market for opportunities...
+2025-11-08 15:47:13,594 - bot.selector - INFO - \U0001f525 Atualizando lista de pares em alta: BNBUSDT, NEARUSDT, UNIUSDT
+2025-11-08 15:47:15,364 - bot.selector - INFO - No trading opportunities found
+2025-11-08 15:47:15,366 - bot.trading_bot - INFO - No trading opportunities found
+2025-11-08 15:47:16,167 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:47:21,497 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:47:26,776 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:47:30,364 - bot.trading_bot - INFO - \U0001f50d Scanning market for opportunities...
+2025-11-08 15:47:32,300 - bot.selector - INFO - No trading opportunities found
+2025-11-08 15:47:32,303 - bot.trading_bot - INFO - No trading opportunities found
+2025-11-08 15:47:32,588 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:47:37,863 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:47:43,156 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:47:47,323 - bot.trading_bot - INFO - \U0001f50d Scanning market for opportunities...
+2025-11-08 15:47:49,100 - bot.selector - INFO - No trading opportunities found
+2025-11-08 15:47:49,107 - bot.trading_bot - INFO - No trading opportunities found
+2025-11-08 15:47:49,392 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:47:54,698 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:47:59,977 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:48:04,104 - bot.trading_bot - INFO - \U0001f50d Scanning market for opportunities...
+2025-11-08 15:48:05,934 - bot.selector - INFO - No trading opportunities found
+2025-11-08 15:48:05,937 - bot.trading_bot - INFO - No trading opportunities found
+2025-11-08 15:48:06,727 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:48:12,066 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:48:17,390 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:48:20,936 - bot.trading_bot - INFO - \U0001f50d Scanning market for opportunities...
+2025-11-08 15:48:22,717 - bot.selector - INFO - No trading opportunities found
+2025-11-08 15:48:22,718 - bot.trading_bot - INFO - No trading opportunities found
+2025-11-08 15:48:23,006 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:48:28,308 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:48:33,749 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:48:37,725 - bot.trading_bot - INFO - \U0001f50d Scanning market for opportunities...
+2025-11-08 15:48:39,503 - bot.selector - INFO - No trading opportunities found
+2025-11-08 15:48:39,509 - bot.trading_bot - INFO - No trading opportunities found
+2025-11-08 15:48:39,799 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:48:45,096 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:48:50,418 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:48:54,503 - bot.trading_bot - INFO - \U0001f50d Scanning market for opportunities...
+2025-11-08 15:48:56,278 - bot.selector - INFO - No trading opportunities found
+2025-11-08 15:48:56,281 - bot.trading_bot - INFO - No trading opportunities found
+2025-11-08 15:48:56,568 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:49:01,870 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:49:07,319 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:49:11,295 - bot.trading_bot - INFO - \U0001f50d Scanning market for opportunities...
+2025-11-08 15:49:13,616 - bot.selector - INFO - No trading opportunities found
+2025-11-08 15:49:13,623 - bot.trading_bot - INFO - No trading opportunities found
+2025-11-08 15:49:13,911 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:49:19,217 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:49:24,513 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:49:28,627 - bot.trading_bot - INFO - \U0001f50d Scanning market for opportunities...
+2025-11-08 15:49:30,238 - bot.selector - INFO - \U0001f525 Atualizando lista de pares em alta: BNBUSDT, NEARUSDT, UNIUSDT
+2025-11-08 15:49:32,023 - bot.selector - INFO - No trading opportunities found
+2025-11-08 15:49:32,030 - bot.trading_bot - INFO - No trading opportunities found
+2025-11-08 15:49:32,319 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:49:37,623 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:49:42,918 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:49:47,022 - bot.trading_bot - INFO - \U0001f50d Scanning market for opportunities...
+2025-11-08 15:49:48,800 - bot.selector - INFO - No trading opportunities found
+2025-11-08 15:49:48,803 - bot.trading_bot - INFO - No trading opportunities found
+2025-11-08 15:49:49,087 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:49:54,367 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:49:59,663 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:50:03,799 - bot.trading_bot - INFO - \U0001f50d Scanning market for opportunities...
+2025-11-08 15:50:05,568 - bot.selector - INFO - No trading opportunities found
+2025-11-08 15:50:05,568 - bot.trading_bot - INFO - No trading opportunities found
+2025-11-08 15:50:05,856 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:50:11,154 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:50:16,432 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:50:20,592 - bot.trading_bot - INFO - \U0001f50d Scanning market for opportunities...
+2025-11-08 15:50:22,420 - bot.selector - INFO - No trading opportunities found
+2025-11-08 15:50:22,422 - bot.trading_bot - INFO - No trading opportunities found
+2025-11-08 15:50:22,711 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:50:27,994 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:50:33,257 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:50:37,449 - bot.trading_bot - INFO - \U0001f50d Scanning market for opportunities...
+2025-11-08 15:50:38,640 - bot.selector - INFO - NEARUSDT: Signal=BUY, Score=54.51
+2025-11-08 15:50:39,235 - bot.selector - INFO - Best opportunity: NEARUSDT with score 55.87
+2025-11-08 15:50:39,238 - bot.trading_bot - INFO - \U0001f3af Opportunity found: NEARUSDT | Signal: BUY | Score: 55.87
+2025-11-08 15:50:39,238 - bot.learning_system - INFO - \u274c Trade rejeitado | Score: 0.30 < 0.60
+2025-11-08 15:50:39,239 - bot.trading_bot - INFO - \U0001f6ab Trade rejeitado por ML - Score baixo: 0.30
+2025-11-08 15:50:39,526 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+2025-11-08 15:50:40,004 - bot.telegram_client - INFO - Telegram message sent successfully
+2025-11-08 15:50:44,821 - bot.binance_client - ERROR - Error getting balance: APIError(code=-2015): Invalid API-key, IP, or permissions for action.
+ERROR [2025-11-18 09:25:00] APIError -2015
+ERROR [2025-11-18 09:25:00] APIError -2015
+ERROR [2025-11-18 09:25:00] APIError -2015
+ERROR [2025-11-18 09:42:00] APIError -2015

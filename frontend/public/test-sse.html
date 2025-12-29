@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste SSE - Trading Bot</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; background: #1a1a2e; color: #eee; }
+        .container { max-width: 900px; margin: 0 auto; }
+        h1 { color: #00d4aa; }
+        .card { background: #16213e; padding: 20px; margin: 10px 0; border-radius: 8px; }
+        .success { color: #00d4aa; }
+        .error { color: #ff6b6b; }
+        .loading { color: #ffa502; }
+        pre { background: #0f0f23; padding: 10px; border-radius: 4px; overflow-x: auto; max-height: 300px; font-size: 12px; }
+        button { background: #00d4aa; color: #1a1a2e; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; margin: 5px; font-weight: bold; }
+        button:hover { background: #00b894; }
+        button.danger { background: #ff6b6b; color: white; }
+        #sseStatus { padding: 15px; border-radius: 4px; margin: 10px 0; font-size: 18px; font-weight: bold; }
+        .status-connecting { background: #ffa502; color: #000; }
+        .status-open { background: #00d4aa; color: #000; }
+        .status-error { background: #ff6b6b; color: #fff; }
+        .status-closed { background: #555; color: #fff; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔴 Teste SSE (Server-Sent Events)</h1>
+        <p>Esta página testa a conexão SSE que o dashboard usa para atualizações em tempo real.</p>
+        
+        <div class="card">
+            <h3>📍 Informações do Ambiente</h3>
+            <p><strong>URL Atual:</strong> <span id="currentUrl"></span></p>
+            <p><strong>Hostname:</strong> <span id="hostname"></span></p>
+            <p><strong>API URL Detectada:</strong> <span id="apiUrl"></span></p>
+            <p><strong>SSE URL:</strong> <span id="sseUrl"></span></p>
+        </div>
+
+        <div class="card">
+            <h3>🔌 Controle de Conexão</h3>
+            <button onclick="connectSSE()">▶️ Conectar SSE</button>
+            <button onclick="disconnectSSE()" class="danger">⏹️ Desconectar</button>
+            <button onclick="testRestApi()">🔍 Testar REST API</button>
+            
+            <div id="sseStatus" class="status-closed">⚫ SSE: Não conectado</div>
+            
+            <p><strong>Mensagens recebidas:</strong> <span id="sseCount">0</span></p>
+            <p><strong>Última atualização:</strong> <span id="lastUpdate">-</span></p>
+        </div>
+
+        <div class="card">
+            <h3>📊 Dados Recebidos via SSE</h3>
+            <p><strong>Bot Status:</strong></p>
+            <ul>
+                <li>Rodando: <span id="isRunning">-</span></li>
+                <li>Balance: <span id="balance">-</span></li>
+                <li>Posições Abertas: <span id="positions">-</span></li>
+                <li>Testnet: <span id="testnet">-</span></li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h3>📝 Último Payload SSE</h3>
+            <pre id="sseData">Aguardando conexão...</pre>
+        </div>
+
+        <div class="card">
+            <h3>📋 Log de Eventos</h3>
+            <div id="log" style="max-height: 250px; overflow-y: auto; font-family: monospace; font-size: 12px;"></div>
+        </div>
+    </div>
+
+    <script>
+        let eventSource = null;
+        let sseMessageCount = 0;
+
+        // Detectar URL do backend (mesma lógica do React)
+        function getApiUrl() {
+            const hostname = window.location.hostname;
+            
+            // Se estamos em botrading.uk (domínio personalizado)
+            if (hostname === 'botrading.uk' || hostname.endsWith('.botrading.uk')) {
+                return 'https://api.botrading.uk';
+            }
+            
+            // Se estamos em trycloudflare.com (túnel temporário)
+            if (hostname.includes('trycloudflare.com')) {
+                return localStorage.getItem('remote_backend_url') || null;
+            }
+            
+            // Acesso local
+            return `${window.location.protocol}//${hostname}:8000`;
+        }
+
+        const apiUrl = getApiUrl();
+        const sseUrl = apiUrl ? apiUrl + '/api/stream' : null;
+
+        // Preencher informações
+        document.getElementById('currentUrl').textContent = window.location.href;
+        document.getElementById('hostname').textContent = window.location.hostname;
+        document.getElementById('apiUrl').textContent = apiUrl || '❌ NÃO CONFIGURADO';
+        document.getElementById('sseUrl').textContent = sseUrl || '❌ NÃO DISPONÍVEL';
+
+        function log(message, type = 'info') {
+            const logDiv = document.getElementById('log');
+            const time = new Date().toLocaleTimeString();
+            const colors = { error: '#ff6b6b', success: '#00d4aa', info: '#ffa502', data: '#74b9ff' };
+            const color = colors[type] || '#fff';
+            logDiv.innerHTML = `<div style="color: ${color}; margin: 2px 0; border-bottom: 1px solid #333; padding: 2px 0;">[${time}] ${message}</div>` + logDiv.innerHTML;
+        }
+
+        function updateStatus(state, text) {
+            const statusDiv = document.getElementById('sseStatus');
+            statusDiv.className = 'status-' + state;
+            statusDiv.textContent = text;
+        }
+
+        async function testRestApi() {
+            if (!apiUrl) {
+                log('❌ API URL não configurada!', 'error');
+                return;
+            }
+
+            log(`🔍 Testando REST: ${apiUrl}/api/bot/status`, 'info');
+            
+            try {
+                const response = await fetch(apiUrl + '/api/bot/status');
+                const data = await response.json();
+                log(`✅ REST API OK! Status: ${response.status}`, 'success');
+                log(`📊 is_running: ${data.is_running}, balance: ${data.balance}`, 'data');
+            } catch (error) {
+                log(`❌ REST API ERRO: ${error.message}`, 'error');
+            }
+        }
+
+        function connectSSE() {
+            if (!sseUrl) {
+                log('❌ SSE URL não disponível!', 'error');
+                return;
+            }
+
+            // Fechar conexão existente
+            if (eventSource) {
+                eventSource.close();
+                eventSource = null;
+            }
+
+            log(`🔄 Conectando SSE: ${sseUrl}`, 'info');
+            updateStatus('connecting', '🟡 SSE: Conectando...');
+
+            try {
+                eventSource = new EventSource(sseUrl, { withCredentials: false });
+
+                eventSource.onopen = function(e) {
+                    log('✅ SSE: Conexão aberta!', 'success');
+                    updateStatus('open', '🟢 SSE: Conectado!');
+                };
+
+                eventSource.onmessage = function(e) {
+                    sseMessageCount++;
+                    document.getElementById('sseCount').textContent = sseMessageCount;
+                    document.getElementById('lastUpdate').textContent = new Date().toLocaleTimeString();
+                    
+                    try {
+                        const payload = JSON.parse(e.data);
+                        
+                        // Atualizar dados na UI
+                        if (payload.status) {
+                            document.getElementById('isRunning').textContent = payload.status.is_running ? '✅ Sim' : '❌ Não';
+                            document.getElementById('balance').textContent = payload.status.balance?.toFixed(2) + ' USDT';
+                            document.getElementById('positions').textContent = payload.status.open_positions || 0;
+                            document.getElementById('testnet').textContent = payload.status.testnet_mode ? '✅ Sim' : '❌ Não';
+                        }
+                        
+                        // Mostrar payload resumido
+                        const summary = {
+                            type: payload.type,
+                            timestamp: payload.timestamp,
+                            status: payload.status ? {
+                                is_running: payload.status.is_running,
+                                balance: payload.status.balance,
+                                open_positions: payload.status.open_positions
+                            } : null
+                        };
+                        document.getElementById('sseData').textContent = JSON.stringify(summary, null, 2);
+                        
+                        log(`📨 Mensagem #${sseMessageCount} recebida (type: ${payload.type})`, 'data');
+                        
+                    } catch (err) {
+                        log(`⚠️ Erro ao parsear mensagem: ${err.message}`, 'error');
+                        document.getElementById('sseData').textContent = e.data.substring(0, 500);
+                    }
+                };
+
+                eventSource.onerror = function(e) {
+                    const state = eventSource.readyState;
+                    const stateText = ['CONNECTING', 'OPEN', 'CLOSED'][state];
+                    
+                    log(`❌ SSE Erro! readyState: ${state} (${stateText})`, 'error');
+                    
+                    if (state === 2) { // CLOSED
+                        updateStatus('error', '🔴 SSE: Desconectado (erro)');
+                        log('🔴 Conexão fechada. Verifique se o backend está rodando.', 'error');
+                    } else if (state === 0) { // CONNECTING
+                        updateStatus('connecting', '🟡 SSE: Reconectando...');
+                        log('🔄 Tentando reconectar...', 'info');
+                    }
+                };
+
+            } catch (error) {
+                log(`❌ Erro ao criar EventSource: ${error.message}`, 'error');
+                updateStatus('error', '🔴 SSE: Erro ao conectar');
+            }
+        }
+
+        function disconnectSSE() {
+            if (eventSource) {
+                eventSource.close();
+                eventSource = null;
+                log('⏹️ SSE desconectado manualmente', 'info');
+                updateStatus('closed', '⚫ SSE: Desconectado');
+            }
+        }
+
+        // Log inicial
+        log('📄 Página carregada', 'info');
+        log(`📍 Hostname: ${window.location.hostname}`, 'info');
+        log(`🌐 API URL: ${apiUrl || 'NÃO CONFIGURADO'}`, apiUrl ? 'success' : 'error');
+        
+        // Auto-conectar em 2 segundos
+        log('⏳ Conectando automaticamente em 2 segundos...', 'info');
+        setTimeout(() => {
+            connectSSE();
+        }, 2000);
+    </script>
+</body>
+</html>

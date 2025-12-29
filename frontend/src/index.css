@@ -1,0 +1,446 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================
+    TEMA DARK PREMIUM - Violeta/Cyan
+    ============================================ */
+
+/* Fix para mobile - evitar zoom e scroll indesejado */
+html {
+  -webkit-text-size-adjust: 100%;
+  touch-action: manipulation;
+}
+
+body {
+    margin: 0;
+    font-family:
+        'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
+        sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+    min-height: -webkit-fill-available;
+    min-height: 100vh;
+    letter-spacing: -0.01em;
+}
+
+/* Prevenir zoom em inputs no iOS */
+input, select, textarea {
+  font-size: 16px !important;
+}
+
+/* Fix para altura em mobile */
+#root {
+  min-height: -webkit-fill-available;
+  min-height: 100vh;
+}
+
+code {
+    font-family:
+        'JetBrains Mono', source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
+}
+
+@layer base {
+    :root {
+        /* Tema claro - mantido para compatibilidade */
+        --background: 0 0% 100%;
+        --foreground: 240 10% 3.9%;
+        --card: 0 0% 100%;
+        --card-foreground: 240 10% 3.9%;
+        --popover: 0 0% 100%;
+        --popover-foreground: 240 10% 3.9%;
+        --primary: 270 70% 55%;
+        --primary-foreground: 0 0% 100%;
+        --secondary: 240 4.8% 95.9%;
+        --secondary-foreground: 240 5.9% 10%;
+        --muted: 240 4.8% 95.9%;
+        --muted-foreground: 240 3.8% 46.1%;
+        --accent: 189 94% 43%;
+        --accent-foreground: 0 0% 100%;
+        --destructive: 350 89% 60%;
+        --destructive-foreground: 0 0% 100%;
+        --success: 142 76% 36%;
+        --success-foreground: 0 0% 100%;
+        --border: 240 5.9% 90%;
+        --input: 240 5.9% 90%;
+        --ring: 270 70% 55%;
+        --chart-1: 270 70% 55%;
+        --chart-2: 189 94% 43%;
+        --chart-3: 142 76% 36%;
+        --chart-4: 350 89% 60%;
+        --chart-5: 45 93% 47%;
+        --radius: 0.75rem;
+
+        /* Skeleton Loading Colors (Light) */
+        --skeleton-base: 240 4.8% 95.9%;
+        --skeleton-highlight: 0 0% 100%;
+    }
+
+    .dark {
+        /* Tema escuro premium - Violeta/Cyan */
+        --background: 0 0% 4%;
+        --foreground: 0 0% 95%;
+        --card: 0 0% 7%;
+        --card-foreground: 0 0% 95%;
+        --popover: 0 0% 7%;
+        --popover-foreground: 0 0% 95%;
+        --primary: 270 70% 55%;
+        --primary-foreground: 0 0% 100%;
+        --secondary: 0 0% 12%;
+        --secondary-foreground: 0 0% 95%;
+        --muted: 0 0% 12%;
+        --muted-foreground: 0 0% 55%;
+        --accent: 189 94% 43%;
+        --accent-foreground: 0 0% 100%;
+        --destructive: 350 89% 60%;
+        --destructive-foreground: 0 0% 100%;
+        --success: 142 76% 36%;
+        --success-foreground: 0 0% 100%;
+        --border: 0 0% 15%;
+        --input: 0 0% 12%;
+        --ring: 270 70% 55%;
+        --chart-1: 270 70% 55%;
+        --chart-2: 189 94% 43%;
+        --chart-3: 142 76% 36%;
+        --chart-4: 350 89% 60%;
+        --chart-5: 45 93% 47%;
+
+        /* Skeleton Loading Colors (Dark) - Professional shimmer */
+        --skeleton-base: 0 0% 10%;
+        --skeleton-highlight: 0 0% 15%;
+    }
+}
+
+@layer base {
+    * {
+        @apply border-border;
+    }
+    body {
+        @apply bg-background text-foreground;
+    }
+}
+
+/* ============================================
+   Premium Utilities
+   ============================================ */
+@layer utilities {
+    /* Base Glass */
+    .glass {
+        background: rgba(255, 255, 255, 0.05);
+        -webkit-backdrop-filter: blur(12px);
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .glass-strong {
+        background: rgba(255, 255, 255, 0.08);
+        -webkit-backdrop-filter: blur(16px);
+        backdrop-filter: blur(16px);
+        border: 1px solid rgba(139, 92, 246, 0.2);
+    }
+
+    .glass-subtle {
+        background: rgba(255, 255, 255, 0.02);
+        -webkit-backdrop-filter: blur(8px);
+        backdrop-filter: blur(8px);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    /* Glassmorphism card */
+    .glass-card {
+        @apply bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl;
+        transition: all 0.3s ease;
+    }
+
+    .glass-card:hover {
+        @apply bg-white/10 border-violet-500/30;
+        box-shadow: 0 0 30px rgba(139, 92, 246, 0.15);
+    }
+
+    /* Premium card with glow */
+    .premium-card {
+        @apply relative overflow-hidden rounded-2xl;
+        background: linear-gradient(135deg, rgba(17, 17, 17, 0.9) 0%, rgba(10, 10, 10, 0.95) 100%);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .premium-card:hover {
+        border-color: rgba(139, 92, 246, 0.4);
+        box-shadow:
+            0 0 40px rgba(139, 92, 246, 0.15),
+            0 20px 60px rgba(0, 0, 0, 0.4);
+        transform: translateY(-2px);
+    }
+
+    /* Gradient text - Violet to Cyan */
+    .gradient-text {
+        background: linear-gradient(135deg, #8b5cf6, #22d3ee);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    /* Gradient text hover effect */
+    .gradient-text-hover {
+        background: linear-gradient(135deg, #a78bfa, #67e8f9);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    /* Glow effects */
+    .glow-violet {
+        box-shadow: 0 0 20px rgba(139, 92, 246, 0.4);
+    }
+
+    .glow-cyan {
+        box-shadow: 0 0 20px rgba(34, 211, 238, 0.4);
+    }
+
+    .glow-emerald {
+        box-shadow: 0 0 20px rgba(16, 185, 129, 0.4);
+    }
+
+    .glow-rose {
+        box-shadow: 0 0 20px rgba(244, 63, 94, 0.4);
+    }
+
+    /* Text glow */
+    .text-glow-violet {
+        text-shadow: 0 0 20px rgba(139, 92, 246, 0.5);
+    }
+
+    .text-glow-cyan {
+        text-shadow: 0 0 20px rgba(34, 211, 238, 0.5);
+    }
+
+    /* Sidebar active state */
+    .sidebar-active {
+        @apply bg-violet-500/10 border-l-2 border-l-violet-500 text-violet-400;
+    }
+
+    /* Hover lift effect */
+    .hover-lift {
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .hover-lift:hover {
+        transform: translateY(-2px);
+    }
+
+    /* Shimmer effect for loading */
+    .shimmer {
+        background: linear-gradient(
+            90deg,
+            rgba(255, 255, 255, 0) 0%,
+            rgba(255, 255, 255, 0.05) 50%,
+            rgba(255, 255, 255, 0) 100%
+        );
+        background-size: 200% 100%;
+        animation: shimmer 2s infinite;
+    }
+
+    /* Gradient border */
+    .gradient-border {
+        position: relative;
+    }
+
+    .gradient-border::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        padding: 1px;
+        border-radius: inherit;
+        background: linear-gradient(135deg, #8b5cf6, #22d3ee);
+        -webkit-mask:
+            linear-gradient(#fff 0 0) content-box,
+            linear-gradient(#fff 0 0);
+        mask:
+            linear-gradient(#fff 0 0) content-box,
+            linear-gradient(#fff 0 0);
+        -webkit-mask-composite: xor;
+        mask-composite: exclude;
+        pointer-events: none;
+    }
+
+    /* Animate fade in */
+    .animate-fade-in {
+        animation: fade-in 0.3s ease-out;
+    }
+
+    @keyframes fade-in {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+}
+
+/* ============================================
+   Scrollbar Premium
+   ============================================ */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(10, 10, 10, 0.8);
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, rgba(139, 92, 246, 0.4), rgba(34, 211, 238, 0.4));
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, rgba(139, 92, 246, 0.6), rgba(34, 211, 238, 0.6));
+}
+
+/* ============================================
+   Chart customizations
+   ============================================ */
+.recharts-cartesian-grid-horizontal line,
+.recharts-cartesian-grid-vertical line {
+    stroke: rgba(255, 255, 255, 0.05);
+}
+
+.recharts-tooltip-wrapper {
+    filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.5));
+}
+
+/* ============================================
+   Mesh Gradient Background
+   ============================================ */
+.mesh-bg {
+    background-image:
+        radial-gradient(at 40% 20%, rgba(139, 92, 246, 0.15) 0px, transparent 50%),
+        radial-gradient(at 80% 0%, rgba(34, 211, 238, 0.1) 0px, transparent 50%),
+        radial-gradient(at 0% 50%, rgba(139, 92, 246, 0.1) 0px, transparent 50%),
+        radial-gradient(at 80% 50%, rgba(16, 185, 129, 0.08) 0px, transparent 50%),
+        radial-gradient(at 0% 100%, rgba(34, 211, 238, 0.1) 0px, transparent 50%);
+}
+
+/* ============================================
+   Stagger Animation for children
+   ============================================ */
+.stagger-children > * {
+    animation: fade-in 0.4s ease-out backwards;
+}
+
+.stagger-children > *:nth-child(1) { animation-delay: 0.05s; }
+.stagger-children > *:nth-child(2) { animation-delay: 0.1s; }
+.stagger-children > *:nth-child(3) { animation-delay: 0.15s; }
+.stagger-children > *:nth-child(4) { animation-delay: 0.2s; }
+.stagger-children > *:nth-child(5) { animation-delay: 0.25s; }
+.stagger-children > *:nth-child(6) { animation-delay: 0.3s; }
+.stagger-children > *:nth-child(7) { animation-delay: 0.35s; }
+.stagger-children > *:nth-child(8) { animation-delay: 0.4s; }
+
+/* ============================================
+   Premium Input Styles
+   ============================================ */
+.input-glass {
+    @apply bg-white/5 border-white/10 focus:border-violet-500/50 focus:ring-violet-500/20;
+    transition: all 0.3s ease;
+}
+
+.input-glass:focus {
+    box-shadow: 0 0 20px rgba(139, 92, 246, 0.15);
+}
+
+/* ============================================
+   Premium Button Styles
+   ============================================ */
+.btn-gradient {
+    background: linear-gradient(135deg, #8b5cf6, #22d3ee);
+    transition: all 0.3s ease;
+}
+
+.btn-gradient:hover {
+    box-shadow: 0 0 30px rgba(139, 92, 246, 0.4);
+    transform: translateY(-2px);
+}
+
+.btn-gradient:active {
+    transform: scale(0.98);
+}
+
+/* ============================================
+   Premium Badge Glow
+   ============================================ */
+.badge-glow-green {
+    box-shadow: 0 0 15px rgba(16, 185, 129, 0.4);
+}
+
+.badge-glow-red {
+    box-shadow: 0 0 15px rgba(244, 63, 94, 0.4);
+}
+
+.badge-glow-violet {
+    box-shadow: 0 0 15px rgba(139, 92, 246, 0.4);
+}
+
+.badge-glow-cyan {
+    box-shadow: 0 0 15px rgba(34, 211, 238, 0.4);
+}
+
+/* ============================================
+   Debug wrapper fix
+   ============================================ */
+@layer base {
+    [data-debug-wrapper="true"] {
+        display: contents !important;
+    }
+
+    [data-debug-wrapper="true"] > * {
+        margin-left: inherit;
+        margin-right: inherit;
+        margin-top: inherit;
+        margin-bottom: inherit;
+        padding-left: inherit;
+        padding-right: inherit;
+        padding-top: inherit;
+        padding-bottom: inherit;
+        column-gap: inherit;
+        row-gap: inherit;
+        gap: inherit;
+        border-left-width: inherit;
+        border-right-width: inherit;
+        border-top-width: inherit;
+        border-bottom-width: inherit;
+        border-left-style: inherit;
+        border-right-style: inherit;
+        border-top-style: inherit;
+        border-bottom-style: inherit;
+        border-left-color: inherit;
+        border-right-color: inherit;
+        border-top-color: inherit;
+        border-bottom-color: inherit;
+    }
+}
+
+/* ============================================
+   React Loading Skeleton - Professional Config
+   ============================================ */
+.react-loading-skeleton {
+    --base-color: hsl(var(--skeleton-base));
+    --highlight-color: hsl(var(--skeleton-highlight));
+    border-radius: 0.5rem;
+}
+
+/* Skeleton shimmer animation - Professional effect */
+@keyframes shimmer {
+    0% {
+        background-position: -200% 0;
+    }
+    100% {
+        background-position: 200% 0;
+    }
+}

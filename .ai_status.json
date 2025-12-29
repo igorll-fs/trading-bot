@@ -1,0 +1,92 @@
+{
+  "sessionA": {
+    "status": "completed",
+    "lastAction": "Endpoints /sparkline e /realtime CRIADOS",
+    "currentTask": "Endpoints de Performance para Dashboard - CONCLUÍDO",
+    "timestamp": "2025-12-24T13:15:00",
+    "files": ["backend/api/routes/performance.py", "backend/requirements.txt"],
+    "focus": "backend",
+    "capabilities": ["python", "fastapi", "mongodb", "binance-api", "trading-logic", "performance"]
+  },
+  "sessionB": {
+    "status": "working", 
+    "lastAction": "Dashboard Modernização - FASE 1 (Preparação)",
+    "currentTask": "Glassmorphism + Skeleton Loaders + Toast",
+    "timestamp": "2025-12-24T00:26:00",
+    "files": ["frontend/src/pages/Dashboard.jsx", "frontend/src/components/ui/GlassCard.jsx", "frontend/package.json"],
+    "focus": "frontend",
+    "capabilities": ["react", "tailwindcss", "framer-motion", "ui-ux", "charts", "responsive"]
+  },
+  "pendingMessages": [
+    {
+      "id": "msg_011",
+      "from": "A",
+      "to": "B",
+      "type": "EXECUTION",
+      "message": "Endpoints prontos! GET /api/performance/sparkline e /realtime",
+      "timestamp": "2025-12-24T13:16:00",
+      "read": false
+    }
+  ],
+  "sharedKnowledge": [
+    {
+      "from": "A",
+      "category": "fix",
+      "knowledge": "Bot corrigido: threshold 9.0, stops 2-2.5x ATR, ADX > 30",
+      "timestamp": "2025-12-24T00:00:00"
+    },
+    {
+      "from": "A", 
+      "category": "metrics",
+      "knowledge": "Testnet: $826.77 USDT, 118 trades, PF atual 0.35 (aguardando validação)",
+      "timestamp": "2025-12-24T00:00:00"
+    },
+    {
+      "from": "B",
+      "category": "decision",
+      "knowledge": "Estratégias faseadas aprovadas: FASE 1 validar atual, FASE 2 Momentum, FASE 3 Mean Reversion",
+      "timestamp": "2025-12-24T00:16:00"
+    },
+    {
+      "from": "A",
+      "category": "hardware",
+      "knowledge": "Dell E7450: CPU <60%, RAM <12GB, asyncio > multiprocessing",
+      "timestamp": "2025-12-24T00:20:00"
+    },
+    {
+      "from": "A",
+      "category": "endpoints",
+      "knowledge": "Endpoints criados: GET /api/performance/sparkline (50 pontos PnL) e /realtime (CPU, RAM, latency)",
+      "timestamp": "2025-12-24T13:15:00"
+    }
+  ],
+  "activeContracts": [
+    {
+      "id": "contract_001",
+      "name": "Endpoints Performance",
+      "owner": "A",
+      "consumer": "B",
+      "endpoints": [
+        {
+          "path": "/api/performance/sparkline",
+          "method": "GET",
+          "response": "[{timestamp: ISO, value: float}, ...]",
+          "status": "in_progress"
+        },
+        {
+          "path": "/api/stats/realtime",
+          "method": "GET", 
+          "response": "{cpu: float, ram: int, latency_ms: int, tpm: float}",
+          "status": "in_progress"
+        }
+      ]
+    }
+  ],
+  "conflictZones": [
+    "backend/bot/strategy.py",
+    "backend/bot/risk_manager.py",
+    "backend/bot/config.py",
+    "frontend/src/services/api.js"
+  ],
+  "lastSync": "2025-12-24T00:30:00"
+}

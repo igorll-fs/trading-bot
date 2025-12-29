@@ -1,0 +1,1466 @@
+[
+  {
+    "name": "minScore",
+    "expected": 0.9,
+    "actual": 0,
+    "values": [
+      0
+    ],
+    "operator": ">=",
+    "passed": false,
+    "auditId": "bf-cache",
+    "level": "error",
+    "url": "http://127.0.0.1:3000/",
+    "auditTitle": "Page prevented back/forward cache restoration",
+    "auditDocumentationLink": "https://developer.chrome.com/docs/lighthouse/performance/bf-cache/"
+  },
+  {
+    "name": "minScore",
+    "expected": 0.9,
+    "actual": 0,
+    "values": [
+      0
+    ],
+    "operator": ">=",
+    "passed": false,
+    "auditId": "bootup-time",
+    "level": "warn",
+    "url": "http://127.0.0.1:3000/",
+    "auditTitle": "JavaScript execution time",
+    "auditDocumentationLink": "https://developer.chrome.com/docs/lighthouse/performance/bootup-time/"
+  },
+  {
+    "name": "minScore",
+    "expected": 0.9,
+    "actual": 0,
+    "values": [
+      0
+    ],
+    "operator": ">=",
+    "passed": false,
+    "auditId": "csp-xss",
+    "level": "error",
+    "url": "http://127.0.0.1:3000/",
+    "auditTitle": "Ensure CSP is effective against XSS attacks",
+    "auditDocumentationLink": "https://developer.chrome.com/docs/lighthouse/best-practices/csp-xss/"
+  },
+  {
+    "name": "minScore",
+    "expected": 0.9,
+    "actual": 0,
+    "values": [
+      0
+    ],
+    "operator": ">=",
+    "passed": false,
+    "auditId": "dom-size",
+    "level": "warn",
+    "url": "http://127.0.0.1:3000/",
+    "auditTitle": "Avoids an excessive DOM size",
+    "auditDocumentationLink": "https://developers.google.com/web/fundamentals/performance/rendering/reduce-the-scope-and-complexity-of-style-calculations"
+  },
+  {
+    "name": "maxLength",
+    "expected": 0,
+    "actual": 2,
+    "values": [
+      2
+    ],
+    "operator": "<=",
+    "passed": false,
+    "auditId": "duplicated-javascript",
+    "level": "warn",
+    "url": "http://127.0.0.1:3000/",
+    "auditTitle": "Remove duplicate modules in JavaScript bundles"
+  },
+  {
+    "name": "minScore",
+    "expected": 0.9,
+    "actual": 0,
+    "values": [
+      0
+    ],
+    "operator": ">=",
+    "passed": false,
+    "auditId": "errors-in-console",
+    "level": "error",
+    "url": "http://127.0.0.1:3000/",
+    "auditTitle": "Browser errors were logged to the console",
+    "auditDocumentationLink": "https://developer.chrome.com/docs/lighthouse/best-practices/errors-in-console/"
+  },
+  {
+    "name": "minScore",
+    "expected": 0.9,
+    "actual": 0.74,
+    "values": [
+      0.74
+    ],
+    "operator": ">=",
+    "passed": false,
+    "auditId": "first-meaningful-paint",
+    "level": "warn",
+    "url": "http://127.0.0.1:3000/",
+    "auditTitle": "First Meaningful Paint",
+    "auditDocumentationLink": "https://developer.chrome.com/docs/lighthouse/performance/first-meaningful-paint/"
+  },
+  {
+    "name": "minScore",
+    "expected": 0.9,
+    "actual": 0,
+    "values": [
+      0
+    ],
+    "operator": ">=",
+    "passed": false,
+    "auditId": "frame-title",
+    "level": "error",
+    "url": "http://127.0.0.1:3000/",
+    "auditTitle": "`<frame>` or `<iframe>` elements do not have a title",
+    "auditDocumentationLink": "https://dequeuniversity.com/rules/axe/4.8/frame-title"
+  },
+  {
+    "name": "minScore",
+    "expected": 0.9,
+    "actual": 0,
+    "values": [
+      0
+    ],
+    "operator": ">=",
+    "passed": false,
+    "auditId": "installable-manifest",
+    "level": "error",
+    "url": "http://127.0.0.1:3000/",
+    "auditTitle": "Web app manifest or service worker do not meet the installability requirements",
+    "auditDocumentationLink": "https://developer.chrome.com/docs/lighthouse/pwa/installable-manifest/"
+  },
+  {
+    "name": "minScore",
+    "expected": 0.9,
+    "actual": 0.62,
+    "values": [
+      0.62
+    ],
+    "operator": ">=",
+    "passed": false,
+    "auditId": "largest-contentful-paint",
+    "level": "warn",
+    "url": "http://127.0.0.1:3000/",
+    "auditTitle": "Largest Contentful Paint",
+    "auditDocumentationLink": "https://developer.chrome.com/docs/lighthouse/performance/lighthouse-largest-contentful-paint/"
+  },
+  {
+    "name": "maxLength",
+    "expected": 0,
+    "actual": 4,
+    "values": [
+      4
+    ],
+    "operator": "<=",
+    "passed": false,
+    "auditId": "legacy-javascript",
+    "level": "warn",
+    "url": "http://127.0.0.1:3000/",
+    "auditTitle": "Avoid serving legacy JavaScript to modern browsers",
+    "auditDocumentationLink": "https://web.dev/articles/publish-modern-javascript"
+  },
+  {
+    "name": "minScore",
+    "expected": 0.9,
+    "actual": 0,
+    "values": [
+      0
+    ],
+    "operator": ">=",
+    "passed": false,
+    "auditId": "mainthread-work-breakdown",
+    "level": "warn",
+    "url": "http://127.0.0.1:3000/",
+    "auditTitle": "Minimizes main-thread work",
+    "auditDocumentationLink": "https://developer.chrome.com/docs/lighthouse/performance/mainthread-work-breakdown/"
+  },
+  {
+    "name": "minScore",
+    "expected": 0.9,
+    "actual": 0,
+    "values": [
+      0
+    ],
+    "operator": ">=",
+    "passed": false,
+    "auditId": "maskable-icon",
+    "level": "error",
+    "url": "http://127.0.0.1:3000/",
+    "auditTitle": "Manifest doesn't have a maskable icon",
+    "auditDocumentationLink": "https://developer.chrome.com/docs/lighthouse/pwa/maskable-icon-audit/"
+  },
+  {
+    "name": "maxLength",
+    "expected": 0,
+    "actual": 1,
+    "values": [
+      1
+    ],
+    "operator": "<=",
+    "passed": false,
+    "auditId": "render-blocking-resources",
+    "level": "warn",
+    "url": "http://127.0.0.1:3000/",
+    "auditTitle": "Eliminate render-blocking resources",
+    "auditDocumentationLink": "https://developer.chrome.com/docs/lighthouse/performance/render-blocking-resources/"
+  },
+  {
+    "name": "minScore",
+    "expected": 0.9,
+    "actual": 0,
+    "values": [
+      0
+    ],
+    "operator": ">=",
+    "passed": false,
+    "auditId": "server-response-time",
+    "level": "warn",
+    "url": "http://127.0.0.1:3000/",
+    "auditTitle": "Initial server response time was short",
+    "auditDocumentationLink": "https://developer.chrome.com/docs/lighthouse/performance/time-to-first-byte/"
+  },
+  {
+    "name": "minScore",
+    "expected": 0.9,
+    "actual": 0.81,
+    "values": [
+      0.81
+    ],
+    "operator": ">=",
+    "passed": false,
+    "auditId": "speed-index",
+    "level": "warn",
+    "url": "http://127.0.0.1:3000/",
+    "auditTitle": "Speed Index",
+    "auditDocumentationLink": "https://developer.chrome.com/docs/lighthouse/performance/speed-index/"
+  },
+  {
+    "name": "minScore",
+    "expected": 0.9,
+    "actual": 0,
+    "values": [
+      0
+    ],
+    "operator": ">=",
+    "passed": false,
+    "auditId": "splash-screen",
+    "level": "error",
+    "url": "http://127.0.0.1:3000/",
+    "auditTitle": "Is not configured for a custom splash screen",
+    "auditDocumentationLink": "https://developer.chrome.com/docs/lighthouse/pwa/splash-screen/"
+  },
+  {
+    "name": "minScore",
+    "expected": 0.9,
+    "actual": 0,
+    "values": [
+      0
+    ],
+    "operator": ">=",
+    "passed": false,
+    "auditId": "themed-omnibox",
+    "level": "error",
+    "url": "http://127.0.0.1:3000/",
+    "auditTitle": "Does not set a theme color for the address bar.",
+    "auditDocumentationLink": "https://developer.chrome.com/docs/lighthouse/pwa/themed-omnibox/"
+  },
+  {
+    "name": "minScore",
+    "expected": 0.9,
+    "actual": 0,
+    "values": [
+      0
+    ],
+    "operator": ">=",
+    "passed": false,
+    "auditId": "total-byte-weight",
+    "level": "error",
+    "url": "http://127.0.0.1:3000/",
+    "auditTitle": "Avoids enormous network payloads",
+    "auditDocumentationLink": "https://developer.chrome.com/docs/lighthouse/performance/total-byte-weight/"
+  },
+  {
+    "name": "maxLength",
+    "expected": 0,
+    "actual": 1,
+    "values": [
+      1
+    ],
+    "operator": "<=",
+    "passed": false,
+    "auditId": "unminified-css",
+    "level": "error",
+    "url": "http://127.0.0.1:3000/",
+    "auditTitle": "Minify CSS",
+    "auditDocumentationLink": "https://developer.chrome.com/docs/lighthouse/performance/unminified-css/"
+  },
+  {
+    "name": "maxLength",
+    "expected": 0,
+    "actual": 3,
+    "values": [
+      3
+    ],
+    "operator": "<=",
+    "passed": false,
+    "auditId": "unminified-javascript",
+    "level": "error",
+    "url": "http://127.0.0.1:3000/",
+    "auditTitle": "Minify JavaScript",
+    "auditDocumentationLink": "https://developer.chrome.com/docs/lighthouse/performance/unminified-javascript/"
+  },
+  {
+    "name": "maxLength",
+    "expected": 0,
+    "actual": 1,
+    "values": [
+      1
+    ],
+    "operator": "<=",
+    "passed": false,
+    "auditId": "unused-css-rules",
+    "level": "error",
+    "url": "http://127.0.0.1:3000/",
+    "auditTitle": "Reduce unused CSS",
+    "auditDocumentationLink": "https://developer.chrome.com/docs/lighthouse/performance/unused-css-rules/"
+  },
+  {
+    "name": "maxLength",
+    "expected": 0,
+    "actual": 4,
+    "values": [
+      4
+    ],
+    "operator": "<=",
+    "passed": false,
+    "auditId": "unused-javascript",
+    "level": "error",
+    "url": "http://127.0.0.1:3000/",
+    "auditTitle": "Reduce unused JavaScript",
+    "auditDocumentationLink": "https://developer.chrome.com/docs/lighthouse/performance/unused-javascript/"
+  },
+  {
+    "name": "maxLength",
+    "expected": 0,
+    "actual": 9,
+    "values": [
+      9
+    ],
+    "operator": "<=",
+    "passed": false,
+    "auditId": "uses-long-cache-ttl",
+    "level": "warn",
+    "url": "http://127.0.0.1:3000/",
+    "auditTitle": "Serve static assets with an efficient cache policy",
+    "auditDocumentationLink": "https://developer.chrome.com/docs/lighthouse/performance/uses-long-cache-ttl/"
+  },
+  {
+    "name": "maxLength",
+    "expected": 0,
+    "actual": 4,
+    "values": [
+      4
+    ],
+    "operator": "<=",
+    "passed": false,
+    "auditId": "uses-rel-preconnect",
+    "level": "error",
+    "url": "http://127.0.0.1:3000/",
+    "auditTitle": "Preconnect to required origins",
+    "auditDocumentationLink": "https://developer.chrome.com/docs/lighthouse/performance/uses-rel-preconnect/"
+  },
+  {
+    "name": "minScore",
+    "expected": 0.9,
+    "actual": 0.85,
+    "values": [
+      0.85
+    ],
+    "operator": ">=",
+    "passed": false,
+    "auditProperty": "accessibility",
+    "auditId": "categories",
+    "level": "warn",
+    "url": "http://127.0.0.1:3000/"
+  },
+  {
+    "name": "minScore",
+    "expected": 0.9,
+    "actual": 0,
+    "values": [
+      0
+    ],
+    "operator": ">=",
+    "passed": false,
+    "auditId": "bf-cache",
+    "level": "error",
+    "url": "http://127.0.0.1:3000/settings",
+    "auditTitle": "Page prevented back/forward cache restoration",
+    "auditDocumentationLink": "https://developer.chrome.com/docs/lighthouse/performance/bf-cache/"
+  },
+  {
+    "name": "minScore",
+    "expected": 0.9,
+    "actual": 0,
+    "values": [
+      0
+    ],
+    "operator": ">=",
+    "passed": false,
+    "auditId": "bootup-time",
+    "level": "warn",
+    "url": "http://127.0.0.1:3000/settings",
+    "auditTitle": "JavaScript execution time",
+    "auditDocumentationLink": "https://developer.chrome.com/docs/lighthouse/performance/bootup-time/"
+  },
+  {
+    "name": "minScore",
+    "expected": 0.9,
+    "actual": 0,
+    "values": [
+      0
+    ],
+    "operator": ">=",
+    "passed": false,
+    "auditId": "csp-xss",
+    "level": "error",
+    "url": "http://127.0.0.1:3000/settings",
+    "auditTitle": "Ensure CSP is effective against XSS attacks",
+    "auditDocumentationLink": "https://developer.chrome.com/docs/lighthouse/best-practices/csp-xss/"
+  },
+  {
+    "name": "minScore",
+    "expected": 0.9,
+    "actual": 0,
+    "values": [
+      0
+    ],
+    "operator": ">=",
+    "passed": false,
+    "auditId": "dom-size",
+    "level": "warn",
+    "url": "http://127.0.0.1:3000/settings",
+    "auditTitle": "Avoids an excessive DOM size",
+    "auditDocumentationLink": "https://developers.google.com/web/fundamentals/performance/rendering/reduce-the-scope-and-complexity-of-style-calculations"
+  },
+  {
+    "name": "maxLength",
+    "expected": 0,
+    "actual": 2,
+    "values": [
+      2
+    ],
+    "operator": "<=",
+    "passed": false,
+    "auditId": "duplicated-javascript",
+    "level": "warn",
+    "url": "http://127.0.0.1:3000/settings",
+    "auditTitle": "Remove duplicate modules in JavaScript bundles"
+  },
+  {
+    "name": "minScore",
+    "expected": 0.9,
+    "actual": 0,
+    "values": [
+      0
+    ],
+    "operator": ">=",
+    "passed": false,
+    "auditId": "errors-in-console",
+    "level": "error",
+    "url": "http://127.0.0.1:3000/settings",
+    "auditTitle": "Browser errors were logged to the console",
+    "auditDocumentationLink": "https://developer.chrome.com/docs/lighthouse/best-practices/errors-in-console/"
+  },
+  {
+    "name": "minScore",
+    "expected": 0.9,
+    "actual": 0,
+    "values": [
+      0
+    ],
+    "operator": ">=",
+    "passed": false,
+    "auditId": "frame-title",
+    "level": "error",
+    "url": "http://127.0.0.1:3000/settings",
+    "auditTitle": "`<frame>` or `<iframe>` elements do not have a title",
+    "auditDocumentationLink": "https://dequeuniversity.com/rules/axe/4.8/frame-title"
+  },
+  {
+    "name": "minScore",
+    "expected": 0.9,
+    "actual": 0,
+    "values": [
+      0
+    ],
+    "operator": ">=",
+    "passed": false,
+    "auditId": "installable-manifest",
+    "level": "error",
+    "url": "http://127.0.0.1:3000/settings",
+    "auditTitle": "Web app manifest or service worker do not meet the installability requirements",
+    "auditDocumentationLink": "https://developer.chrome.com/docs/lighthouse/pwa/installable-manifest/"
+  },
+  {
+    "name": "minScore",
+    "expected": 0.9,
+    "actual": 0.86,
+    "values": [
+      0.86
+    ],
+    "operator": ">=",
+    "passed": false,
+    "auditId": "largest-contentful-paint",
+    "level": "warn",
+    "url": "http://127.0.0.1:3000/settings",
+    "auditTitle": "Largest Contentful Paint",
+    "auditDocumentationLink": "https://developer.chrome.com/docs/lighthouse/performance/lighthouse-largest-contentful-paint/"
+  },
+  {
+    "name": "maxLength",
+    "expected": 0,
+    "actual": 4,
+    "values": [
+      4
+    ],
+    "operator": "<=",
+    "passed": false,
+    "auditId": "legacy-javascript",
+    "level": "warn",
+    "url": "http://127.0.0.1:3000/settings",
+    "auditTitle": "Avoid serving legacy JavaScript to modern browsers",
+    "auditDocumentationLink": "https://web.dev/articles/publish-modern-javascript"
+  },
+  {
+    "name": "minScore",
+    "expected": 0.9,
+    "actual": 0,
+    "values": [
+      0
+    ],
+    "operator": ">=",
+    "passed": false,
+    "auditId": "mainthread-work-breakdown",
+    "level": "warn",
+    "url": "http://127.0.0.1:3000/settings",
+    "auditTitle": "Minimizes main-thread work",
+    "auditDocumentationLink": "https://developer.chrome.com/docs/lighthouse/performance/mainthread-work-breakdown/"
+  },
+  {
+    "name": "minScore",
+    "expected": 0.9,
+    "actual": 0,
+    "values": [
+      0
+    ],
+    "operator": ">=",
+    "passed": false,
+    "auditId": "maskable-icon",
+    "level": "error",
+    "url": "http://127.0.0.1:3000/settings",
+    "auditTitle": "Manifest doesn't have a maskable icon",
+    "auditDocumentationLink": "https://developer.chrome.com/docs/lighthouse/pwa/maskable-icon-audit/"
+  },
+  {
+    "name": "maxLength",
+    "expected": 0,
+    "actual": 1,
+    "values": [
+      1
+    ],
+    "operator": "<=",
+    "passed": false,
+    "auditId": "render-blocking-resources",
+    "level": "warn",
+    "url": "http://127.0.0.1:3000/settings",
+    "auditTitle": "Eliminate render-blocking resources",
+    "auditDocumentationLink": "https://developer.chrome.com/docs/lighthouse/performance/render-blocking-resources/"
+  },
+  {
+    "name": "minScore",
+    "expected": 0.9,
+    "actual": 0,
+    "values": [
+      0
+    ],
+    "operator": ">=",
+    "passed": false,
+    "auditId": "server-response-time",
+    "level": "warn",
+    "url": "http://127.0.0.1:3000/settings",
+    "auditTitle": "Initial server response time was short",
+    "auditDocumentationLink": "https://developer.chrome.com/docs/lighthouse/performance/time-to-first-byte/"
+  },
+  {
+    "name": "minScore",
+    "expected": 0.9,
+    "actual": 0,
+    "values": [
+      0
+    ],
+    "operator": ">=",
+    "passed": false,
+    "auditId": "splash-screen",
+    "level": "error",
+    "url": "http://127.0.0.1:3000/settings",
+    "auditTitle": "Is not configured for a custom splash screen",
+    "auditDocumentationLink": "https://developer.chrome.com/docs/lighthouse/pwa/splash-screen/"
+  },
+  {
+    "name": "minScore",
+    "expected": 0.9,
+    "actual": 0,
+    "values": [
+      0
+    ],
+    "operator": ">=",
+    "passed": false,
+    "auditId": "themed-omnibox",
+    "level": "error",
+    "url": "http://127.0.0.1:3000/settings",
+    "auditTitle": "Does not set a theme color for the address bar.",
+    "auditDocumentationLink": "https://developer.chrome.com/docs/lighthouse/pwa/themed-omnibox/"
+  },
+  {
+    "name": "minScore",
+    "expected": 0.9,
+    "actual": 0,
+    "values": [
+      0
+    ],
+    "operator": ">=",
+    "passed": false,
+    "auditId": "total-byte-weight",
+    "level": "error",
+    "url": "http://127.0.0.1:3000/settings",
+    "auditTitle": "Avoids enormous network payloads",
+    "auditDocumentationLink": "https://developer.chrome.com/docs/lighthouse/performance/total-byte-weight/"
+  },
+  {
+    "name": "maxLength",
+    "expected": 0,
+    "actual": 1,
+    "values": [
+      1
+    ],
+    "operator": "<=",
+    "passed": false,
+    "auditId": "unminified-css",
+    "level": "error",
+    "url": "http://127.0.0.1:3000/settings",
+    "auditTitle": "Minify CSS",
+    "auditDocumentationLink": "https://developer.chrome.com/docs/lighthouse/performance/unminified-css/"
+  },
+  {
+    "name": "maxLength",
+    "expected": 0,
+    "actual": 3,
+    "values": [
+      3
+    ],
+    "operator": "<=",
+    "passed": false,
+    "auditId": "unminified-javascript",
+    "level": "error",
+    "url": "http://127.0.0.1:3000/settings",
+    "auditTitle": "Minify JavaScript",
+    "auditDocumentationLink": "https://developer.chrome.com/docs/lighthouse/performance/unminified-javascript/"
+  },
+  {
+    "name": "maxLength",
+    "expected": 0,
+    "actual": 1,
+    "values": [
+      1
+    ],
+    "operator": "<=",
+    "passed": false,
+    "auditId": "unused-css-rules",
+    "level": "error",
+    "url": "http://127.0.0.1:3000/settings",
+    "auditTitle": "Reduce unused CSS",
+    "auditDocumentationLink": "https://developer.chrome.com/docs/lighthouse/performance/unused-css-rules/"
+  },
+  {
+    "name": "maxLength",
+    "expected": 0,
+    "actual": 5,
+    "values": [
+      5
+    ],
+    "operator": "<=",
+    "passed": false,
+    "auditId": "unused-javascript",
+    "level": "error",
+    "url": "http://127.0.0.1:3000/settings",
+    "auditTitle": "Reduce unused JavaScript",
+    "auditDocumentationLink": "https://developer.chrome.com/docs/lighthouse/performance/unused-javascript/"
+  },
+  {
+    "name": "maxLength",
+    "expected": 0,
+    "actual": 9,
+    "values": [
+      9
+    ],
+    "operator": "<=",
+    "passed": false,
+    "auditId": "uses-long-cache-ttl",
+    "level": "warn",
+    "url": "http://127.0.0.1:3000/settings",
+    "auditTitle": "Serve static assets with an efficient cache policy",
+    "auditDocumentationLink": "https://developer.chrome.com/docs/lighthouse/performance/uses-long-cache-ttl/"
+  },
+  {
+    "name": "maxLength",
+    "expected": 0,
+    "actual": 2,
+    "values": [
+      2
+    ],
+    "operator": "<=",
+    "passed": false,
+    "auditId": "uses-rel-preconnect",
+    "level": "error",
+    "url": "http://127.0.0.1:3000/settings",
+    "auditTitle": "Preconnect to required origins",
+    "auditDocumentationLink": "https://developer.chrome.com/docs/lighthouse/performance/uses-rel-preconnect/"
+  },
+  {
+    "name": "minScore",
+    "expected": 0.9,
+    "actual": 0.85,
+    "values": [
+      0.85
+    ],
+    "operator": ">=",
+    "passed": false,
+    "auditProperty": "accessibility",
+    "auditId": "categories",
+    "level": "warn",
+    "url": "http://127.0.0.1:3000/settings"
+  },
+  {
+    "name": "minScore",
+    "expected": 0.9,
+    "actual": 0,
+    "values": [
+      0
+    ],
+    "operator": ">=",
+    "passed": false,
+    "auditId": "bf-cache",
+    "level": "error",
+    "url": "http://127.0.0.1:3000/trades",
+    "auditTitle": "Page prevented back/forward cache restoration",
+    "auditDocumentationLink": "https://developer.chrome.com/docs/lighthouse/performance/bf-cache/"
+  },
+  {
+    "name": "minScore",
+    "expected": 0.9,
+    "actual": 0,
+    "values": [
+      0
+    ],
+    "operator": ">=",
+    "passed": false,
+    "auditId": "bootup-time",
+    "level": "warn",
+    "url": "http://127.0.0.1:3000/trades",
+    "auditTitle": "JavaScript execution time",
+    "auditDocumentationLink": "https://developer.chrome.com/docs/lighthouse/performance/bootup-time/"
+  },
+  {
+    "name": "minScore",
+    "expected": 0.9,
+    "actual": 0,
+    "values": [
+      0
+    ],
+    "operator": ">=",
+    "passed": false,
+    "auditId": "csp-xss",
+    "level": "error",
+    "url": "http://127.0.0.1:3000/trades",
+    "auditTitle": "Ensure CSP is effective against XSS attacks",
+    "auditDocumentationLink": "https://developer.chrome.com/docs/lighthouse/best-practices/csp-xss/"
+  },
+  {
+    "name": "minScore",
+    "expected": 0.9,
+    "actual": 0,
+    "values": [
+      0
+    ],
+    "operator": ">=",
+    "passed": false,
+    "auditId": "dom-size",
+    "level": "warn",
+    "url": "http://127.0.0.1:3000/trades",
+    "auditTitle": "Avoids an excessive DOM size",
+    "auditDocumentationLink": "https://developers.google.com/web/fundamentals/performance/rendering/reduce-the-scope-and-complexity-of-style-calculations"
+  },
+  {
+    "name": "maxLength",
+    "expected": 0,
+    "actual": 1,
+    "values": [
+      1
+    ],
+    "operator": "<=",
+    "passed": false,
+    "auditId": "duplicated-javascript",
+    "level": "warn",
+    "url": "http://127.0.0.1:3000/trades",
+    "auditTitle": "Remove duplicate modules in JavaScript bundles"
+  },
+  {
+    "name": "minScore",
+    "expected": 0.9,
+    "actual": 0,
+    "values": [
+      0
+    ],
+    "operator": ">=",
+    "passed": false,
+    "auditId": "errors-in-console",
+    "level": "error",
+    "url": "http://127.0.0.1:3000/trades",
+    "auditTitle": "Browser errors were logged to the console",
+    "auditDocumentationLink": "https://developer.chrome.com/docs/lighthouse/best-practices/errors-in-console/"
+  },
+  {
+    "name": "minScore",
+    "expected": 0.9,
+    "actual": 0.81,
+    "values": [
+      0.81
+    ],
+    "operator": ">=",
+    "passed": false,
+    "auditId": "first-meaningful-paint",
+    "level": "warn",
+    "url": "http://127.0.0.1:3000/trades",
+    "auditTitle": "First Meaningful Paint",
+    "auditDocumentationLink": "https://developer.chrome.com/docs/lighthouse/performance/first-meaningful-paint/"
+  },
+  {
+    "name": "minScore",
+    "expected": 0.9,
+    "actual": 0,
+    "values": [
+      0
+    ],
+    "operator": ">=",
+    "passed": false,
+    "auditId": "installable-manifest",
+    "level": "error",
+    "url": "http://127.0.0.1:3000/trades",
+    "auditTitle": "Web app manifest or service worker do not meet the installability requirements",
+    "auditDocumentationLink": "https://developer.chrome.com/docs/lighthouse/pwa/installable-manifest/"
+  },
+  {
+    "name": "minScore",
+    "expected": 0.9,
+    "actual": 0,
+    "values": [
+      0
+    ],
+    "operator": ">=",
+    "passed": false,
+    "auditId": "label-content-name-mismatch",
+    "level": "error",
+    "url": "http://127.0.0.1:3000/trades",
+    "auditTitle": "Elements with visible text labels do not have matching accessible names.",
+    "auditDocumentationLink": "https://dequeuniversity.com/rules/axe/4.8/label-content-name-mismatch"
+  },
+  {
+    "name": "minScore",
+    "expected": 0.9,
+    "actual": 0.73,
+    "values": [
+      0.73
+    ],
+    "operator": ">=",
+    "passed": false,
+    "auditId": "largest-contentful-paint",
+    "level": "warn",
+    "url": "http://127.0.0.1:3000/trades",
+    "auditTitle": "Largest Contentful Paint",
+    "auditDocumentationLink": "https://developer.chrome.com/docs/lighthouse/performance/lighthouse-largest-contentful-paint/"
+  },
+  {
+    "name": "maxLength",
+    "expected": 0,
+    "actual": 4,
+    "values": [
+      4
+    ],
+    "operator": "<=",
+    "passed": false,
+    "auditId": "legacy-javascript",
+    "level": "warn",
+    "url": "http://127.0.0.1:3000/trades",
+    "auditTitle": "Avoid serving legacy JavaScript to modern browsers",
+    "auditDocumentationLink": "https://web.dev/articles/publish-modern-javascript"
+  },
+  {
+    "name": "minScore",
+    "expected": 0.9,
+    "actual": 0,
+    "values": [
+      0
+    ],
+    "operator": ">=",
+    "passed": false,
+    "auditId": "mainthread-work-breakdown",
+    "level": "warn",
+    "url": "http://127.0.0.1:3000/trades",
+    "auditTitle": "Minimizes main-thread work",
+    "auditDocumentationLink": "https://developer.chrome.com/docs/lighthouse/performance/mainthread-work-breakdown/"
+  },
+  {
+    "name": "minScore",
+    "expected": 0.9,
+    "actual": 0,
+    "values": [
+      0
+    ],
+    "operator": ">=",
+    "passed": false,
+    "auditId": "maskable-icon",
+    "level": "error",
+    "url": "http://127.0.0.1:3000/trades",
+    "auditTitle": "Manifest doesn't have a maskable icon",
+    "auditDocumentationLink": "https://developer.chrome.com/docs/lighthouse/pwa/maskable-icon-audit/"
+  },
+  {
+    "name": "maxLength",
+    "expected": 0,
+    "actual": 1,
+    "values": [
+      1
+    ],
+    "operator": "<=",
+    "passed": false,
+    "auditId": "render-blocking-resources",
+    "level": "warn",
+    "url": "http://127.0.0.1:3000/trades",
+    "auditTitle": "Eliminate render-blocking resources",
+    "auditDocumentationLink": "https://developer.chrome.com/docs/lighthouse/performance/render-blocking-resources/"
+  },
+  {
+    "name": "minScore",
+    "expected": 0.9,
+    "actual": 0,
+    "values": [
+      0
+    ],
+    "operator": ">=",
+    "passed": false,
+    "auditId": "server-response-time",
+    "level": "warn",
+    "url": "http://127.0.0.1:3000/trades",
+    "auditTitle": "Initial server response time was short",
+    "auditDocumentationLink": "https://developer.chrome.com/docs/lighthouse/performance/time-to-first-byte/"
+  },
+  {
+    "name": "minScore",
+    "expected": 0.9,
+    "actual": 0,
+    "values": [
+      0
+    ],
+    "operator": ">=",
+    "passed": false,
+    "auditId": "splash-screen",
+    "level": "error",
+    "url": "http://127.0.0.1:3000/trades",
+    "auditTitle": "Is not configured for a custom splash screen",
+    "auditDocumentationLink": "https://developer.chrome.com/docs/lighthouse/pwa/splash-screen/"
+  },
+  {
+    "name": "minScore",
+    "expected": 0.9,
+    "actual": 0,
+    "values": [
+      0
+    ],
+    "operator": ">=",
+    "passed": false,
+    "auditId": "themed-omnibox",
+    "level": "error",
+    "url": "http://127.0.0.1:3000/trades",
+    "auditTitle": "Does not set a theme color for the address bar.",
+    "auditDocumentationLink": "https://developer.chrome.com/docs/lighthouse/pwa/themed-omnibox/"
+  },
+  {
+    "name": "minScore",
+    "expected": 0.9,
+    "actual": 0,
+    "values": [
+      0
+    ],
+    "operator": ">=",
+    "passed": false,
+    "auditId": "total-byte-weight",
+    "level": "error",
+    "url": "http://127.0.0.1:3000/trades",
+    "auditTitle": "Avoids enormous network payloads",
+    "auditDocumentationLink": "https://developer.chrome.com/docs/lighthouse/performance/total-byte-weight/"
+  },
+  {
+    "name": "maxLength",
+    "expected": 0,
+    "actual": 1,
+    "values": [
+      1
+    ],
+    "operator": "<=",
+    "passed": false,
+    "auditId": "unminified-css",
+    "level": "error",
+    "url": "http://127.0.0.1:3000/trades",
+    "auditTitle": "Minify CSS",
+    "auditDocumentationLink": "https://developer.chrome.com/docs/lighthouse/performance/unminified-css/"
+  },
+  {
+    "name": "maxLength",
+    "expected": 0,
+    "actual": 2,
+    "values": [
+      2
+    ],
+    "operator": "<=",
+    "passed": false,
+    "auditId": "unminified-javascript",
+    "level": "error",
+    "url": "http://127.0.0.1:3000/trades",
+    "auditTitle": "Minify JavaScript",
+    "auditDocumentationLink": "https://developer.chrome.com/docs/lighthouse/performance/unminified-javascript/"
+  },
+  {
+    "name": "maxLength",
+    "expected": 0,
+    "actual": 1,
+    "values": [
+      1
+    ],
+    "operator": "<=",
+    "passed": false,
+    "auditId": "unused-css-rules",
+    "level": "error",
+    "url": "http://127.0.0.1:3000/trades",
+    "auditTitle": "Reduce unused CSS",
+    "auditDocumentationLink": "https://developer.chrome.com/docs/lighthouse/performance/unused-css-rules/"
+  },
+  {
+    "name": "maxLength",
+    "expected": 0,
+    "actual": 3,
+    "values": [
+      3
+    ],
+    "operator": "<=",
+    "passed": false,
+    "auditId": "unused-javascript",
+    "level": "error",
+    "url": "http://127.0.0.1:3000/trades",
+    "auditTitle": "Reduce unused JavaScript",
+    "auditDocumentationLink": "https://developer.chrome.com/docs/lighthouse/performance/unused-javascript/"
+  },
+  {
+    "name": "maxLength",
+    "expected": 0,
+    "actual": 9,
+    "values": [
+      9
+    ],
+    "operator": "<=",
+    "passed": false,
+    "auditId": "uses-long-cache-ttl",
+    "level": "warn",
+    "url": "http://127.0.0.1:3000/trades",
+    "auditTitle": "Serve static assets with an efficient cache policy",
+    "auditDocumentationLink": "https://developer.chrome.com/docs/lighthouse/performance/uses-long-cache-ttl/"
+  },
+  {
+    "name": "maxLength",
+    "expected": 0,
+    "actual": 4,
+    "values": [
+      4
+    ],
+    "operator": "<=",
+    "passed": false,
+    "auditId": "uses-rel-preconnect",
+    "level": "error",
+    "url": "http://127.0.0.1:3000/trades",
+    "auditTitle": "Preconnect to required origins",
+    "auditDocumentationLink": "https://developer.chrome.com/docs/lighthouse/performance/uses-rel-preconnect/"
+  },
+  {
+    "name": "minScore",
+    "expected": 0.9,
+    "actual": 0,
+    "values": [
+      0
+    ],
+    "operator": ">=",
+    "passed": false,
+    "auditId": "bf-cache",
+    "level": "error",
+    "url": "http://127.0.0.1:3000/instructions",
+    "auditTitle": "Page prevented back/forward cache restoration",
+    "auditDocumentationLink": "https://developer.chrome.com/docs/lighthouse/performance/bf-cache/"
+  },
+  {
+    "name": "minScore",
+    "expected": 0.9,
+    "actual": 0,
+    "values": [
+      0
+    ],
+    "operator": ">=",
+    "passed": false,
+    "auditId": "bootup-time",
+    "level": "warn",
+    "url": "http://127.0.0.1:3000/instructions",
+    "auditTitle": "JavaScript execution time",
+    "auditDocumentationLink": "https://developer.chrome.com/docs/lighthouse/performance/bootup-time/"
+  },
+  {
+    "name": "minScore",
+    "expected": 0.9,
+    "actual": 0,
+    "values": [
+      0
+    ],
+    "operator": ">=",
+    "passed": false,
+    "auditId": "csp-xss",
+    "level": "error",
+    "url": "http://127.0.0.1:3000/instructions",
+    "auditTitle": "Ensure CSP is effective against XSS attacks",
+    "auditDocumentationLink": "https://developer.chrome.com/docs/lighthouse/best-practices/csp-xss/"
+  },
+  {
+    "name": "minScore",
+    "expected": 0.9,
+    "actual": 0,
+    "values": [
+      0
+    ],
+    "operator": ">=",
+    "passed": false,
+    "auditId": "dom-size",
+    "level": "warn",
+    "url": "http://127.0.0.1:3000/instructions",
+    "auditTitle": "Avoids an excessive DOM size",
+    "auditDocumentationLink": "https://developers.google.com/web/fundamentals/performance/rendering/reduce-the-scope-and-complexity-of-style-calculations"
+  },
+  {
+    "name": "maxLength",
+    "expected": 0,
+    "actual": 1,
+    "values": [
+      1
+    ],
+    "operator": "<=",
+    "passed": false,
+    "auditId": "duplicated-javascript",
+    "level": "warn",
+    "url": "http://127.0.0.1:3000/instructions",
+    "auditTitle": "Remove duplicate modules in JavaScript bundles"
+  },
+  {
+    "name": "minScore",
+    "expected": 0.9,
+    "actual": 0,
+    "values": [
+      0
+    ],
+    "operator": ">=",
+    "passed": false,
+    "auditId": "errors-in-console",
+    "level": "error",
+    "url": "http://127.0.0.1:3000/instructions",
+    "auditTitle": "Browser errors were logged to the console",
+    "auditDocumentationLink": "https://developer.chrome.com/docs/lighthouse/best-practices/errors-in-console/"
+  },
+  {
+    "name": "minScore",
+    "expected": 0.9,
+    "actual": 0,
+    "values": [
+      0
+    ],
+    "operator": ">=",
+    "passed": false,
+    "auditId": "heading-order",
+    "level": "error",
+    "url": "http://127.0.0.1:3000/instructions",
+    "auditTitle": "Heading elements are not in a sequentially-descending order",
+    "auditDocumentationLink": "https://dequeuniversity.com/rules/axe/4.8/heading-order"
+  },
+  {
+    "name": "minScore",
+    "expected": 0.9,
+    "actual": 0,
+    "values": [
+      0
+    ],
+    "operator": ">=",
+    "passed": false,
+    "auditId": "installable-manifest",
+    "level": "error",
+    "url": "http://127.0.0.1:3000/instructions",
+    "auditTitle": "Web app manifest or service worker do not meet the installability requirements",
+    "auditDocumentationLink": "https://developer.chrome.com/docs/lighthouse/pwa/installable-manifest/"
+  },
+  {
+    "name": "minScore",
+    "expected": 0.9,
+    "actual": 0,
+    "values": [
+      0
+    ],
+    "operator": ">=",
+    "passed": false,
+    "auditId": "label-content-name-mismatch",
+    "level": "error",
+    "url": "http://127.0.0.1:3000/instructions",
+    "auditTitle": "Elements with visible text labels do not have matching accessible names.",
+    "auditDocumentationLink": "https://dequeuniversity.com/rules/axe/4.8/label-content-name-mismatch"
+  },
+  {
+    "name": "minScore",
+    "expected": 0.9,
+    "actual": 0.77,
+    "values": [
+      0.77
+    ],
+    "operator": ">=",
+    "passed": false,
+    "auditId": "largest-contentful-paint",
+    "level": "warn",
+    "url": "http://127.0.0.1:3000/instructions",
+    "auditTitle": "Largest Contentful Paint",
+    "auditDocumentationLink": "https://developer.chrome.com/docs/lighthouse/performance/lighthouse-largest-contentful-paint/"
+  },
+  {
+    "name": "maxLength",
+    "expected": 0,
+    "actual": 4,
+    "values": [
+      4
+    ],
+    "operator": "<=",
+    "passed": false,
+    "auditId": "legacy-javascript",
+    "level": "warn",
+    "url": "http://127.0.0.1:3000/instructions",
+    "auditTitle": "Avoid serving legacy JavaScript to modern browsers",
+    "auditDocumentationLink": "https://web.dev/articles/publish-modern-javascript"
+  },
+  {
+    "name": "minScore",
+    "expected": 0.9,
+    "actual": 0,
+    "values": [
+      0
+    ],
+    "operator": ">=",
+    "passed": false,
+    "auditId": "mainthread-work-breakdown",
+    "level": "warn",
+    "url": "http://127.0.0.1:3000/instructions",
+    "auditTitle": "Minimizes main-thread work",
+    "auditDocumentationLink": "https://developer.chrome.com/docs/lighthouse/performance/mainthread-work-breakdown/"
+  },
+  {
+    "name": "minScore",
+    "expected": 0.9,
+    "actual": 0,
+    "values": [
+      0
+    ],
+    "operator": ">=",
+    "passed": false,
+    "auditId": "maskable-icon",
+    "level": "error",
+    "url": "http://127.0.0.1:3000/instructions",
+    "auditTitle": "Manifest doesn't have a maskable icon",
+    "auditDocumentationLink": "https://developer.chrome.com/docs/lighthouse/pwa/maskable-icon-audit/"
+  },
+  {
+    "name": "maxLength",
+    "expected": 0,
+    "actual": 1,
+    "values": [
+      1
+    ],
+    "operator": "<=",
+    "passed": false,
+    "auditId": "render-blocking-resources",
+    "level": "warn",
+    "url": "http://127.0.0.1:3000/instructions",
+    "auditTitle": "Eliminate render-blocking resources",
+    "auditDocumentationLink": "https://developer.chrome.com/docs/lighthouse/performance/render-blocking-resources/"
+  },
+  {
+    "name": "minScore",
+    "expected": 0.9,
+    "actual": 0,
+    "values": [
+      0
+    ],
+    "operator": ">=",
+    "passed": false,
+    "auditId": "server-response-time",
+    "level": "warn",
+    "url": "http://127.0.0.1:3000/instructions",
+    "auditTitle": "Initial server response time was short",
+    "auditDocumentationLink": "https://developer.chrome.com/docs/lighthouse/performance/time-to-first-byte/"
+  },
+  {
+    "name": "minScore",
+    "expected": 0.9,
+    "actual": 0,
+    "values": [
+      0
+    ],
+    "operator": ">=",
+    "passed": false,
+    "auditId": "splash-screen",
+    "level": "error",
+    "url": "http://127.0.0.1:3000/instructions",
+    "auditTitle": "Is not configured for a custom splash screen",
+    "auditDocumentationLink": "https://developer.chrome.com/docs/lighthouse/pwa/splash-screen/"
+  },
+  {
+    "name": "minScore",
+    "expected": 0.9,
+    "actual": 0,
+    "values": [
+      0
+    ],
+    "operator": ">=",
+    "passed": false,
+    "auditId": "themed-omnibox",
+    "level": "error",
+    "url": "http://127.0.0.1:3000/instructions",
+    "auditTitle": "Does not set a theme color for the address bar.",
+    "auditDocumentationLink": "https://developer.chrome.com/docs/lighthouse/pwa/themed-omnibox/"
+  },
+  {
+    "name": "minScore",
+    "expected": 0.9,
+    "actual": 0,
+    "values": [
+      0
+    ],
+    "operator": ">=",
+    "passed": false,
+    "auditId": "total-byte-weight",
+    "level": "error",
+    "url": "http://127.0.0.1:3000/instructions",
+    "auditTitle": "Avoids enormous network payloads",
+    "auditDocumentationLink": "https://developer.chrome.com/docs/lighthouse/performance/total-byte-weight/"
+  },
+  {
+    "name": "maxLength",
+    "expected": 0,
+    "actual": 1,
+    "values": [
+      1
+    ],
+    "operator": "<=",
+    "passed": false,
+    "auditId": "unminified-css",
+    "level": "error",
+    "url": "http://127.0.0.1:3000/instructions",
+    "auditTitle": "Minify CSS",
+    "auditDocumentationLink": "https://developer.chrome.com/docs/lighthouse/performance/unminified-css/"
+  },
+  {
+    "name": "maxLength",
+    "expected": 0,
+    "actual": 1,
+    "values": [
+      1
+    ],
+    "operator": "<=",
+    "passed": false,
+    "auditId": "unminified-javascript",
+    "level": "error",
+    "url": "http://127.0.0.1:3000/instructions",
+    "auditTitle": "Minify JavaScript",
+    "auditDocumentationLink": "https://developer.chrome.com/docs/lighthouse/performance/unminified-javascript/"
+  },
+  {
+    "name": "maxLength",
+    "expected": 0,
+    "actual": 1,
+    "values": [
+      1
+    ],
+    "operator": "<=",
+    "passed": false,
+    "auditId": "unused-css-rules",
+    "level": "error",
+    "url": "http://127.0.0.1:3000/instructions",
+    "auditTitle": "Reduce unused CSS",
+    "auditDocumentationLink": "https://developer.chrome.com/docs/lighthouse/performance/unused-css-rules/"
+  },
+  {
+    "name": "maxLength",
+    "expected": 0,
+    "actual": 4,
+    "values": [
+      4
+    ],
+    "operator": "<=",
+    "passed": false,
+    "auditId": "unused-javascript",
+    "level": "error",
+    "url": "http://127.0.0.1:3000/instructions",
+    "auditTitle": "Reduce unused JavaScript",
+    "auditDocumentationLink": "https://developer.chrome.com/docs/lighthouse/performance/unused-javascript/"
+  },
+  {
+    "name": "maxLength",
+    "expected": 0,
+    "actual": 8,
+    "values": [
+      8
+    ],
+    "operator": "<=",
+    "passed": false,
+    "auditId": "uses-long-cache-ttl",
+    "level": "warn",
+    "url": "http://127.0.0.1:3000/instructions",
+    "auditTitle": "Serve static assets with an efficient cache policy",
+    "auditDocumentationLink": "https://developer.chrome.com/docs/lighthouse/performance/uses-long-cache-ttl/"
+  },
+  {
+    "name": "maxLength",
+    "expected": 0,
+    "actual": 3,
+    "values": [
+      3
+    ],
+    "operator": "<=",
+    "passed": false,
+    "auditId": "uses-rel-preconnect",
+    "level": "error",
+    "url": "http://127.0.0.1:3000/instructions",
+    "auditTitle": "Preconnect to required origins",
+    "auditDocumentationLink": "https://developer.chrome.com/docs/lighthouse/performance/uses-rel-preconnect/"
+  }
+]

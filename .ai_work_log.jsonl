@@ -1,0 +1,6 @@
+{"session":"A","action":"system_created","details":"Sistema de comunicação AI_CHAT.md criado","files":["AI_CHAT.md","AI_COORDINATION.md"],"timestamp":"2025-12-24T00:00:00"}
+{"session":"A","action":"proposals_sent","details":"3 propostas enviadas: otimização, estratégias, dashboard","files":[],"timestamp":"2025-12-24T00:02:00"}
+{"session":"B","action":"proposals_reviewed","details":"Respondeu 3 propostas: 2 aprovadas, 1 contra-proposta","files":[],"timestamp":"2025-12-24T00:18:00"}
+{"session":"A","action":"approval","details":"Aprovado msg_005 - estratégias faseadas","files":[],"timestamp":"2025-12-24T00:28:00"}
+{"session":"B","action":"started","details":"Dashboard Modernização - FASE 1 (Preparação)","files":["frontend/package.json","frontend/src/components/ui/GlassCard.jsx"],"timestamp":"2025-12-24T00:26:00"}
+{"session":"A","action":"started","details":"Endpoints de Performance para Dashboard","files":["backend/server.py","backend/bot/trading_bot.py"],"timestamp":"2025-12-24T00:30:00"}

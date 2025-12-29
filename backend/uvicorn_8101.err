@@ -1,0 +1,27 @@
+INFO:     Started server process [3232]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8101 (Press CTRL+C to quit)
+2025-11-18 00:39:25,936 - bot.trading_bot - INFO - Loading config (source=db/env, testnet=True)
+2025-11-18 00:39:26,331 - bot.binance_client - INFO - Using Binance SPOT TESTNET (virtual funds)
+2025-11-18 00:39:26,922 - bot.binance_client - INFO - Timestamp offset atualizado: -36172ms
+2025-11-18 00:39:26,934 - bot.binance_client - INFO - Binance client connected successfully
+2025-11-18 00:39:26,946 - bot.trading_bot - INFO - Binance initialization: Success
+2025-11-18 00:39:26,958 - bot.learning_system - INFO - Nenhum aprendizado anterior encontrado. Iniciando com parametros padrao.
+2025-11-18 00:39:26,959 - bot.learning_system - INFO - O bot vai aprender do zero e salvar seu aprendizado!
+2025-11-18 00:39:26,962 - bot.trading_bot - INFO - Loaded 0 open positions
+2025-11-18 00:39:26,963 - bot.trading_bot - INFO - Trading bot initialized successfully
+2025-11-18 00:39:27,259 - bot.binance_client - INFO - Spot account balance retrieved: $6667.6528 USDT
+2025-11-18 00:39:43,307 - bot.trading_bot - INFO - Verificando posicoes existentes na Binance antes de iniciar...
+2025-11-18 00:39:43,741 - bot.telegram_client - WARNING - Telegram SSL verification failed (Cannot connect to host api.telegram.org:443 ssl:True [SSLCertVerificationError: (1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self signed certificate in certificate chain (_ssl.c:992)')]). Retrying without certificate validation.
+2025-11-18 00:39:44,500 - bot.telegram_client - INFO - Telegram message sent successfully
+2025-11-18 00:39:44,503 - bot.trading_bot - INFO - Iniciando limpeza de posicoes existentes...
+2025-11-18 00:39:44,794 - bot.trading_bot - INFO - Nenhuma ordem aberta na Binance. Conta limpa!
+2025-11-18 00:39:45,117 - bot.telegram_client - INFO - Telegram message sent successfully
+2025-11-18 00:39:45,446 - bot.telegram_client - INFO - Telegram message sent successfully
+2025-11-18 00:39:45,768 - bot.telegram_client - INFO - Telegram message sent successfully
+2025-11-18 00:39:45,771 - bot.trading_bot - INFO - Trading bot started
+2025-11-18 00:39:45,787 - bot.trading_bot - INFO - Scanning market for opportunities...
+2025-11-18 00:39:46,630 - bot.selector - INFO - Atualizando lista de pares em alta: UNIUSDT
+2025-11-18 00:39:47,232 - bot.selector - INFO - No trading opportunities found
+2025-11-18 00:39:47,234 - bot.trading_bot - INFO - No trading opportunities found
