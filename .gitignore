@@ -48,6 +48,8 @@ venv.bak/
 
 # 📝 LOGS E TEMPORÁRIOS
 *.log
+query
+nul
 *.err
 logs/
 *.log.*
