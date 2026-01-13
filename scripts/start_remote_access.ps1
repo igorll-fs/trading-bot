@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
     Inicia o Trading Bot com acesso mobile via Cloudflare Tunnel
 .DESCRIPTION
@@ -13,7 +13,7 @@
 $ErrorActionPreference = "SilentlyContinue"
 $BackendPort = 8000
 $FrontendPort = 3000
-$CloudflaredPath = "C:\Users\igor\cloudflared.exe"
+$CloudflaredPath = "cloudflared.exe"
 
 Write-Host ""
 Write-Host "================================================================" -ForegroundColor Magenta

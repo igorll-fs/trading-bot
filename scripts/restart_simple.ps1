@@ -1,11 +1,11 @@
-# Script Robusto de Restart - Trading Bot
+﻿# Script Robusto de Restart - Trading Bot
 # Versao simplificada e funcional
 
 Write-Host "`n========================================" -ForegroundColor Cyan
 Write-Host " Trading Bot - Restart Sistema" -ForegroundColor Cyan
 Write-Host "========================================`n" -ForegroundColor Cyan
 
-$ProjectRoot = "C:\Users\igor\Desktop\17-10-2025-main"
+$ProjectRoot = "$PSScriptRoot\.."
 $BackendPort = 8000
 $FrontendPort = 3000
 
