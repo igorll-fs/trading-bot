@@ -1,0 +1,18 @@
+# Definir linguagens principais
+*.py linguist-language=Python
+*.js linguist-language=JavaScript
+*.jsx linguist-language=JavaScript
+*.tsx linguist-language=TypeScript
+*.ts linguist-language=TypeScript
+
+# Ignorar arquivos de build/config no cálculo de linguagens
+node_modules/ linguist-vendored
+.venv/ linguist-vendored
+venv/ linguist-vendored
+build/ linguist-vendored
+dist/ linguist-vendored
+
+# Marcar documentação
+*.md linguist-documentation
+*.txt linguist-documentation
+docs/ linguist-documentation
