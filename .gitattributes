@@ -1,18 +1,19 @@
-# Definir linguagens principais
+﻿# ForÃ§a detecÃ§Ã£o correta de linguagens no GitHub
 *.py linguist-language=Python
 *.js linguist-language=JavaScript
 *.jsx linguist-language=JavaScript
-*.tsx linguist-language=TypeScript
 *.ts linguist-language=TypeScript
+*.tsx linguist-language=TypeScript
 
-# Ignorar arquivos de build/config no cálculo de linguagens
-node_modules/ linguist-vendored
-.venv/ linguist-vendored
-venv/ linguist-vendored
-build/ linguist-vendored
-dist/ linguist-vendored
-
-# Marcar documentação
+# Marca arquivos que nÃ£o devem contar para estatÃ­sticas
 *.md linguist-documentation
-*.txt linguist-documentation
-docs/ linguist-documentation
+*.json linguist-generated=true
+*.lock linguist-generated=true
+package-lock.json linguist-generated=true
+yarn.lock linguist-generated=true
+
+# Ignora arquivos de build/vendor
+frontend/build/** linguist-vendored
+node_modules/** linguist-vendored
+.venv/** linguist-vendored
+__pycache__/** linguist-vendored

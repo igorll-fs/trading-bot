@@ -1,4 +1,4 @@
-@echo off
+﻿@echo off
 echo ========================================
 echo Parando Servico Cloudflared e Reiniciando Manualmente
 echo ========================================
@@ -12,7 +12,7 @@ echo.
 echo [2/3] Aguarde enquanto o tunnel inicia...
 echo.
 
-cd C:\Users\igor
+cd %USERPROFILE%
 start "Cloudflared Tunnel" cmd /k "cloudflared.exe tunnel run trading-bot"
 
 timeout /t 5 /nobreak >nul

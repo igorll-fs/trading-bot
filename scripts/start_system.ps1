@@ -1,4 +1,4 @@
-# start_system.ps1
+﻿# start_system.ps1
 # Script para iniciar o Trading Bot System completo
 
 Write-Host "`n" -NoNewline
@@ -7,7 +7,7 @@ Write-Host "    🤖 TRADING BOT SYSTEM - Inicialização" -ForegroundColor Cyan
 Write-Host "═══════════════════════════════════════════════════════" -ForegroundColor Cyan
 Write-Host "`n"
 
-$ROOT_PATH = "C:\Users\igor\Desktop\17-10-2025-main"
+$ROOT_PATH = "$PSScriptRoot\.."
 
 # 1. Verificar MongoDB
 Write-Host "1️⃣  Verificando MongoDB..." -ForegroundColor Yellow

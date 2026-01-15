@@ -1,11 +1,11 @@
-# Script simplificado para iniciar Backend + Frontend
+﻿# Script simplificado para iniciar Backend + Frontend
 param(
     [int]$BackendPort = 8000,
     [int]$FrontendPort = 3000
 )
 
 $ErrorActionPreference = "Stop"
-$ProjectRoot = "C:\Users\igor\Desktop\17-10-2025-main"
+$ProjectRoot = "$PSScriptRoot\.."
 
 Write-Host "`n=== INICIANDO SISTEMA DE TRADING ===" -ForegroundColor Cyan
 

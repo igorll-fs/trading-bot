@@ -1,16 +1,30 @@
-# 🔐 CREDENCIAIS E SEGURANÇA (NUNCA ENVIAR!)
+﻿# DADOS SENSIVEIS (NUNCA COMMITAR)
+*.env
 .env
-.env.local
-.env.*.local
 .env.*
+!.env.example
+
+# API Keys e Credenciais
+*secret*
+*token*
+*credentials*
 *.key
 *.pem
-*.p8
-credentials.json
-*credentials*
-*token.json*
 
-# 🐍 PYTHON
+# LOGS E HISTORICO
+*.log
+*.err
+logs/
+*.log.*
+
+# DADOS DE TRADING (PRIVADOS)
+temp_trades.json
+*trades_backup*.json
+data_raw/*.json
+data_raw/*.csv
+cUsersigor*
+
+# PYTHON
 __pycache__/
 *.py[cod]
 *$py.class
@@ -28,122 +42,61 @@ parts/
 sdist/
 var/
 wheels/
-pip-wheel-metadata/
-share/python-wheels/
 *.egg-info/
 .installed.cfg
 *.egg
 MANIFEST
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+env/
+.virtualenv/
+
+# PyTest
 .pytest_cache/
 .coverage
 htmlcov/
 
-# 📦 VIRTUAL ENVIRONMENTS
-.venv/
-venv/
-env/
-ENV/
-env.bak/
-venv.bak/
-
-# 📝 LOGS E TEMPORÁRIOS
-*.log
-query
-nul
-*.err
-logs/
-*.log.*
-temp/
-tmp/
-*.tmp
-uvicorn*.err
-nul
-query
-
-# 🎨 NODEJS / FRONTEND
+# NODE / FRONTEND
 node_modules/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-.pnpm-debug.log*
-/.pnp
-.pnp.js
-.yarn/install-state.gz
-.yarn/*
-!.yarn/patches
-!.yarn/plugins
-!.yarn/releases
-!.yarn/versions
+
+# Build
 frontend/build/
 frontend/dist/
-frontend/lhci-report/
-frontend/playwright-report/
-frontend/test-results/
-.cache/
+frontend/.cache/
 
-# 🔧 IDE E EDITORES
-.vscode/
+# Reports
+lhci-report/
+playwright-report/
+test-results/
+
+# IDEs
+.vscode/*
+!.vscode/extensions.json
 .idea/
 *.swp
 *.swo
 *~
+
+# SISTEMA OPERACIONAL
 .DS_Store
-*.sublime-project
-*.sublime-workspace
-.project
-.pydevproject
-.settings/
-*.iml
-.ac
+Thumbs.db
+desktop.ini
+nul
+query
 
-# 🗂️ ARQUIVOS GERADOS
-*.zip
-*.tar.gz
-*.tar
-*.tgz
-*.pack
-*.deb
-*.dylib
-analysis/
-data_raw/
-*.csv
-temp_*
+# MONGODB DUMPS
+*.dump
+mongo_backup/
 
-# 🤖 BOT ESPECÍFICO
-backend/bot/logs/
-data_collection/
-strategy/backtest_results/
-*.pkl
-*.joblib
-*.sqlite
-*.db
-
-# 📊 MONGODB E DATABASES
-dump/
-backup/
-*.mongodump
-
-# 🐳 DOCKER
-.dockerignore
-docker-compose.override.yml
-
-# 📋 NEXT.JS / BUILD
-/.next/
-/out/
-next-env.d.ts
-*.tsbuildinfo
-/coverage
-.vercel
-chainlit.md
-.chainlit
-.ipynb_checkpoints/
-
-# 📋 VS CODE / REMOTE
-*.code-workspace
-
-# ⏸️ MISC
-dump.rdb
-.ai_status.json
-.ai_work_log.jsonl
-agenthub/agents/youtube/db
-android-sdk/
+# TEMPORARIOS
+*.tmp
+*.bak
+*.backup
+temp/
+tmp/

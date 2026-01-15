@@ -1,4 +1,4 @@
-@echo off
+﻿@echo off
 :: ================================================================
 :: SCRIPT DE INICIALIZACAO DOS SERVICOS - BOTRADING
 :: Executar como Administrador
@@ -52,7 +52,7 @@ if %errorlevel% equ 0 (
     sc query cloudflared >nul 2>&1
     if %errorlevel% neq 0 (
         echo       Cloudflared: Instalando servico...
-        C:\Users\igor\cloudflared.exe --config C:\Users\igor\.cloudflared\config.yml service install >nul 2>&1
+        %USERPROFILE%\cloudflared.exe --config %USERPROFILE%\.cloudflared\config.yml service install >nul 2>&1
     )
 
     echo       Cloudflared: Iniciando...

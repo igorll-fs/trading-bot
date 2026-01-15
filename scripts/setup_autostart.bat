@@ -1,4 +1,4 @@
-@echo off
+﻿@echo off
 :: ================================================================
 :: CONFIGURA INICIALIZACAO AUTOMATICA DOS SERVICOS
 :: Executar como Administrador (apenas uma vez)
@@ -35,13 +35,13 @@ sc query cloudflared >nul 2>&1
 if %errorlevel% equ 0 (
     echo       Removendo instalacao antiga...
     net stop cloudflared >nul 2>&1
-    C:\Users\igor\cloudflared.exe service uninstall >nul 2>&1
+    %USERPROFILE%\cloudflared.exe service uninstall >nul 2>&1
     timeout /t 2 /nobreak >nul
 )
 
 :: Instala com configuracao correta
 echo       Instalando com configuracao correta...
-C:\Users\igor\cloudflared.exe --config C:\Users\igor\.cloudflared\config.yml service install >nul 2>&1
+%USERPROFILE%\cloudflared.exe --config %USERPROFILE%\.cloudflared\config.yml service install >nul 2>&1
 
 sc config cloudflared start= auto >nul 2>&1
 sc failure cloudflared reset= 86400 actions= restart/5000/restart/10000/restart/30000 >nul 2>&1

@@ -1,11 +1,11 @@
-@echo off
+﻿@echo off
 echo ================================================================
 echo    INSTALANDO CLOUDFLARE TUNNEL COMO SERVICO WINDOWS
 echo ================================================================
 echo.
 
 echo [1/3] Instalando servico...
-C:\Users\igor\cloudflared.exe service install
+%USERPROFILE%\cloudflared.exe service install
 if %errorlevel% neq 0 (
     echo ERRO: Falha ao instalar. Execute como Administrador!
     pause
