@@ -1,19 +1,31 @@
-﻿# ForÃ§a detecÃ§Ã£o correta de linguagens no GitHub
+﻿# Force correct language detection on GitHub
 *.py linguist-language=Python
 *.js linguist-language=JavaScript
 *.jsx linguist-language=JavaScript
 *.ts linguist-language=TypeScript
 *.tsx linguist-language=TypeScript
+*.css linguist-language=CSS
 
-# Marca arquivos que nÃ£o devem contar para estatÃ­sticas
-*.md linguist-documentation
+# Mark files that should not count for statistics
+*.md linguist-documentation=true
 *.json linguist-generated=true
 *.lock linguist-generated=true
 package-lock.json linguist-generated=true
 yarn.lock linguist-generated=true
 
-# Ignora arquivos de build/vendor
-frontend/build/** linguist-vendored
-node_modules/** linguist-vendored
-.venv/** linguist-vendored
-__pycache__/** linguist-vendored
+# Ignore build/vendor files
+frontend/build/** linguist-vendored=true
+node_modules/** linguist-vendored=true
+.venv/** linguist-vendored=true
+__pycache__/** linguist-vendored=true
+*.pyc linguist-vendored=true
+
+# Ensure line endings are consistent
+* text=auto
+*.py text eol=lf
+*.js text eol=lf
+*.jsx text eol=lf
+*.md text eol=lf
+*.json text eol=lf
+*.bat text eol=crlf
+*.ps1 text eol=crlf
