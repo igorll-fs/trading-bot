@@ -1,4 +1,4 @@
-# 🤖 Trading Bot Enterprise - Sistema de Trading Automatizado com IA
+# 🤖 Trading Bot Pro- Sistema de Trading Automatizado 
 
 > **Bot de trading profissional com Machine Learning, análise técnica avançada e otimizações de performance.**  
 > Projeto de **alta complexidade** com arquitetura em microsserviços, sistema de aprendizado adaptativo e integração full-stack.
@@ -516,7 +516,7 @@ MIT License - veja arquivo [LICENSE](LICENSE) para detalhes.
 
 - 🐛 **Issues**: [GitHub Issues](https://github.com/igorll-fs/trading-bot/issues)
 - 💬 **Discussões**: [GitHub Discussions](https://github.com/igorll-fs/trading-bot/discussions)
-- 📧 **Email**: Entre em contato via GitHub
+- 📧 **Email**: igorlluiz19@gmail.com
 
 ---
 
@@ -542,7 +542,7 @@ MIT License - veja arquivo [LICENSE](LICENSE) para detalhes.
 
 ---
 
-**Desenvolvido com ❤️ para traders profissionais**
+
 
 **Última atualização**: 13 de janeiro de 2026
 
