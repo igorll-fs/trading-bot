@@ -1,5 +1,4 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Alert, AlertDescription } from '@/components/ui/alert';
 import { BookOpen, AlertTriangle, CheckCircle2, Info } from 'lucide-react';
 
 const Instructions = () => {

@@ -1,13 +1,30 @@
-import { useMemo, useState } from 'react';
-import { Outlet, Link, useLocation } from 'react-router-dom';
-import { useTheme } from '@/components/ThemeProvider';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Sheet, SheetContent } from '@/components/ui/sheet';
-import { LayoutDashboard, Settings, History, BookOpen, Moon, Sun, Wifi, WifiOff, Activity, AlertTriangle, CircleDot, FlaskConical, ShieldCheck, ExternalLink, Menu } from 'lucide-react';
-import { useBotStatus } from '@/hooks/useBotQueries';
-import { useBotStream } from '@/providers/BotDataProvider';
-import { formatDateTime } from '@/lib/formatters';
+import { useTheme } from "@/components/ThemeProvider";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Sheet, SheetContent } from "@/components/ui/sheet";
+import { useBotStatus } from "@/hooks/useBotQueries";
+import { formatDateTime } from "@/lib/formatters";
+import { useBotStream } from "@/providers/BotDataProvider";
+import {
+  Activity,
+  AlertTriangle,
+  BookOpen,
+  Brain,
+  CircleDot,
+  ExternalLink,
+  FlaskConical,
+  History,
+  LayoutDashboard,
+  Menu,
+  Moon,
+  Settings,
+  ShieldCheck,
+  Sun,
+  Wifi,
+  WifiOff,
+} from "lucide-react";
+import { useMemo, useState } from "react";
+import { Link, Outlet, useLocation } from "react-router-dom";
 
 const Layout = () => {
   const location = useLocation();
@@ -19,73 +36,89 @@ const Layout = () => {
     refetchInterval: 45_000,
   });
 
-  const navItems = useMemo(() => (
-    [
-      { path: '/', icon: LayoutDashboard, label: 'Dashboard' },
-      { path: '/settings', icon: Settings, label: 'Configuracoes' },
-      { path: '/trades', icon: History, label: 'Historico' },
-      { path: '/instructions', icon: BookOpen, label: 'Instrucoes' },
-    ]
-  ), []);
+  const navItems = useMemo(
+    () => [
+      { path: "/", icon: LayoutDashboard, label: "Dashboard" },
+      { path: "/settings", icon: Settings, label: "Configuracoes" },
+      { path: "/trades", icon: History, label: "Historico" },
+      { path: "/reflections", icon: Brain, label: "Reflexoes" },
+      { path: "/instructions", icon: BookOpen, label: "Instrucoes" },
+    ],
+    [],
+  );
 
-  const connectionMeta = useMemo(() => ({
-    open: {
-      label: 'Conectado',
-      Icon: Wifi,
-      className: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30',
-    },
-    connecting: {
-      label: 'Reconectando...',
-      Icon: Activity,
-      className: 'bg-amber-500/10 text-amber-400 border-amber-500/30 animate-pulse',
-    },
-    closed: {
-      label: 'Offline',
-      Icon: WifiOff,
-      className: 'bg-rose-500/10 text-rose-400 border-rose-500/30',
-    },
-    unavailable: {
-      label: 'Backend indisponivel',
-      Icon: AlertTriangle,
-      className: 'bg-rose-500/10 text-rose-400 border-rose-500/30',
-    },
-    idle: {
-      label: 'Aguardando conexao',
-      Icon: CircleDot,
-      className: 'bg-white/5 text-white/50 border-white/10',
-    },
-  }[streamState] || {
-    label: 'Aguardando conexao',
-    Icon: CircleDot,
-    className: 'bg-white/5 text-white/50 border-white/10',
-  }), [streamState]);
+  const connectionMeta = useMemo(
+    () =>
+      ({
+        open: {
+          label: "Conectado",
+          Icon: Wifi,
+          className: "bg-emerald-500/10 text-emerald-400 border-emerald-500/30",
+        },
+        connecting: {
+          label: "Reconectando...",
+          Icon: Activity,
+          className:
+            "bg-amber-500/10 text-amber-400 border-amber-500/30 animate-pulse",
+        },
+        closed: {
+          label: "Offline",
+          Icon: WifiOff,
+          className: "bg-rose-500/10 text-rose-400 border-rose-500/30",
+        },
+        unavailable: {
+          label: "Backend indisponivel",
+          Icon: AlertTriangle,
+          className: "bg-rose-500/10 text-rose-400 border-rose-500/30",
+        },
+        idle: {
+          label: "Aguardando conexao",
+          Icon: CircleDot,
+          className: "bg-white/5 text-white/50 border-white/10",
+        },
+      })[streamState] || {
+        label: "Aguardando conexao",
+        Icon: CircleDot,
+        className: "bg-white/5 text-white/50 border-white/10",
+      },
+    [streamState],
+  );
 
-  const modeMeta = useMemo(() => ((status?.testnet_mode ?? true)
-    ? {
-        label: 'Modo Testnet',
-        Icon: FlaskConical,
-        className: 'bg-cyan-500/10 text-cyan-400 border-cyan-500/30',
-      }
-    : {
-        label: 'Modo Real',
-        Icon: ShieldCheck,
-        className: 'bg-violet-500/10 text-violet-400 border-violet-500/30',
-      }), [status?.testnet_mode]);
+  const modeMeta = useMemo(
+    () =>
+      (status?.testnet_mode ?? true)
+        ? {
+            label: "Modo Testnet",
+            Icon: FlaskConical,
+            className: "bg-cyan-500/10 text-cyan-400 border-cyan-500/30",
+          }
+        : {
+            label: "Modo Real",
+            Icon: ShieldCheck,
+            className: "bg-violet-500/10 text-violet-400 border-violet-500/30",
+          },
+    [status?.testnet_mode],
+  );
 
-  const runningMeta = useMemo(() => (status?.is_running
-    ? {
-        label: 'Bot em execucao',
-        className: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30',
-      }
-    : {
-        label: 'Bot parado',
-        className: 'bg-white/5 text-white/50 border-white/10',
-      }), [status?.is_running]);
+  const runningMeta = useMemo(
+    () =>
+      status?.is_running
+        ? {
+            label: "Bot em execucao",
+            className:
+              "bg-emerald-500/10 text-emerald-400 border-emerald-500/30",
+          }
+        : {
+            label: "Bot parado",
+            className: "bg-white/5 text-white/50 border-white/10",
+          },
+    [status?.is_running],
+  );
 
   const lastUpdateIso = status?.last_update;
   const lastUpdateLabel = useMemo(
     () => formatDateTime(lastUpdateIso),
-    [lastUpdateIso]
+    [lastUpdateIso],
   );
 
   const isDataStale = useMemo(() => {
@@ -116,7 +149,7 @@ const Layout = () => {
             <Link
               key={item.path}
               to={item.path}
-              aria-current={isActive ? 'page' : undefined}
+              aria-current={isActive ? "page" : undefined}
               onClick={onNavigate}
             >
               <Button
@@ -124,8 +157,8 @@ const Layout = () => {
                 variant="ghost"
                 className={`w-full justify-start gap-3 transition-all duration-300 rounded-xl h-12 group/nav ${
                   isActive
-                    ? 'bg-gradient-to-r from-violet-500/15 to-cyan-500/10 border-l-2 border-l-violet-500 text-violet-400 font-semibold shadow-lg shadow-violet-500/10'
-                    : 'text-white/60 hover:text-white hover:bg-white/5 border-l-2 border-l-transparent hover:border-l-violet-500/50'
+                    ? "bg-gradient-to-r from-violet-500/15 to-cyan-500/10 border-l-2 border-l-violet-500 text-violet-400 font-semibold shadow-lg shadow-violet-500/10"
+                    : "text-white/60 hover:text-white hover:bg-white/5 border-l-2 border-l-transparent hover:border-l-violet-500/50"
                 }`}
               >
                 <Icon
@@ -133,11 +166,13 @@ const Layout = () => {
                   aria-hidden="true"
                   className={`transition-all duration-300 ${
                     isActive
-                      ? 'text-violet-400'
-                      : 'text-white/50 group-hover/nav:text-violet-400 group-hover/nav:scale-110'
+                      ? "text-violet-400"
+                      : "text-white/50 group-hover/nav:text-violet-400 group-hover/nav:scale-110"
                   }`}
                 />
-                <span className={`transition-all duration-300 ${!isActive && 'group-hover/nav:translate-x-1'}`}>
+                <span
+                  className={`transition-all duration-300 ${!isActive && "group-hover/nav:translate-x-1"}`}
+                >
                   {item.label}
                 </span>
               </Button>
@@ -153,12 +188,18 @@ const Layout = () => {
           variant="outline"
           size="sm"
           className="w-full gap-2 border-white/10 text-white/60 hover:text-white hover:bg-white/5 hover:border-violet-500/30 rounded-xl h-10 transition-all duration-300"
-          onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-          aria-pressed={theme === 'dark'}
-          aria-label={theme === 'dark' ? 'Ativar tema claro' : 'Ativar tema escuro'}
+          onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+          aria-pressed={theme === "dark"}
+          aria-label={
+            theme === "dark" ? "Ativar tema claro" : "Ativar tema escuro"
+          }
         >
-          {theme === 'dark' ? <Sun size={18} aria-hidden="true" /> : <Moon size={18} aria-hidden="true" />}
-          {theme === 'dark' ? 'Modo Claro' : 'Modo Escuro'}
+          {theme === "dark" ? (
+            <Sun size={18} aria-hidden="true" />
+          ) : (
+            <Moon size={18} aria-hidden="true" />
+          )}
+          {theme === "dark" ? "Modo Claro" : "Modo Escuro"}
         </Button>
       </div>
 
@@ -181,8 +222,12 @@ const Layout = () => {
             </div>
 
             <div className="flex-1 min-w-0">
-              <p className="text-[10px] text-white/40 uppercase tracking-wider">Desenvolvido por</p>
-              <p className="text-sm font-semibold text-white truncate">Igor Luiz</p>
+              <p className="text-[10px] text-white/40 uppercase tracking-wider">
+                Desenvolvido por
+              </p>
+              <p className="text-sm font-semibold text-white truncate">
+                Igor Luiz
+              </p>
             </div>
 
             <a
@@ -192,7 +237,10 @@ const Layout = () => {
               className="flex items-center justify-center w-9 h-9 rounded-xl bg-white/5 border border-white/10 hover:border-violet-500/50 hover:bg-violet-500/10 transition-all duration-300 group/ig"
               aria-label="Seguir Igor no Instagram (abre em nova aba)"
             >
-              <ExternalLink size={16} className="text-white/60 group-hover/ig:text-violet-400 transition-colors" />
+              <ExternalLink
+                size={16}
+                className="text-white/60 group-hover/ig:text-violet-400 transition-colors"
+              />
             </a>
           </div>
 
@@ -235,7 +283,11 @@ const Layout = () => {
       </Sheet>
 
       {/* Main Content */}
-      <main id="main-content" className="flex-1 overflow-y-auto flex flex-col bg-[#0A0A0A] mesh-bg" role="main">
+      <main
+        id="main-content"
+        className="flex-1 overflow-y-auto flex flex-col bg-[#0A0A0A] mesh-bg"
+        role="main"
+      >
         {/* Header - Glassmorphism */}
         <header className="sticky top-0 z-20 border-b border-white/10 bg-black/60 backdrop-blur-xl">
           <div className="flex flex-wrap items-center justify-between gap-3 px-6 py-3">
@@ -247,7 +299,11 @@ const Layout = () => {
             >
               <Menu size={24} className="text-white" />
             </button>
-            <div className="flex flex-wrap items-center gap-2" aria-live="polite" aria-atomic="true">
+            <div
+              className="flex flex-wrap items-center gap-2"
+              aria-live="polite"
+              aria-atomic="true"
+            >
               <Badge
                 variant="outline"
                 className={`flex items-center gap-2 rounded-full px-3 py-1.5 text-xs font-medium border ${connectionMeta.className}`}
@@ -260,10 +316,14 @@ const Layout = () => {
                 <connectionMeta.Icon size={14} aria-hidden="true" />
                 {connectionMeta.label}
                 {lastUpdateLabel && (
-                  <span className="text-[10px] text-white/40">- {lastUpdateLabel}</span>
+                  <span className="text-[10px] text-white/40">
+                    - {lastUpdateLabel}
+                  </span>
                 )}
                 {isDataStale && (
-                  <span className="text-[10px] text-amber-400">(desatualizado)</span>
+                  <span className="text-[10px] text-amber-400">
+                    (desatualizado)
+                  </span>
                 )}
               </Badge>
               <Badge
@@ -280,12 +340,19 @@ const Layout = () => {
                 <CircleDot
                   size={14}
                   aria-hidden="true"
-                  className={status?.is_running ? 'text-emerald-400 animate-pulse' : 'text-white/40'}
+                  className={
+                    status?.is_running
+                      ? "text-emerald-400 animate-pulse"
+                      : "text-white/40"
+                  }
                 />
                 {runningMeta.label}
               </Badge>
               {statusFetching && (
-                <Activity aria-hidden="true" className="h-4 w-4 animate-spin text-violet-400" />
+                <Activity
+                  aria-hidden="true"
+                  className="h-4 w-4 animate-spin text-violet-400"
+                />
               )}
             </div>
             <div className="text-xs text-white/40 font-mono">

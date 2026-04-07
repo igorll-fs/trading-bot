@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback, useRef } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Settings, ExternalLink, X } from 'lucide-react';
@@ -21,6 +21,7 @@ const RemoteSetup = ({ onConfigured }) => {
     } else {
       setIsConfiguring(true);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // Removido onConfigured das dependências para evitar loop
   
   const handleSave = () => {

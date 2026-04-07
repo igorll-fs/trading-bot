@@ -31,16 +31,18 @@ class BinanceCriticalError(BinanceServiceError):
 
 class BinanceClientManager:
     def __init__(self):
-        self.testnet_api_key = os.getenv('BINANCE_API_KEY', '')
-        self.testnet_api_secret = os.getenv('BINANCE_API_SECRET', '')
+        self.testnet_api_key = os.getenv("BINANCE_API_KEY", "")
+        self.testnet_api_secret = os.getenv("BINANCE_API_SECRET", "")
         # Suporte a TESTNET_MODE (novo) ou BINANCE_TESTNET (legado) - padrao True
-        testnet_env = os.getenv('TESTNET_MODE', os.getenv('BINANCE_TESTNET', 'true'))
-        self.use_testnet = testnet_env.lower() == 'true'
+        testnet_env = os.getenv("TESTNET_MODE", os.getenv("BINANCE_TESTNET", "true"))
+        self.use_testnet = str(testnet_env).strip().lower() in {"1", "true", "yes", "y", "on"}
         self.client = None
         self._price_cache = get_price_cache()
         # Configurações de retry mais robustas
-        self.max_retries = int(os.getenv('BINANCE_MAX_RETRIES', '5'))  # Aumentado de 3 para 5
-        self.retry_backoff = float(os.getenv('BINANCE_RETRY_BACKOFF', '0.5'))  # Reduzido para retry mais rápido
+        self.max_retries = int(os.getenv("BINANCE_MAX_RETRIES", "5"))  # Aumentado de 3 para 5
+        self.retry_backoff = float(
+            os.getenv("BINANCE_RETRY_BACKOFF", "0.5")
+        )  # Reduzido para retry mais rápido
         # Erros que podem ser retentados
         self._retryable_api_errors = {-1003, -1015, -1021, -1001}  # Adicionado -1001 (DISCONNECTED)
         self._timestamp_error_code = -1021
@@ -65,7 +67,7 @@ class BinanceClientManager:
             if use_test:
                 # Testnet Spot URLs
                 self.client = Client(key, secret, testnet=True)
-                self.client.API_URL = 'https://testnet.binance.vision/api'
+                self.client.API_URL = "https://testnet.binance.vision/api"
                 logger.info("Using Binance SPOT TESTNET (virtual funds)")
             else:
                 # Production Binance Spot
@@ -101,13 +103,15 @@ class BinanceClientManager:
                 try:
                     server_time = self.client.get_server_time()
                     local_time = int(time.time() * 1000)
-                    time_diff = server_time['serverTime'] - local_time
+                    time_diff = server_time["serverTime"] - local_time
                     self.client.timestamp_offset = time_diff
                     self._last_time_sync = time.time()
-                    
+
                     # Log apenas se offset significativo (>1s)
                     if abs(time_diff) > 1000:
-                        logger.warning(f"Timestamp offset significativo: {time_diff}ms - relogio local pode estar dessincronizado")
+                        logger.warning(
+                            f"Timestamp offset significativo: {time_diff}ms - relogio local pode estar dessincronizado"
+                        )
                     else:
                         logger.debug(f"Timestamp offset atualizado: {time_diff}ms")
                     return
@@ -200,10 +204,10 @@ class BinanceClientManager:
             if not self.client:
                 logger.warning("Binance client not initialized, cannot get balance")
                 return None
-            
+
             # Sincronizar timestamp antes de chamadas autenticadas
             self._sync_server_time()
-            
+
             # Usar recvWindow maior (60s) para tolerar diferenca de timestamp
             account = self._execute_with_retry(
                 "get_account_balance",
@@ -212,8 +216,8 @@ class BinanceClientManager:
             )
             # Buscar saldo USDT
             usdt_balance = next(
-                (float(asset['free']) for asset in account['balances'] if asset['asset'] == 'USDT'),
-                0.0
+                (float(asset["free"]) for asset in account["balances"] if asset["asset"] == "USDT"),
+                0.0,
             )
             logger.info(f"Spot account balance retrieved: ${usdt_balance} USDT")
             return usdt_balance
@@ -235,7 +239,7 @@ class BinanceClientManager:
                 lambda: self.client.get_symbol_ticker(symbol=symbol),
                 critical=False,
             )
-            return float(ticker['price'])
+            return float(ticker["price"])
         except BinanceTransientError:
             raise
         except BinanceCriticalError:
@@ -254,13 +258,13 @@ class BinanceClientManager:
             prices: Dict[str, float] = {}
 
             # Primeiro tenta preencher via snapshot em cache
-            snapshot = self._price_cache.get('symbol_price_snapshot')
+            snapshot = self._price_cache.get("symbol_price_snapshot")
             if snapshot:
                 for ticker in snapshot:
-                    sym = ticker.get('symbol')
+                    sym = ticker.get("symbol")
                     if sym in symbol_set:
                         try:
-                            prices[sym] = float(ticker['price'])
+                            prices[sym] = float(ticker["price"])
                         except (TypeError, ValueError):
                             continue
 
@@ -268,6 +272,7 @@ class BinanceClientManager:
 
             # Se ainda falta e não há snapshot válido, baixa uma vez e guarda
             if missing:
+
                 def fetch_all():
                     return self._execute_with_retry(
                         "get_symbol_ticker_snapshot",
@@ -275,26 +280,26 @@ class BinanceClientManager:
                         critical=False,
                     )
 
-                snapshot = self._price_cache.get_or_set('symbol_price_snapshot', fetch_all)
+                snapshot = self._price_cache.get_or_set("symbol_price_snapshot", fetch_all)
                 if snapshot:
                     for ticker in snapshot:
-                        sym = ticker.get('symbol')
+                        sym = ticker.get("symbol")
                         if sym in missing:
                             try:
-                                prices[sym] = float(ticker['price'])
+                                prices[sym] = float(ticker["price"])
                             except (TypeError, ValueError):
                                 continue
                     missing = symbol_set.difference(prices)
 
-            #Fallback pontual para símbolos que continuarem faltando
+            # Fallback pontual para símbolos que continuarem faltando
             for symbol in list(missing):
                 ticker = self._execute_with_retry(
                     f"get_symbol_ticker:{symbol}",
                     lambda sym=symbol: self.client.get_symbol_ticker(symbol=sym),
                     critical=False,
                 )
-                if ticker and 'price' in ticker:
-                    prices[symbol] = float(ticker['price'])
+                if ticker and "price" in ticker:
+                    prices[symbol] = float(ticker["price"])
 
             return prices
         except (BinanceTransientError, BinanceCriticalError):
@@ -305,40 +310,40 @@ class BinanceClientManager:
 
     def get_symbol_precision(self, symbol: str) -> tuple:
         """Get quantity and price precision for a symbol.
-        
+
         Returns:
             tuple: (quantity_precision, price_precision, min_qty, step_size)
         """
         if not self.client:
             return (2, 2, 0.01, 0.01)  # defaults
-        
+
         try:
             info = self.client.get_symbol_info(symbol)
             if not info:
                 logger.warning(f"No info found for {symbol}, using defaults")
                 return (2, 2, 0.01, 0.01)
-            
+
             qty_precision = 2
             price_precision = 2
             min_qty = 0.01
             step_size = 0.01
-            
-            for f in info.get('filters', []):
-                if f['filterType'] == 'LOT_SIZE':
-                    step_size = float(f['stepSize'])
-                    min_qty = float(f['minQty'])
+
+            for f in info.get("filters", []):
+                if f["filterType"] == "LOT_SIZE":
+                    step_size = float(f["stepSize"])
+                    min_qty = float(f["minQty"])
                     # Calculate precision from step size
                     if step_size >= 1:
                         qty_precision = 0
                     else:
-                        qty_precision = len(str(step_size).rstrip('0').split('.')[-1])
-                elif f['filterType'] == 'PRICE_FILTER':
-                    tick_size = float(f['tickSize'])
+                        qty_precision = len(str(step_size).rstrip("0").split(".")[-1])
+                elif f["filterType"] == "PRICE_FILTER":
+                    tick_size = float(f["tickSize"])
                     if tick_size >= 1:
                         price_precision = 0
                     else:
-                        price_precision = len(str(tick_size).rstrip('0').split('.')[-1])
-            
+                        price_precision = len(str(tick_size).rstrip("0").split(".")[-1])
+
             return (qty_precision, price_precision, min_qty, step_size)
         except Exception as e:
             logger.warning(f"Error getting symbol precision for {symbol}: {e}")
@@ -347,21 +352,21 @@ class BinanceClientManager:
     def adjust_quantity(self, symbol: str, quantity: float) -> float:
         """Adjust quantity to match symbol's precision requirements."""
         qty_precision, _, min_qty, step_size = self.get_symbol_precision(symbol)
-        
+
         # Round down to step size
         adjusted = (quantity // step_size) * step_size
-        
+
         # Apply precision
         adjusted = round(adjusted, qty_precision)
-        
+
         # Ensure minimum
         if adjusted < min_qty:
             logger.warning(f"Quantity {adjusted} below min {min_qty} for {symbol}")
             return 0
-        
+
         return adjusted
 
-    def place_order(self, symbol, side, quantity, price=None, order_type='MARKET'):
+    def place_order(self, symbol, side, quantity, price=None, order_type="MARKET"):
         """Place a Spot order"""
         if not self.client:
             raise RuntimeError("Binance client not initialized")
@@ -371,22 +376,22 @@ class BinanceClientManager:
         if adjusted_qty <= 0:
             raise BinanceCriticalError(
                 f"place_order:{symbol}:{side}",
-                ValueError(f"Quantity {quantity} too small for {symbol}")
+                ValueError(f"Quantity {quantity} too small for {symbol}"),
             )
-        
+
         logger.info(f"Quantity adjusted for {symbol}: {quantity} -> {adjusted_qty}")
 
         params = {
-            'symbol': symbol,
-            'side': side,
-            'type': order_type,
-            'quantity': adjusted_qty,
-            'recvWindow': self._recv_window,  # Tolerância de timestamp
+            "symbol": symbol,
+            "side": side,
+            "type": order_type,
+            "quantity": adjusted_qty,
+            "recvWindow": self._recv_window,  # Tolerância de timestamp
         }
 
-        if order_type == 'LIMIT' and price:
-            params['price'] = price
-            params['timeInForce'] = 'GTC'
+        if order_type == "LIMIT" and price:
+            params["price"] = price
+            params["timeInForce"] = "GTC"
 
         def submit_order():
             # Sincronizar timestamp antes de enviar ordem
@@ -401,6 +406,69 @@ class BinanceClientManager:
             critical=True,
         )
 
+    def place_oco_order(
+        self,
+        symbol: str,
+        quantity: float,
+        take_profit_price: float,
+        stop_price: float,
+        stop_limit_price: float,
+    ) -> Optional[Dict]:
+        """Coloca uma ordem OCO (SELL) após compra: TP (LIMIT) + SL (STOP_LIMIT) no Binance.
+
+        Para Spot BUY: OCO de venda com TP em cima e SL abaixo.
+        - take_profit_price: preço alvo para fechar com lucro
+        - stop_price:        gatilho que ativa a ordem STOP_LIMIT
+        - stop_limit_price:  preço de execução após o gatilho (ligeiramente abaixo do stop)
+
+        Retorna o resultado da API ou None se OCO não suportado/falhou.
+        """
+        if not self.client:
+            return None
+
+        adjusted_qty = self.adjust_quantity(symbol, quantity)
+        if adjusted_qty <= 0:
+            logger.warning("OCO: quantidade inválida para %s (%.8f)", symbol, quantity)
+            return None
+
+        self._sync_server_time()
+
+        def submit_oco():
+            return self.client.create_oco_order(
+                symbol=symbol,
+                side="SELL",
+                quantity=adjusted_qty,
+                price=str(take_profit_price),  # Alvo de lucro (LIMIT)
+                stopPrice=str(stop_price),  # Gatilho de stop
+                stopLimitPrice=str(stop_limit_price),  # Preço da STOP_LIMIT
+                stopLimitTimeInForce="GTC",
+                recvWindow=self._recv_window,
+            )
+
+        try:
+            result = self._execute_with_retry(
+                f"place_oco:{symbol}",
+                submit_oco,
+                critical=False,
+            )
+            logger.info(
+                "[OCO] %s: TP=%.4f SL_trigger=%.4f SL_limit=%.4f qty=%.6f",
+                symbol,
+                take_profit_price,
+                stop_price,
+                stop_limit_price,
+                adjusted_qty,
+            )
+            return result
+        except Exception as exc:
+            # OCO pode falhar se símbolo não suporta (ex: preço já atingido, filtros)
+            logger.warning(
+                "[OCO] Falha ao criar OCO para %s: %s — usando monitoramento em memória",
+                symbol,
+                exc,
+            )
+            return None
+
     def get_open_orders(self, symbol=None):
         """Get open Spot orders"""
         if not self.client:
@@ -408,7 +476,7 @@ class BinanceClientManager:
 
         # Sincronizar timestamp antes de chamada autenticada
         self._sync_server_time()
-        
+
         action = f"get_open_orders:{symbol}" if symbol else "get_open_orders"
         fetch = (
             (lambda: self.client.get_open_orders(symbol=symbol, recvWindow=self._recv_window))
@@ -429,10 +497,12 @@ class BinanceClientManager:
 
         # Sincronizar timestamp antes de cancelar
         self._sync_server_time()
-        
+
         self._execute_with_retry(
             f"cancel_order:{symbol}:{order_id}",
-            lambda: self.client.cancel_order(symbol=symbol, orderId=order_id, recvWindow=self._recv_window),
+            lambda: self.client.cancel_order(
+                symbol=symbol, orderId=order_id, recvWindow=self._recv_window
+            ),
             critical=False,
         )
         return True

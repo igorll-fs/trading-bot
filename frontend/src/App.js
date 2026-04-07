@@ -1,18 +1,19 @@
-import { Suspense, lazy, useEffect, useState } from 'react';
-import '@/App.css';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { ThemeProvider } from '@/components/ThemeProvider';
-import { Toaster } from '@/components/ui/sonner';
-import Layout from '@/components/Layout';
-import ErrorBoundary from '@/components/ErrorBoundary';
-import { QueryClient, QueryClientProvider } from 'react-query';
-import { BotDataProvider } from '@/providers/BotDataProvider';
-import RemoteSetup from '@/components/RemoteSetup';
+import "@/App.css";
+import ErrorBoundary from "@/components/ErrorBoundary";
+import Layout from "@/components/Layout";
+import RemoteSetup from "@/components/RemoteSetup";
+import { ThemeProvider } from "@/components/ThemeProvider";
+import { Toaster } from "@/components/ui/sonner";
+import { BotDataProvider } from "@/providers/BotDataProvider";
+import { Suspense, lazy, useEffect, useState } from "react";
+import { QueryClient, QueryClientProvider } from "react-query";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 
-const Dashboard = lazy(() => import('@/pages/Dashboard'));
-const Settings = lazy(() => import('@/pages/Settings'));
-const Trades = lazy(() => import('@/pages/Trades'));
-const Instructions = lazy(() => import('@/pages/Instructions'));
+const Dashboard = lazy(() => import("@/pages/Dashboard"));
+const Settings = lazy(() => import("@/pages/Settings"));
+const Trades = lazy(() => import("@/pages/Trades"));
+const Instructions = lazy(() => import("@/pages/Instructions"));
+const Reflections = lazy(() => import("@/pages/Reflections"));
 
 const PageFallback = () => (
   <div className="flex items-center justify-center h-full py-20">
@@ -33,32 +34,39 @@ function App() {
             retry: 1,
           },
         },
-      })
+      }),
   );
 
   useEffect(() => {
     // Handle browser/tab close - rely on latest synced status without async requests
     const handleBeforeUnload = (e) => {
       try {
-        const isRunning = window.sessionStorage?.getItem('bot:isRunning') === '1';
+        const isRunning =
+          window.sessionStorage?.getItem("bot:isRunning") === "1";
         if (isRunning) {
-          const warningMessage = '⚠️ O bot está rodando! Fechar pode causar prejuízo. Pare o bot primeiro no Dashboard.';
+          const warningMessage =
+            "⚠️ O bot está rodando! Fechar pode causar prejuízo. Pare o bot primeiro no Dashboard.";
           e.preventDefault();
           e.returnValue = warningMessage;
           return warningMessage;
         }
       } catch (error) {
-        console.debug('Não foi possível verificar o status do bot antes de fechar a aba.', error);
+        console.debug(
+          "Não foi possível verificar o status do bot antes de fechar a aba.",
+          error,
+        );
       }
       return undefined;
     };
 
-    window.addEventListener('beforeunload', handleBeforeUnload);
-    return () => window.removeEventListener('beforeunload', handleBeforeUnload);
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => window.removeEventListener("beforeunload", handleBeforeUnload);
   }, []);
 
   // Detectar acesso remoto (Cloudflare Tunnel)
-  const isRemoteAccess = typeof window !== 'undefined' && window.location.hostname.includes('trycloudflare.com');
+  const isRemoteAccess =
+    typeof window !== "undefined" &&
+    window.location.hostname.includes("trycloudflare.com");
 
   return (
     <ErrorBoundary>
@@ -75,6 +83,7 @@ function App() {
                         <Route index element={<Dashboard />} />
                         <Route path="settings" element={<Settings />} />
                         <Route path="trades" element={<Trades />} />
+                        <Route path="reflections" element={<Reflections />} />
                         <Route path="instructions" element={<Instructions />} />
                       </Route>
                     </Routes>

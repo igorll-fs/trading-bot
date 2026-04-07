@@ -22,6 +22,7 @@ from dotenv import load_dotenv
 from bot.trading_bot import get_bot
 from bot.config import BotConfig
 from bot.logging_config import setup_logging, get_logger
+from bot.reflection_service import ReflectionService
 
 # Load environment
 ROOT_DIR = Path(__file__).parent
@@ -41,6 +42,12 @@ client = AsyncIOMotorClient(
     serverSelectionTimeoutMS=5000
 )
 db = client[os.environ['DB_NAME']]
+
+# Initialize Reflection Service (self-improvement loop)
+reflection_service = ReflectionService(
+    db=db,
+    interval_minutes=int(os.environ.get('REFLECTION_INTERVAL', '60'))
+)
 
 
 def _sanitize_config(config: BotConfig) -> Dict[str, Any]:
@@ -92,6 +99,8 @@ from api.routes.bot import create_bot_router
 from api.routes.performance import create_performance_router
 from api.routes.learning import create_learning_router
 from api.routes.market import create_market_router
+from api.routes.llm import create_llm_router
+from api.routes.reflection import create_reflection_router
 from api.rate_limiting import setup_rate_limiting
 
 # Create routers with dependencies
@@ -101,6 +110,8 @@ bot_router = create_bot_router(db, get_bot)
 performance_router = create_performance_router(db, get_bot)
 learning_router = create_learning_router(db, get_bot)
 market_router = create_market_router(db, get_bot)
+llm_router = create_llm_router(db, get_bot)
+reflection_router = create_reflection_router(db, reflection_service)
 
 # Include all routers
 api_router.include_router(health_router)
@@ -109,6 +120,8 @@ api_router.include_router(bot_router)
 api_router.include_router(performance_router)
 api_router.include_router(learning_router)
 api_router.include_router(market_router)
+api_router.include_router(llm_router)
+api_router.include_router(reflection_router)
 
 
 # Root endpoint
@@ -137,6 +150,12 @@ app.add_middleware(
 async def on_startup():
     """Inicialização do servidor."""
     await ensure_indexes()
+
+    # Start self-reflection heartbeat (autonomous learning loop)
+    import asyncio
+    asyncio.create_task(reflection_service.heartbeat())
+    logger.info("🪞 Self-reflection service started")
+
     logger.info("Server started successfully")
 
 

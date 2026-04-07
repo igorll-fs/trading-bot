@@ -42,7 +42,14 @@ def create_config_router(db, get_bot_func):
             config = await load_bot_config(db)
             return config.to_public_dict()
         except Exception as e:
-            raise HTTPException(status_code=500, detail=str(e))
+            error_str = str(e)
+            # Detectar erro de conexão MongoDB e retornar mensagem amigável
+            if "10061" in error_str or "ServerSelectionTimeoutError" in error_str or "connection" in error_str.lower():
+                raise HTTPException(
+                    status_code=503,
+                    detail="MongoDB não está disponível. Verifique se o serviço está rodando na porta 27017."
+                )
+            raise HTTPException(status_code=500, detail=error_str[:200])
     
     @router.post("/config")
     async def save_config(config: ConfigModel):

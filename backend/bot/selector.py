@@ -1,3 +1,4 @@
+import concurrent.futures
 import logging
 import time
 from typing import List, Dict, Optional, Tuple
@@ -9,9 +10,10 @@ from bot.config import DEFAULT_SELECTOR_BASE_SYMBOLS
 
 logger = logging.getLogger(__name__)
 
+
 class CryptoSelector:
     """Intelligent cryptocurrency selector"""
-    
+
     def __init__(
         self,
         client,
@@ -26,11 +28,11 @@ class CryptoSelector:
     ):
         """
         Initialize CryptoSelector
-        
+
         Args:
             client: Binance client
             strategy: TradingStrategy instance (OBRIGATÓRIO para evitar cache duplicado)
-        
+
         Raises:
             ValueError: Se strategy não for fornecido
         """
@@ -64,18 +66,18 @@ class CryptoSelector:
             return
 
         try:
-            tickers = self._stats_cache.get_or_set('ticker_24h_snapshot', self.client.get_ticker)
+            tickers = self._stats_cache.get_or_set("ticker_24h_snapshot", self.client.get_ticker)
             if not tickers:
                 raise ValueError("ticker snapshot vazio")
             snapshot: Dict[str, Tuple[float, float]] = {}
 
             for ticker in tickers:
-                symbol = ticker.get('symbol')
+                symbol = ticker.get("symbol")
                 if symbol not in self.base_symbols:
                     continue
                 try:
-                    change = float(ticker.get('priceChangePercent', 0.0))
-                    quote_volume = float(ticker.get('quoteVolume', 0.0))
+                    change = float(ticker.get("priceChangePercent", 0.0))
+                    quote_volume = float(ticker.get("quoteVolume", 0.0))
                 except (TypeError, ValueError):
                     continue
 
@@ -87,24 +89,18 @@ class CryptoSelector:
             if snapshot:
                 # Ordena por variacao positiva, depois volume
                 ordered = sorted(
-                    snapshot.items(),
-                    key=lambda item: (item[1][0], item[1][1]),
-                    reverse=True
+                    snapshot.items(), key=lambda item: (item[1][0], item[1][1]), reverse=True
                 )
                 selected = [symbol for symbol, _ in ordered[: self.trending_pool_size]]
                 self.symbols = selected or list(self.base_symbols)
                 self._trending_cache = snapshot
-                logger.info(
-                    "Atualizando lista de pares em alta: %s",
-                    ", ".join(self.symbols)
-                )
+                logger.info("Atualizando lista de pares em alta: %s", ", ".join(self.symbols))
             else:
                 # fallback para base case
                 self.symbols = list(self.base_symbols)
                 self._trending_cache = {}
                 logger.info(
-                    "Nenhum ativo acima de %.2f%%, usando lista base",
-                    self.min_change_percent
+                    "Nenhum ativo acima de %.2f%%, usando lista base", self.min_change_percent
                 )
 
         except Exception as e:
@@ -113,7 +109,7 @@ class CryptoSelector:
             self._trending_cache = {}
 
         self._last_trending_refresh = now
-    
+
     def update_settings(
         self,
         *,
@@ -138,77 +134,86 @@ class CryptoSelector:
             self.min_quote_volume = max(0.0, float(min_quote_volume))
         if max_spread_percent is not None:
             self.max_spread_percent = max(0.0, float(max_spread_percent))
-    
+
+    def _analyze_candidate(self, symbol: str) -> Optional[Dict]:
+        """Analisa um único símbolo; retorna None se filtrado ou HOLD."""
+        if not self._passes_liquidity_filters(symbol):
+            logger.info("%s filtrado por spread/volume insuficiente", symbol)
+            return None
+
+        analysis = self.strategy.analyze_symbol(symbol)
+        if not analysis or analysis["signal"] == "HOLD":
+            return None
+
+        if "unified_score" in analysis:
+            score = analysis["unified_score"]
+            logger.info(
+                "%s: Signal=%s, UnifiedScore=%d (%s), Divergence=%s",
+                symbol,
+                analysis["signal"],
+                score,
+                analysis.get("signal_quality", "unknown"),
+                analysis.get("divergence", "none"),
+            )
+        else:
+            score = self._calculate_score(analysis)
+            logger.info("%s: Signal=%s, Score=%.2f", symbol, analysis["signal"], score)
+
+        analysis["score"] = score
+        trending_info = self._trending_cache.get(symbol)
+        if trending_info:
+            analysis["price_change_percent"] = trending_info[0]
+            analysis["quote_volume"] = trending_info[1]
+            analysis["score"] += min(trending_info[0], 5)  # cap bonus
+        return analysis
+
     def select_best_crypto(self, excluded_symbols: List[str] = None) -> Optional[Dict]:
-        """Select the best cryptocurrency to trade"""
+        """Select the best cryptocurrency to trade.
+
+        Analisa os símbolos em paralelo (ThreadPoolExecutor, max 4 workers)
+        respeitando os limites de hardware do Dell E7450.
+        """
         try:
             if excluded_symbols is None:
                 excluded_symbols = []
-            
-            self._refresh_trending_symbols()
-            candidates = []
-            
-            for symbol in self.symbols:
-                if symbol in excluded_symbols:
-                    continue
 
-                if not self._passes_liquidity_filters(symbol):
-                    logger.info("%s filtrado por spread/volume insuficiente", symbol)
-                    continue
-                
-                analysis = self.strategy.analyze_symbol(symbol)
-                if analysis and analysis['signal'] != 'HOLD':
-                    # MELHORIA: Usar unified_score se disponível, senão calcular legado
-                    if 'unified_score' in analysis:
-                        score = analysis['unified_score']
-                        logger.info(
-                            "%s: Signal=%s, UnifiedScore=%d (%s), Divergence=%s",
-                            symbol, analysis['signal'], score,
-                            analysis.get('signal_quality', 'unknown'),
-                            analysis.get('divergence', 'none')
-                        )
-                    else:
-                        # Fallback para cálculo legado
-                        score = self._calculate_score(analysis)
-                        logger.info(f"{symbol}: Signal={analysis['signal']}, Score={score:.2f}")
-                    
-                    analysis['score'] = score
-                    trending_info = self._trending_cache.get(symbol)
-                    if trending_info:
-                        analysis['price_change_percent'] = trending_info[0]
-                        analysis['quote_volume'] = trending_info[1]
-                        # Bonus adicional para ativos em forte alta
-                        analysis['score'] += min(trending_info[0], 5)  # cap bonus
-                    candidates.append(analysis)
-            
+            self._refresh_trending_symbols()
+
+            symbols_to_check = [s for s in self.symbols if s not in excluded_symbols]
+
+            # Análise paralela — max_workers=4 respeita os 4 threads do E7450
+            candidates: List[Dict] = []
+            with concurrent.futures.ThreadPoolExecutor(max_workers=4) as pool:
+                for result in pool.map(self._analyze_candidate, symbols_to_check):
+                    if result is not None:
+                        candidates.append(result)
+
             if not candidates:
                 logger.info("No trading opportunities found")
                 return None
-            
-            # Sort by score and return best
-            candidates.sort(key=lambda x: x['score'], reverse=True)
+
+            candidates.sort(key=lambda x: x["score"], reverse=True)
             best = candidates[0]
-            
-            logger.info(f"Best opportunity: {best['symbol']} with score {best['score']:.2f}")
+            logger.info("Best opportunity: %s with score %.2f", best["symbol"], best["score"])
             return best
-            
+
         except Exception as e:
             logger.error("Error selecting crypto: %s", e)
             return None
-    
+
     def _calculate_score(self, analysis: Dict) -> float:
         """Calculate opportunity score"""
         score = 0.0
-        
+
         # Signal strength (max 40 points)
-        score += analysis['strength'] * 0.4
-        
+        score += analysis["strength"] * 0.4
+
         # Volume ratio (max 30 points)
-        volume_score = min(analysis['volume_ratio'] * 15, 30)
+        volume_score = min(analysis["volume_ratio"] * 15, 30)
         score += volume_score
-        
+
         # Volatility (optimal range: 0.5-2.0) (max 30 points)
-        volatility = analysis['volatility']
+        volatility = analysis["volatility"]
         if 0.5 <= volatility <= 2.0:
             volatility_score = 30
         elif volatility < 0.5:
@@ -216,12 +221,12 @@ class CryptoSelector:
         else:
             volatility_score = max(30 - (volatility - 2) * 10, 0)
         score += volatility_score
-        
+
         return score
 
     def _passes_liquidity_filters(self, symbol: str) -> bool:
         """Filtra pares com spread alto ou volume baixo no timeframe configurado.
-        
+
         MELHORIA: Filtro dinâmico que ajusta limites baseado na volatilidade do mercado.
         Em alta volatilidade, permite spreads maiores (mercado mais volátil = spreads maiores).
         """
@@ -229,23 +234,25 @@ class CryptoSelector:
             # MELHORIA: Detectar regime de mercado para ajustar filtros
             regime = self.strategy.detect_market_regime()
             volatility_multiplier = 1.0
-            
-            if regime.get('regime') == 'volatile':
+
+            if regime.get("regime") == "volatile":
                 volatility_multiplier = 1.5  # Permite spreads 50% maiores em mercado volátil
-            elif regime.get('regime') == 'trending':
+            elif regime.get("regime") == "trending":
                 volatility_multiplier = 1.2  # Permite spreads 20% maiores em tendência
-            
+
             adjusted_max_spread = self.max_spread_percent * volatility_multiplier
-            adjusted_min_volume = self.min_quote_volume * (1 / volatility_multiplier)  # Volume menor aceito
-            
+            adjusted_min_volume = self.min_quote_volume * (
+                1 / volatility_multiplier
+            )  # Volume menor aceito
+
             # Spread via book ticker
             ticker = self._price_cache.get_or_set(
                 f"book_ticker_{symbol}",
                 lambda: self.client.get_orderbook_ticker(symbol=symbol),
             )
             if ticker:
-                bid = float(ticker.get('bidPrice', 0))
-                ask = float(ticker.get('askPrice', 0))
+                bid = float(ticker.get("bidPrice", 0))
+                ask = float(ticker.get("askPrice", 0))
                 if bid > 0 and ask > 0:
                     mid = (bid + ask) / 2
                     spread_pct = ((ask - bid) / mid) * 100
@@ -260,13 +267,15 @@ class CryptoSelector:
                         return False
 
             # Volume no timeframe configurado (quote volume)
-            df = self.strategy.get_historical_data(symbol, timeframe=self.strategy.timeframe, limit=30)
+            df = self.strategy.get_historical_data(
+                symbol, timeframe=self.strategy.timeframe, limit=30
+            )
             if df is None or df.empty:
                 return False
 
             # quote_volume já vem como string; garantir numérico
             try:
-                quote_volume = pd.to_numeric(df['quote_volume']).tail(8).sum()
+                quote_volume = pd.to_numeric(df["quote_volume"]).tail(8).sum()
             except Exception:
                 quote_volume = 0
 
@@ -279,22 +288,23 @@ class CryptoSelector:
                     self.strategy.timeframe,
                 )
                 return False
-            
+
             # MELHORIA: Verificar correlação com BTC se for alt
-            if 'BTC' not in symbol:
+            if "BTC" not in symbol:
                 btc_correlation = self.strategy.calculate_btc_correlation(symbol)
-                regime_data = self.strategy.detect_market_regime(symbol='BTCUSDT')
-                
+                regime_data = self.strategy.detect_market_regime(symbol="BTCUSDT")
+
                 # Se BTC está bearish e alta correlação, penalizar (mas não rejeitar)
-                if btc_correlation > 0.7 and regime_data.get('regime') == 'trending':
+                if btc_correlation > 0.7 and regime_data.get("regime") == "trending":
                     # Analisar direção do BTC
-                    btc_df = self.strategy.get_historical_data('BTCUSDT', limit=20)
+                    btc_df = self.strategy.get_historical_data("BTCUSDT", limit=20)
                     if btc_df is not None:
-                        btc_trend = btc_df['close'].iloc[-1] < btc_df['close'].iloc[-5]  # Caindo
+                        btc_trend = btc_df["close"].iloc[-1] < btc_df["close"].iloc[-5]  # Caindo
                         if btc_trend:
                             logger.info(
                                 "%s: Alta correlação BTC (%.2f) e BTC caindo - cuidado",
-                                symbol, btc_correlation
+                                symbol,
+                                btc_correlation,
                             )
                             # Não rejeita, mas o score será penalizado
 

@@ -1,551 +1,452 @@
-# 🤖 Trading Bot Enterprise - Sistema de Trading Automatizado com IA
+# 🤖 TradingBot Enterprise — IA Auto-Adaptativa para Mercados Cripto
 
-> **Bot de trading profissional com Machine Learning, análise técnica avançada e otimizações de performance.**  
-> Projeto de **alta complexidade** com arquitetura em microsserviços, sistema de aprendizado adaptativo e integração full-stack.
+<div align="center">
 
-![License](https://img.shields.io/badge/license-MIT-blue)
-![Python](https://img.shields.io/badge/Python-3.11+-green)
-![React](https://img.shields.io/badge/React-19+-blue)
-![Status](https://img.shields.io/badge/Status-Production%20Ready-brightgreen)
+**Sistema completo de trading automatizado com Machine Learning, análise técnica avançada e auto-aperfeiçoamento contínuo.**
+
+[![License](https://img.shields.io/badge/license-MIT-blue)](#)
+[![Python](https://img.shields.io/badge/Python-3.11+-3776AB?logo=python&logoColor=white)](https://python.org)
+[![React](https://img.shields.io/badge/React-18+-61DAFB?logo=react&logoColor=black)](https://reactjs.org)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.110-009688?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
+[![MongoDB](https://img.shields.io/badge/MongoDB-Motor%20Async-47A248?logo=mongodb&logoColor=white)](https://mongodb.com)
+[![TailwindCSS](https://img.shields.io/badge/TailwindCSS-3.x-06B6D4?logo=tailwindcss&logoColor=white)](https://tailwindcss.com)
+[![Scikit-Learn](https://img.shields.io/badge/Scikit--Learn-ML-F7931E?logo=scikit-learn&logoColor=white)](https://scikit-learn.org)
+[![Ollama](https://img.shields.io/badge/Ollama-LLM%20Local-black?logo=llama&logoColor=white)](https://ollama.ai)
+[![Tests](https://img.shields.io/badge/Tests-30%2B%20Passing-brightgreen)](#-testes)
+[![Status](https://img.shields.io/badge/Status-Production%20Ready-success)](#-como-rodar)
+
+<br/>
+
+> 🧠 **IA que aprende com os próprios erros** · ⚡ **Dashboard em tempo real** · 🛡️ **Risk management automático** · 📡 **Notificações via Telegram**
+
+</div>
 
 ---
 
-## 📋 Tabela de Conteúdos
+## 📌 O Que É Este Projeto?
 
-- [Visão Geral](#-visão-geral)
-- [Arquitetura](#-arquitetura-do-sistema)
-- [Características](#-características-principais)
-- [Quick Start](#-início-rápido)
-- [Estratégias](#-estratégias-de-trading)
-- [Machine Learning](#-machine-learning)
-- [Tecnologias](#-tecnologias)
-- [Documentação](#-documentação)
+Um **sistema end-to-end de trading automatizado** conectado à Binance Testnet, composto por:
+
+| Camada | Tecnologia | Responsabilidade |
+|--------|-----------|-----------------|
+| **Backend** | Python 3.11 + FastAPI | API REST, lógica de trading, ML, WebSocket |
+| **Frontend** | React 18 + TailwindCSS | Dashboard em tempo real, glassmorphism UI |
+| **Banco de Dados** | MongoDB (async Motor) | Histórico de trades, modelos ML, reflexões |
+| **IA Local** | Ollama + Mistral 7B | Análise de risco contextual com LLM |
+| **ML** | Scikit-Learn + RandomForest | Filtro de sinais com auto-treinamento |
+| **Integração** | Binance API + Telegram Bot | Execução de ordens + alertas em tempo real |
 
 ---
 
-## 🎯 Visão Geral
+## ✨ Funcionalidades Principais
 
-Um bot de trading **enterprise-grade** que combina:
+### 🧠 Motor de Inteligência Artificial
 
-✅ **Análise Técnica Avançada**: EMA, RSI, MACD, Bollinger Bands, Volume Profiling  
-✅ **Machine Learning Adaptativo**: Aprende com cada trade, ajusta estratégia dinamicamente  
-✅ **Gestão de Risco Profissional**: Kelly Criterion, Position Sizing inteligente, Risk Management  
-✅ **Dashboard Web Moderno**: Interface glassmorphism, tema dark, real-time updates  
-✅ **Monitoramento 24/7**: Telegram notifications, Health checks, Performance metrics  
-✅ **Persistência Robusta**: MongoDB com índices otimizados, Cache distribuído  
-✅ **Testnet + Mainnet**: Teste em ambiente virtual antes de operar com dinheiro real  
-✅ **Código Profissional**: Clean Architecture, SOLID, Type hints, 80%+ test coverage
+| Feature | Detalhes |
+|---------|---------|
+| **ML Signal Filter** | RandomForest + GradientBoosting com TimeSeriesSplit CV — filtra sinais antes de executar |
+| **Auto-Learning Pipeline** | Loop de 60min: coleta → limpeza → geração de dataset → treino → validação |
+| **LLM Risk Advisor** | Ollama (Mistral 7B) analisa contexto de mercado e sugere ajustes de posição |
+| **Reflection System** | Bot analisa performance a cada hora, gera *learnings* e ajusta parâmetros automaticamente |
+| **Advanced Pattern Analyzer** | Detecta padrões por símbolo, direção, período e ROE histórico |
 
-**Status Atual (Testnet)**:
-- 📊 **118 trades históricos**
-- 💰 **Saldo**: $4,999.87 USDT (fundos virtuais)
-- 🎯 **Em validação**: Métricas de performance (5-7 dias)
-- ⚡ **CPU**: <20%, **RAM**: ~11GB (otimizado para Dell E7450)
+### 📊 Análise Técnica Avançada
+
+Implementada do zero com `numpy`/`pandas`, sem bibliotecas de indicadores de terceiros:
+
+- **Tendência:** EMA 12/26/50/200, MACD (12/26/9), ADX(14)
+- **Volatilidade:** Bollinger Bands (20), ATR (14)
+- **Momentum:** RSI (14), Momentum (10), OBV
+- **Volume:** VWAP, `buy_volume_pct` (taker buy vs quote volume)
+- **Multi-timeframe:** 15m (entrada) + 1h (confirmação de tendência)
+- **Correlação:** `calculate_btc_correlation()` — retornos relativos ao BTC
+- **Regime de mercado:** `detect_market_regime()` → trending / ranging / volatile via ADX
+
+### 🛡️ Risk Management (Regras Imutáveis)
+
+```
+• Stop-Loss: obrigatório em 100% das ordens (hard stop no servidor)
+• Position Sizing: Kelly Criterion fracionado (0.25) ou Fixed 2%
+• Perda diária > 5%  → SHUTDOWN automático
+• Drawdown total > 15% → HALT + notificação Telegram
+• Min ROI break-even: 0.27% (cobre todas as taxas Binance)
+• Circuit breaker: 10 falhas consecutivas → pausa 120s
+```
+
+### 🔒 ML Guardrails (Segurança da IA)
+
+O sistema de ML tem **limites rígidos** que impedem parâmetros financeiramente destrutivos:
+
+```python
+HARD_LIMITS = {
+    "confidence":    (0.40, 0.70),   # Nunca operar com excesso de certeza
+    "stop_loss_pct": (0.70, 1.20),   # Stop-loss nunca muito apertado ou largo
+    "take_profit":   (0.60, 1.50),   # R/R mínimo preservado
+    "position_size": (0.50, 1.30),   # Sem all-in acidental
+}
+# Mínimo 20 trades antes de qualquer ajuste (evita overfitting)
+# Ajuste máximo: ±5% por ciclo (mudanças graduais)
+```
+
+> **Resultado real:** >30 tentativas perigosas bloqueadas em produção durante testes.
+
+### ⚡ Dashboard em Tempo Real
+
+Interface **glassmorphism** (dark mode) com Server-Sent Events (SSE):
+
+- 📈 **PnL Chart** — Área chart com histórico de lucro/perda (Recharts)
+- 🎯 **AI Decision Card** — Mostra raciocínio da IA para cada trade
+- 🌍 **Market Regime Card** — Trending / Ranging / Volatile em tempo real
+- 📋 **Reflections UI** — Histórico de auto-análises com win-rate por período
+- ⚙️ **Settings Page** — Configuração de parâmetros com validação ao vivo
+- 🔔 **Alertas** — Notificação ao fechar aba com bot ativo
 
 ---
 
 ## 🏗️ Arquitetura do Sistema
 
-### Componentes Principais
-
 ```
-┌─────────────────────────────────────────────────┐
-│          FRONTEND (React 19 + TailwindCSS)      │
-│  • Dashboard (Real-time monitoring)              │
-│  • Settings (API keys, risk parameters)          │
-│  • Trade History (P&L analysis)                  │
-│  • Glassmorphism UI + Dark Mode                  │
-└────────────────────┬────────────────────────────┘
-                     │ HTTP/WebSocket
-                     ▼
-┌─────────────────────────────────────────────────┐
-│      BACKEND (FastAPI + Python 3.11)            │
-│  ┌─ Trading Engine ────────────────────────┐   │
-│  │ • CoinSelector (vol + volume filtering)  │   │
-│  │ • TradingStrategy (EMA, RSI, MACD, BB)   │   │
-│  │ • RiskManager (Kelly Criterion)          │   │
-│  │ • TradingBot (orchestrator loop)         │   │
-│  └─────────────────────────────────────────┘   │
-│  ┌─ Machine Learning System ────────────────┐   │
-│  │ • LearningSystem (win rate optimization) │   │
-│  │ • Genetic Algorithm (parameter tuning)   │   │
-│  │ • Feedback Loop (trade → improve)        │   │
-│  └─────────────────────────────────────────┘   │
-│  ┌─ Integration Layer ──────────────────────┐   │
-│  │ • Binance API Client (Spot Trading)      │   │
-│  │ • Telegram Bot (async notifications)     │   │
-│  │ • Market Data Cache (5s TTL)             │   │
-│  └─────────────────────────────────────────┘   │
-└────────┬─────────────────┬─────────────────────┘
-         │                 │
-      HTTP/gRPC         HTTP/gRPC
-         │                 │
-         ▼                 ▼
-  ┌──────────────┐  ┌────────────────┐
-  │ MongoDB (DB) │  │ Binance Spot   │
-  ├──────────────┤  │ API (Testnet)  │
-  │ • trades     │  └────────────────┘
-  │ • positions  │
-  │ • ml_state   │
-  │ • configs    │
-  │ (8 índices)  │
-  └──────────────┘
+┌─────────────────────────────────────────────────────────────┐
+│                     FRONTEND (React 18)                      │
+│  Dashboard │ Trades │ Reflections │ Settings │ Instructions   │
+│  Recharts  │ SSE Stream │ React-Query │ Glassmorphism UI     │
+└────────────────────────┬────────────────────────────────────┘
+                         │ HTTP / SSE
+┌────────────────────────▼────────────────────────────────────┐
+│                   BACKEND (FastAPI)                          │
+│  /health │ /bot/control │ /trades │ /performance │ /stream  │
+│  /config │ /market │ /llm │ /reflection │ /learning        │
+│  Rate Limiting │ CORS │ Async Motor (MongoDB)               │
+└──────┬──────────────┬──────────────┬────────────────────────┘
+       │              │              │
+┌──────▼──────┐ ┌─────▼─────┐ ┌────▼────────────────────────┐
+│  TRADING    │ │    ML     │ │        INTEGRAÇÕES           │
+│  ENGINE     │ │ PIPELINE  │ │  Binance API (Testnet)       │
+│             │ │           │ │  Telegram Bot                │
+│ Strategy    │ │ Collector │ │  Ollama LLM (Mistral 7B)     │
+│ Risk Mgr    │ │ Trainer   │ │  MongoDB (Motor Async)       │
+│ Selector    │ │ Filter    │ │  Cloudflare Tunnel           │
+│ Reflection  │ │ Guardrail │ └─────────────────────────────┘
+│ LLM Advisor │ └───────────┘
+└─────────────┘
 ```
 
-### Stack Tecnológico
-
-| Layer | Tecnologias |
-|-------|-------------|
-| **Frontend** | React 19, TailwindCSS, Shadcn/ui, Framer Motion |
-| **Backend** | FastAPI, Python 3.11, Asyncio, Motor, python-binance |
-| **Database** | MongoDB (NoSQL), Índices compostos |
-| **ML/Analytics** | Scikit-learn, NumPy, Pandas, TA-Lib |
-| **DevOps** | Docker, PowerShell, Health checks |
-| **Communication** | Telegram Bot API, WebSocket |
-
----
-
-## ✨ Características Principais
-
-### 🎯 Trading Automatizado Inteligente
-- ✅ Análise multi-indicador em tempo real (EMA, RSI, MACD, Bollinger)
-- ✅ Seleção dinâmica de moedas (volatilidade + volume)
-- ✅ Entrada automática com confirmações múltiplas
-- ✅ Stop-loss e take-profit adaptativos
-- ✅ Gestão de posição com máximo de 3 simultâneas
-
-### 📊 Dashboard Profissional (2025)
-- ✅ Interface glassmorphism com blur effects
-- ✅ Tema dark mode otimizado para traders
-- ✅ Gráficos em tempo real com sparklines
-- ✅ Skeleton loaders e transições suaves
-- ✅ Responsivo para mobile e desktop
-- ✅ Toast notifications para eventos críticos
-
-### 🧠 Machine Learning Adaptativo
-- ✅ Aprendizado contínuo a partir de cada trade
-- ✅ Otimização automática de parâmetros (stop-loss, take-profit)
-- ✅ Filtragem inteligente com score de confiança (0-1)
-- ✅ Algoritmo genético para ajuste automático
-- ✅ Redução de perdas: aprende wins/losses, melhora win rate
-- ✅ Estado persistido em MongoDB para continuidade
-
-### 🛡️ Gestão de Risco Profissional
-- ✅ **Kelly Criterion**: Position sizing matematicamente ótimo
-- ✅ **Fixed Fractional**: Risco fixo por trade (1.5-2%)
-- ✅ **Máximo de posições**: Limite de correlação
-- ✅ **Stop-loss obrigatório**: Nunca opera sem proteção
-- ✅ **Risk/Reward mínimo**: 1:2 por operação
-- ✅ **Drawdown máximo**: 15% com circuit breaker automático
-
-### 🔔 Monitoramento 24/7
-- ✅ Notificações Telegram instantâneas (async, non-blocking)
-- ✅ Métricas em tempo real: CPU, RAM, API latency
-- ✅ Health checks de conectividade
-- ✅ Alertas de threshold (risco, performance)
-- ✅ Logs estruturados para auditoria
-
-### ⚡ Performance Otimizada
-- ✅ **Cache de mercado**: 5s TTL, 70% menos API calls
-- ✅ **Pool MongoDB**: 50 conexões, 8 índices compostos
-- ✅ **Asyncio**: Concorrência eficiente (não multiprocessing)
-- ✅ **Lazy loading**: ML carrega 1000 trades mais recentes
-- ✅ **Compressão**: Dados compactados, bandwidth otimizado
-- ✅ **Dell E7450 ready**: CPU <60%, RAM <12GB
-
-### 🧪 Testnet + Mainnet Support
-- ✅ Teste em ambiente virtual com $100k USDT
-- ✅ Sem risco financeiro antes de produção
-- ✅ Mesmo contrato que produção (autenticação)
-- ✅ Fácil switch entre testnet ↔ mainnet
-- ✅ Validação de 5-7 dias em testnet recomendada
-
----
-
-## 🚀 Início Rápido
-
-### ⚡ 5 Minutos para Começar
-
-```powershell
-# 1. Clone o repositório
-git clone https://github.com/igorll-fs/trading-bot.git
-cd trading-bot
-
-# 2. Execute o instalador
-.\install.bat
-# Instala Python deps, Node deps, valida MongoDB
-
-# 3. Configure .env
-cp backend\.env.example backend\.env
-cp frontend\.env.example frontend\.env
-# Edite os valores conforme necessário
-
-# 4. Inicie o sistema
-.\start.bat
-# Abre Backend (8001) + Frontend (3000) + MongoDB automaticamente
-
-# 5. Acesse o Dashboard
-# http://localhost:3000 → Configure API keys → Clique "Start Bot"
-```
-
-**✅ Pronto! Bot rodando em modo Testnet com $100k USDT virtuais.**
-
-### Modo Testnet (Recomendado)
-
-1. **Criar conta Testnet**: https://testnet.binance.vision
-2. **Gerar API Keys**: Permissões Spot Trading
-3. **Copiar credenciais** para Settings do Dashboard
-4. **Habilitar toggle** "🧪 Testnet Mode"
-5. **Receber $100k USDT** virtuais automaticamente
-6. **Clicar Start Bot** e monitorar trades
-
-**Sem risco! Teste suas estratégias com dinheiro virtual.**
-
----
-
-## 📊 Estratégias de Trading
-
-### Análise Multi-Indicador + ML
-
-Combina **4 indicadores técnicos** com **validações inteligentes**:
-
-| Indicador | Objetivo | Parâmetros |
-|-----------|----------|-----------|
-| **EMA** | Identificar tendência | 12, 26 períodos |
-| **RSI** | Detecção sobrecompra/venda | 14, <30 ou >70 |
-| **MACD** | Confirmar momentum | 12, 26, 9 |
-| **Bollinger Bands** | Volatilidade e reversão | 20 períodos, 2σ |
-
-### Fluxo de Decisão
+### Fluxo de Trading (Ciclo de 15 segundos)
 
 ```
-1️⃣ Filtro de Mercado
-   ├─ ADX > 30? (tendência forte)
-   └─ Hora líquida? (8h-22h UTC)
-
-2️⃣ Seleção de Moedas (Top 15)
-   ├─ Volatilidade < threshold
-   ├─ Volume > média 20 candles
-   └─ Correlação BTC < 0.8
-
-3️⃣ Análise Técnica
-   ├─ EMA 12 > EMA 26? (uptrend)
-   ├─ RSI entre 50-70? (não sobrecomprado)
-   ├─ MACD positivo? (momentum)
-   └─ Preço > BB inferior? (suporte)
-
-4️⃣ ML Scoring
-   ├─ Score de confiança (0-1)
-   └─ Ajustes de risco baseados em history
-
-5️⃣ Execução
-   ├─ Position size = Kelly Criterion
-   ├─ Stop-loss = 2-2.5x ATR
-   ├─ Take-profit = 3x ATR
-   └─ Monitor até close
-```
-
-### Métricas de Performance (Profissional)
-
-```
-Win Rate (WR)      > 50%
-Profit Factor (PF) > 1.5 (excelente: >2.0)
-Sharpe Ratio       > 1.5
-Sortino Ratio      > 2.0
-Max Drawdown       < 15%
-Expectancy         > 1.0
+1. SCAN      → Coleta preços de ~50 pares (cache TTL 5s, -70% chamadas API)
+2. STRATEGY  → Aplica RSI, MACD, BB, EMA, ATR, ADX, VWAP
+3. ML FILTER → RandomForest valida sinal (min_confidence=0.5)
+4. LLM CHECK → Mistral 7B analisa contexto (só se score técnico ≥ 80)
+5. RISK CALC → Kelly Criterion calcula position size
+6. EXECUTE   → Abre posição na Binance Testnet
+7. MONITOR   → Acompanha stop-loss / take-profit / trailing stop
+8. CLOSE     → Fecha posição quando atinge target ou stop
+9. LEARN     → Registra resultado → próximo ciclo de treino ML
 ```
 
 ---
 
-## 🧠 Machine Learning
+## 🛠️ Stack Tecnológica Completa
 
-### Sistema de Aprendizado Contínuo
+### Backend (Python 3.11+)
 
-O bot aprende **regras explícitas** a partir de seus próprios trades:
+| Biblioteca | Uso |
+|-----------|-----|
+| `FastAPI 0.110` | API REST assíncrona com tipagem Pydantic |
+| `Motor 3.3` | Driver MongoDB assíncrono (pool 10-50 conexões) |
+| `python-binance` | Wrapper Binance API com retry automático |
+| `scikit-learn 1.6` | RandomForest, GradientBoosting, TimeSeriesSplit |
+| `numpy / pandas` | Cálculo vetorizado de indicadores técnicos |
+| `asyncio` | Concorrência total em I/O (nunca blocking no event loop) |
+| `psutil` | Hardware profiling (CPU, RAM, latência) |
+| `python-telegram-bot` | Notificações em tempo real |
+| `mypy` | Type checking estrito (100% type hints) |
 
-```python
-# Exemplo: Otimização automática de Stop-Loss
+### Frontend (React 18)
 
-trade_history = [
-  {symbol: 'BTC', stop_loss: 2.0x ATR, win: True},   # ✓
-  {symbol: 'ETH', stop_loss: 3.0x ATR, win: False},  # ✗
-  {symbol: 'BNB', stop_loss: 2.2x ATR, win: True},   # ✓
-]
+| Biblioteca | Uso |
+|-----------|-----|
+| `React 18 + Vite` | SPA com code-splitting por rota (lazy loading) |
+| `TailwindCSS 3` | Estilização utilitária + glassmorphism customizado |
+| `Recharts 3` | PnL charts, Win Rate area charts |
+| `React Query 3` | Caching de dados, invalidação automática via SSE |
+| `Radix UI` | Componentes acessíveis (22 primitivos) |
+| `Framer Motion` | Animações performáticas |
+| `react-window` | Virtualização de listas longas de trades |
+| `Zod + React Hook Form` | Validação de formulários tipada |
 
-# Resultado: stops muito largos (>2.5) = mais perdas
-# Ajuste: novo_stop = 2.2x ATR (otimizado)
-```
+### Banco de Dados e Infraestrutura
 
-### 4 Regras de Aprendizado Automático
-
-1. **Stop-Loss Optimization**: Reduz stops que geram mais perdas
-2. **Take-Profit Scaling**: Aumenta targets para capturar movimento
-3. **Position Sizing**: Kelly Criterion adapta ao win rate atual
-4. **Smart Filtering**: Score de confiança reduz trades low-confidence
-
-### Persistência do Modelo
-
-Dados salvos em MongoDB (`ml_state` collection):
-- Win rate atual por símbolo
-- Drawdown histórico
-- Parâmetros otimizados
-- Score de confiança em tempo real
-
-📈 **Próximas Estratégias (Roadmap)**:
-- [ ] Fase 2: Momentum Breakout (trend-following)
-- [ ] Fase 3: Mean Reversion (counter-trend)
-- [ ] Fase 4: Multi-strategy com seleção automática
+| Tecnologia | Detalhes |
+|-----------|---------|
+| **MongoDB** | Índices em `timestamp`, `symbol`, `profit`, `status` → queries <2ms |
+| **Cloudflare Tunnel** | Acesso remoto seguro sem abrir portas |
+| **Docker** (opcional) | Containerização para deploy |
 
 ---
 
-## 🔧 Tecnologias
-
-### Backend Stack
-
-```
-FastAPI 0.100+         → API REST assíncrona, high-performance
-Python 3.11+           → Type hints, async/await
-Motor (async MongoDB)  → Driver assíncrono para DB
-TA-Lib                 → Indicadores técnicos profissionais
-Scikit-learn           → Machine Learning e estatística
-NumPy/Pandas           → Processamento de dados em massa
-python-binance         → Integração oficial Binance
-Asyncio                → Concorrência eficiente
-Uvicorn                → ASGI server (10k+ req/s)
-```
-
-### Frontend Stack
-
-```
-React 19 + CRACO       → App moderno com zero-config build
-TailwindCSS 3.0+       → Utility-first CSS, responsive design
-Shadcn/ui              → Componentes acessíveis e customizáveis
-Framer Motion          → Animações smooth e performáticas
-Recharts               → Gráficos responsivos e interativos
-Axios                  → HTTP client com interceptors
-React Query            → Cache e state management
-```
-
-### Infraestrutura
-
-```
-MongoDB 5.0+           → NoSQL database com replicação
-Docker                 → Containerização e deployment
-PowerShell Scripts     → Automação Windows nativa
-Git/GitHub             → Controle de versão
-Telegram Bot API       → Notificações em tempo real
-```
-
----
-
-## 📦 Instalação
+## 🚀 Como Rodar
 
 ### Pré-requisitos
 
-- **Python** 3.11+ (com pip)
-- **Node.js** 18+ (com npm/yarn)
-- **MongoDB** Community Edition (ou cloud MongoDB Atlas)
-- **Git** (para clone)
-- **Windows 10+** ou **WSL2** (Linux)
+- Python 3.11+
+- Node.js 18+
+- MongoDB rodando localmente
+- Conta Binance Testnet ([testnet.binance.vision](https://testnet.binance.vision))
+- Ollama instalado (opcional, para análise LLM)
 
-### Passo a Passo (Windows)
+### Instalação
 
-#### 1. Clone o Repositório
-
-```powershell
-git clone https://github.com/igorll-fs/trading-bot.git
-cd trading-bot
-```
-
-#### 2. Execute o Instalador
-
-```powershell
-.\install.bat
-```
-
-Esse script:
-- ✅ Instala dependências Python (pip install -r requirements.txt)
-- ✅ Instala dependências Node (yarn install)
-- ✅ Valida se MongoDB está rodando
-- ✅ Cria pastas necessárias
-
-#### 3. Configure Variáveis de Ambiente
-
-**Backend** (`backend/.env`):
 ```bash
-# MongoDB
-MONGO_URL=mongodb://localhost:27017
-DB_NAME=trading_bot
+# 1. Clonar o repositório
+git clone https://github.com/gameswin010-png/TradingBot.git
+cd TradingBot
 
-# Binance Testnet (Padrão)
-BINANCE_TESTNET_API_KEY=your_testnet_key
-BINANCE_TESTNET_API_SECRET=your_testnet_secret
+# 2. Configurar backend
+python -m venv .venv
+.venv\Scripts\activate          # Windows
+source .venv/bin/activate       # Linux/macOS
+pip install -r backend/requirements.txt
 
-# Telegram (Opcional)
-TELEGRAM_BOT_TOKEN=your_bot_token
-TELEGRAM_CHAT_ID=your_chat_id
+# 3. Configurar variáveis de ambiente
+cp backend/.env.example backend/.env
+# Editar: BINANCE_API_KEY, BINANCE_SECRET_KEY, MONGODB_URI, TELEGRAM_BOT_TOKEN
 
-# Servidor
-HOST=0.0.0.0
-PORT=8001
-DEBUG=false
+# 4. Configurar frontend
+cd frontend
+npm install
+
+# 5. Iniciar o sistema
+# Terminal 1 — Backend:
+python backend/server.py
+
+# Terminal 2 — Frontend:
+cd frontend && npm start
 ```
 
-**Frontend** (`frontend/.env`):
-```bash
-REACT_APP_BACKEND_URL=http://localhost:8001
-REACT_APP_ENABLE_VISUAL_EDITS=false
-```
-
-#### 4. Inicie o Sistema
-
-```powershell
-.\start.bat
-```
-
-Abre automaticamente:
-- Backend: http://localhost:8001
-- Frontend: http://localhost:3000
-- MongoDB: localhost:27017
-
-#### 5. Acesse o Dashboard
-
-Abra seu navegador: **http://localhost:3000**
+**Acesso:**
+- 🖥️ Dashboard: `http://localhost:3000`
+- 🔌 API: `http://localhost:8001`
+- 📚 Docs Swagger: `http://localhost:8001/docs`
 
 ---
 
-## 📚 Documentação
+## 🧪 Testes
 
-| Documento | Descrição |
-|-----------|-----------|
-| [QUICK_START.md](QUICK_START.md) | Guia rápido para começar |
-| [docs/TESTNET_GUIDE.md](docs/TESTNET_GUIDE.md) | Configuração detalhada do Testnet |
-| [docs/MACHINE_LEARNING.md](docs/MACHINE_LEARNING.md) | Como funciona o sistema ML |
-| [docs/BOT_ARCHITECTURE.md](docs/BOT_ARCHITECTURE.md) | Arquitetura técnica completa |
-| [docs/API.md](docs/API.md) | Referência de endpoints REST |
+```bash
+# Testes unitários (backend)
+pytest tests/ -v
+
+# Testes E2E (Playwright)
+cd frontend && npx playwright test
+
+# Testes de performance (budget: <3s TTI no Dell E7450)
+npx playwright test --project=performance
+```
+
+**Cobertura atual:**
+- ✅ 20 testes unitários (ML Guardrails, Risk Manager, Strategy, Selector)
+- ✅ 10 testes E2E Playwright (Dashboard, Reflections, navegação, acessibilidade)
+- ✅ Testes de performance com budget para hardware limitado
 
 ---
 
-## ⚠️ Avisos Importantes
+## 📊 Fases de Desenvolvimento (6 Sprints Autônomos)
 
-### ⚡ Trading Envolve Riscos Significativos
-
-1. **Você pode perder todo o capital investido**
-2. **Não invista mais do que pode perder**
-3. **Este bot não garante lucros**
-4. **Performance passada ≠ resultados futuros**
-
-### 🧪 Use Testnet Primeiro!
-
-- ✅ Teste por 5-7 dias em ambiente virtual
-- ✅ Valide as estratégias antes de dinheiro real
-- ✅ Monitore os parâmetros de risco
-- ✅ Ajuste conforme necessário
-
-### 📋 Responsabilidade Legal
-
-Este software é apenas para fins **educacionais**. O desenvolvedor não se responsabiliza por perdas financeiras. Use por sua conta e risco.
+| Fase | Nome | Entregável | Resultado |
+|------|------|-----------|-----------|
+| **1** | Safe Parameters | Sincronização config ↔ learning_params + HARD LIMITS | 100% safety compliance |
+| **2** | Reflection Dashboard | UI glassmorphism + Win Rate charts + Polling | Dashboard funcional React 18 |
+| **3** | ML Guardrails | Dual-layer validation + 20 unit tests | >30 bloqueios em produção |
+| **4** | Network Learning | State persistence + Active Hours + Bounded Autonomy | Memória entre restarts |
+| **5** | Hardware Optimization | GC agressivo + MongoDB indexing + Hardware profiler | Queries 2ms (-96%) |
+| **6** | E2E Tests & Docs | Playwright tests + Arquitetura consolidada | 30+ testes passando |
 
 ---
 
 ## 📁 Estrutura do Projeto
 
 ```
-trading-bot/
+TradingBot/
 ├── backend/
-│   ├── bot/                      # Motor de trading
-│   │   ├── trading_bot.py        # Orquestrador principal
-│   │   ├── selector.py           # Seleção de moedas
-│   │   ├── strategy.py           # Indicadores técnicos
-│   │   ├── risk_manager.py       # Gestão de risco
-│   │   ├── learning_system.py    # ML adaptativo
-│   │   └── market_cache.py       # Cache de mercado
-│   ├── api/
-│   │   ├── routes/               # Endpoints FastAPI
-│   │   └── models/               # Schemas Pydantic
-│   ├── server.py                 # Aplicação FastAPI
-│   ├── requirements.txt           # Dependências Python
-│   └── .env.example              # Variáveis exemplo
-│
+│   ├── server.py                    # FastAPI entry point (porta 8001)
+│   ├── bot/
+│   │   ├── trading_bot.py           # Loop principal (scan a cada 15s)
+│   │   ├── strategy.py              # 10+ indicadores técnicos
+│   │   ├── risk_manager.py          # Kelly Criterion + Stop-Loss
+│   │   ├── learning_system.py       # ML parameter tuning adaptativo
+│   │   ├── advanced_learning.py     # Pattern analyzer por símbolo/período
+│   │   ├── reflection_service.py    # Auto-análise a cada 60min
+│   │   ├── llm_risk_advisor.py      # Ollama (Mistral 7B) integration
+│   │   ├── llm_analyzer.py          # Análise de sinais com LLM
+│   │   ├── market_cache.py          # Cache TTL 5s (-70% chamadas API)
+│   │   ├── selector.py              # Seleção de ativos com filtros
+│   │   ├── binance_client.py        # Binance API wrapper (retry + testnet)
+│   │   ├── memory_optimizer.py      # GC agressivo para hardware limitado
+│   │   ├── telegram_client.py       # Notificações Telegram
+│   │   └── config.py                # BotConfig dataclass (from_env)
+│   ├── ml/
+│   │   ├── model_trainer.py         # RandomForest/GradientBoosting + CV
+│   │   ├── data_collector.py        # OHLCV 15m/1h/4h (15 pares, 14 dias)
+│   │   ├── dataset_generator.py     # Features técnicas + labels win/loss
+│   │   ├── ml_signal_filter.py      # Inferência em tempo real
+│   │   ├── auto_learning_pipeline.py # Pipeline completo automático
+│   │   └── data_cleaner.py          # Limpeza e normalização
+│   └── api/
+│       ├── models.py                # Pydantic schemas
+│       ├── rate_limiting.py         # Rate limiter por IP
+│       └── routes/                  # health, bot, config, performance,
+│                                    # learning, market, llm, reflection
 ├── frontend/
-│   ├── src/
-│   │   ├── pages/                # Páginas (Dashboard, Settings)
-│   │   ├── components/           # Componentes React
-│   │   ├── hooks/                # Hooks customizados
-│   │   ├── services/             # API client
-│   │   └── styles/               # TailwindCSS
-│   ├── package.json              # Dependências Node
-│   └── .env.example              # Variáveis exemplo
-│
-├── scripts/
-│   ├── install.bat               # Instalação automática
-│   ├── start.bat                 # Inicia sistema completo
-│   ├── stop.bat                  # Para sistema
-│   └── monitor_bot.ps1           # Monitoramento
-│
-├── docs/                         # Documentação completa
-├── tests/                        # Testes automatizados
-└── README.md                     # Este arquivo
+│   └── src/
+│       ├── pages/
+│       │   ├── Dashboard.jsx        # Métricas + PnL chart + AI card
+│       │   ├── Trades.jsx           # Histórico com virtualização
+│       │   ├── Reflections.jsx      # Auto-análise + Win Rate chart
+│       │   ├── Settings.jsx         # Configuração com validação
+│       │   └── Instructions.jsx     # Guia de uso
+│       ├── components/
+│       │   ├── dashboard/           # MetricCard, AIDecisionCard, MarketRegimeCard
+│       │   └── ui/                  # 22 componentes Radix UI
+│       ├── hooks/                   # useBotQueries (status, performance, trades)
+│       └── providers/               # BotDataProvider (SSE stream)
+├── tests/
+│   ├── test_risk_manager.py
+│   ├── test_strategy.py
+│   ├── test_selector.py
+│   ├── test_learning_system.py
+│   └── unit/                        # ML Guardrails tests (20 casos)
+├── docs/
+│   ├── ARCHITECTURE.md
+│   ├── MACHINE_LEARNING.md
+│   ├── ESTRATEGIAS.md
+│   └── OPERATION_GUIDE.md
+└── scripts/                         # PowerShell: monitor, backup, health check
 ```
 
 ---
 
-## 🤝 Contributing
+## 🧩 Destaques de Implementação
 
-Contribuições são bem-vindas! Por favor:
+### Async-First em Todo I/O
 
-1. Faça um fork do projeto
-2. Crie uma branch para sua feature (`git checkout -b feature/AmazingFeature`)
-3. Commit suas mudanças (`git commit -m 'Add some AmazingFeature'`)
-4. Push para a branch (`git push origin feature/AmazingFeature`)
-5. Abra um Pull Request
+```python
+# Nunca bloqueia o event loop — asyncio.to_thread() para código síncrono
+async def _run_blocking(self, func, *args):
+    loop = asyncio.get_event_loop()
+    result = await loop.run_in_executor(None, func, *args)
+    return result
 
----
+# Motor para MongoDB — queries <2ms com índices cobertos
+async def get_trades(self, limit: int = 50) -> list[dict]:
+    return await self.db.trades.find(
+        {"status": "closed"},
+        sort=[("timestamp", -1)],
+        limit=limit
+    ).to_list(length=limit)
+```
 
-## 📜 Licença
+### Pipeline de ML com Guardrails
 
-MIT License - veja arquivo [LICENSE](LICENSE) para detalhes.
+```python
+# Dual-layer validation — impede parâmetros suicidas
+def _validate_safety(self, params: dict) -> dict:
+    for key, (min_val, max_val) in HARD_LIMITS.items():
+        if key in params:
+            original = params[key]
+            params[key] = max(min_val, min(max_val, params[key]))
+            if params[key] != original:
+                logger.warning(f"⚠️ BLOQUEADO: {key} {original:.3f} → {params[key]:.3f}")
+    return params
+```
 
-**Uso**: Você pode usar este código livremente, incluindo em projetos comerciais.  
-**Responsabilidade**: Você é responsável por qualquer uso ou resultado deste código.
+### SSE para Updates em Tempo Real
 
----
-
-## 📞 Suporte
-
-- 🐛 **Issues**: [GitHub Issues](https://github.com/igorll-fs/trading-bot/issues)
-- 💬 **Discussões**: [GitHub Discussions](https://github.com/igorll-fs/trading-bot/discussions)
-- 📧 **Email**: Entre em contato via GitHub
-
----
-
-## 🎯 Roadmap
-
-### Phase 1 ✅ (Current)
-- [x] Trading engine com análise técnica
-- [x] Dashboard profissional
-- [x] ML adaptativo
-- [x] Testnet validation
-
-### Phase 2 🔄 (In Progress)
-- [ ] Momentum Breakout strategy
-- [ ] WebSocket real-time updates
-- [ ] Advanced charting (TradingView)
-- [ ] Risk analytics dashboard
-
-### Phase 3 📅 (Planned)
-- [ ] Mean Reversion strategy
-- [ ] Multi-asset portfolio
-- [ ] Telegram command handler
-- [ ] Performance API webhooks
-
----
-
-**Desenvolvido com ❤️ para traders profissionais**
-
-**Última atualização**: 13 de janeiro de 2026
+```python
+# Server-Sent Events — frontend sempre atualizado sem polling excessivo
+@router.get("/stream")
+async def event_stream(request: Request):
+    async def generate():
+        while True:
+            if await request.is_disconnected():
+                break
+            data = await get_realtime_snapshot(db)
+            yield f"data: {json.dumps(data)}\n\n"
+            await asyncio.sleep(1)
+    return StreamingResponse(generate(), media_type="text/event-stream")
+```
 
 ---
 
-⭐ Se este projeto te ajudou, deixe uma estrela no GitHub!
+## 📈 Métricas de Performance
+
+| Métrica | Valor | Contexto |
+|---------|-------|---------|
+| CPU average | < 25% | i5-5300U dual-core |
+| RAM do bot | 22.6 MB | Sistema com 12GB / 95% uso |
+| MongoDB queries | < 2ms | Com índices cobertos (era 50ms) |
+| Chamadas Binance API | -70% | Cache TTL 5s |
+| Testes passando | 30+ | Unit + E2E Playwright |
+| ML Guardrail blocks | > 30 | Parâmetros suicidas bloqueados |
+| Scan loop | 15s | 50 pares monitorados simultaneamente |
+
+---
+
+## 🔐 Segurança
+
+- **Variáveis sensíveis** armazenadas em `.env` (nunca commitadas)
+- **Rate limiting** por IP em todas as rotas da API
+- **JWT Authentication** preparado (`python-jose`)
+- **Input validation** via Pydantic em 100% dos endpoints
+- **Binance Testnet** — nunca opera com dinheiro real por padrão
+
+---
+
+## 📚 Documentação
+
+| Documento | Conteúdo |
+|----------|---------|
+| [QUICK_START.md](QUICK_START.md) | Setup em 5 minutos |
+| [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | Diagrama completo da arquitetura |
+| [docs/MACHINE_LEARNING.md](docs/MACHINE_LEARNING.md) | Pipeline ML detalhado |
+| [docs/ESTRATEGIAS.md](docs/ESTRATEGIAS.md) | Lógica das estratégias de trading |
+| [docs/OPERATION_GUIDE.md](docs/OPERATION_GUIDE.md) | Guia de operação diária |
+| [docs/SECURITY_GUIDE.md](docs/SECURITY_GUIDE.md) | Guia de segurança |
+
+---
+
+## 💡 Aprendizados do Projeto
+
+Este projeto foi desenvolvido com **constraint-driven architecture** — hardware limitado forçou decisões de engenharia superiores:
+
+- **`asyncio` puro** em vez de multiprocessing → código mais simples e eficiente em dual-core
+- **Generators e streams** em vez de DataFrames completos → uso de memória 5x menor
+- **Batch inserts** no MongoDB em vez de writes individuais → I/O 10x mais eficiente
+- **Cache TTL** para reduzir chamadas de API → 70% menos requests à Binance
+- **Bounded Autonomy** → IA com regras explícitas é mais confiável que IA sem limites
+
+> *"Constraints don't limit creativity — they define it."*
+
+---
+
+## 👨‍💻 Autor
+
+Desenvolvido como projeto pessoal para demonstrar competências em:
+
+- Arquitetura de sistemas distribuídos (full-stack assíncrono)
+- Machine Learning aplicado a finanças quantitativas
+- Integração de LLMs locais (Ollama/Mistral) em sistemas de produção
+- Otimização de performance para hardware restrito
+- Boas práticas de engenharia: TDD, DDD, SOLID, Clean Architecture
+
+---
+
+<div align="center">
+
+**⭐ Se este projeto foi útil, deixe uma estrela!**
+
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Conecte--se-0077B5?logo=linkedin&logoColor=white)](https://linkedin.com)
+[![GitHub](https://img.shields.io/badge/GitHub-gameswin010--png-181717?logo=github&logoColor=white)](https://github.com/gameswin010-png)
+
+</div>

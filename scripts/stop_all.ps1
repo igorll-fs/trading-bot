@@ -15,25 +15,27 @@ Write-Host ""
 # ------------------------------------------------------------
 Write-Host "[1/3] Parando Bot..." -ForegroundColor Yellow
 try {
-    $response = Invoke-RestMethod -Uri "http://localhost:8002/api/bot/control" -Method Post -ContentType "application/json" -Body '{"action":"stop"}' -TimeoutSec 5
+    $response = Invoke-RestMethod -Uri "http://localhost:8000/api/bot/control" -Method Post -ContentType "application/json" -Body '{"action":"stop"}' -TimeoutSec 5
     Write-Host "  -> Bot parado com sucesso!" -ForegroundColor Green
-} catch {
+}
+catch {
     Write-Host "  -> Bot ja estava parado ou backend nao respondeu." -ForegroundColor DarkYellow
 }
 
 Start-Sleep -Seconds 2
 
 # ------------------------------------------------------------
-# 2. Parar Backend (porta 8002)
+# 2. Parar Backend (porta 8000)
 # ------------------------------------------------------------
 Write-Host ""
 Write-Host "[2/3] Parando Backend..." -ForegroundColor Yellow
-$proc8002 = netstat -ano 2>$null | Select-String ":8002.*LISTENING"
-if ($proc8002) {
-    $pid8002 = ($proc8002 -split '\s+')[-1]
-    Stop-Process -Id $pid8002 -Force -ErrorAction SilentlyContinue
-    Write-Host "  -> Backend (PID $pid8002) parado!" -ForegroundColor Green
-} else {
+$proc8000 = netstat -ano 2>$null | Select-String ":8000.*LISTENING"
+if ($proc8000) {
+    $pid8000 = ($proc8000 -split '\s+')[-1]
+    Stop-Process -Id $pid8000 -Force -ErrorAction SilentlyContinue
+    Write-Host "  -> Backend (PID $pid8000) parado!" -ForegroundColor Green
+}
+else {
     Write-Host "  -> Backend ja estava parado." -ForegroundColor DarkYellow
 }
 
@@ -47,7 +49,8 @@ if ($proc3000) {
     $pid3000 = ($proc3000 -split '\s+')[-1]
     Stop-Process -Id $pid3000 -Force -ErrorAction SilentlyContinue
     Write-Host "  -> Frontend (PID $pid3000) parado!" -ForegroundColor Green
-} else {
+}
+else {
     Write-Host "  -> Frontend ja estava parado." -ForegroundColor DarkYellow
 }
 

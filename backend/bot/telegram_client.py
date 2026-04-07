@@ -2,6 +2,7 @@ import os
 import requests
 import logging
 from datetime import datetime
+from typing import Dict, Optional
 import aiohttp
 import ssl
 from aiohttp import ClientConnectorCertificateError
@@ -12,8 +13,8 @@ logger = logging.getLogger(__name__)
 
 class TelegramNotifier:
     def __init__(self):
-        self.bot_token = os.getenv('TELEGRAM_BOT_TOKEN', '').strip()
-        self.chat_id = os.getenv('TELEGRAM_CHAT_ID', '').strip()
+        self.bot_token = os.getenv("TELEGRAM_BOT_TOKEN", "").strip()
+        self.chat_id = os.getenv("TELEGRAM_CHAT_ID", "").strip()
         self.base_url = f"https://api.telegram.org/bot{self.bot_token}"
         self._session = None
         self.verify_ssl = True
@@ -22,8 +23,17 @@ class TelegramNotifier:
     # Message builders (shared by sync/async senders to avoid duplication)
     # ------------------------------------------------------------------
 
-    def _format_position_opened(self, symbol, side, entry_price, size, leverage,
-                                 stop_loss=None, take_profit=None, ml_score=None):
+    def _format_position_opened(
+        self,
+        symbol,
+        side,
+        entry_price,
+        size,
+        leverage,
+        stop_loss=None,
+        take_profit=None,
+        ml_score=None,
+    ):
         direction = "COMPRA" if side == "BUY" else "VENDA"
 
         details = (
@@ -69,24 +79,121 @@ class TelegramNotifier:
         )
 
     def _bot_started_message(self):
-        return (
-            "[BOT] Trading iniciado!\n\n"
-            "Monitorando o mercado e procurando oportunidades."
-        )
+        return "[BOT] Trading iniciado!\n\n" "Monitorando o mercado e procurando oportunidades."
 
     def _bot_stopped_message(self):
-        return (
-            "[BOT] Trading parado.\n\n"
-            "O bot foi desativado."
-        )
+        return "[BOT] Trading parado.\n\n" "O bot foi desativado."
 
     def _bot_observing_message(self, note=None):
-        message = (
-            "[BOT] Em observacao.\n\n"
-            "Analisando o mercado e aguardando sinais confiaveis."
-        )
+        message = "[BOT] Em observacao.\n\n" "Analisando o mercado e aguardando sinais confiaveis."
         if note:
             message += f"\n\n{note}"
+        return message
+
+    def _format_ai_decision(
+        self, decision_type: str, symbol: str, reasoning: str, data: Optional[Dict] = None
+    ):
+        """Formatar decisões da IA para Telegram"""
+        icons = {
+            "adaptive_stop": "🎯",
+            "position_size": "📊",
+            "pre_trade": "📰",
+            "skip_trade": "❌",
+            "regime_adapt": "🧠",
+        }
+
+        icon = icons.get(decision_type, "🤖")
+
+        if decision_type == "adaptive_stop":
+            title = f"{icon} <b>IA: STOP-LOSS ADAPTATIVO</b>"
+            details = f"<b>Par:</b> {symbol}\n"
+            if data:
+                details += f"<b>Stop:</b> ${data.get('stop_price', 0):.4f}\n"
+                details += f"<b>Multiplier:</b> {data.get('multiplier', 2.0):.1f}x ATR\n"
+                details += f"<b>Confiança:</b> {data.get('confidence', 0)*100:.0f}%\n"
+            details += f"\n<i>{reasoning}</i>"
+
+        elif decision_type == "position_size":
+            title = f"{icon} <b>IA: AJUSTE DE POSITION SIZE</b>"
+            details = f"<b>Par:</b> {symbol}\n"
+            if data:
+                size_mult = data.get("size_multiplier", 1.0)
+                confidence = data.get("confidence_score", 5)
+                details += f"<b>Ajuste:</b> {size_mult:.1f}x ({size_mult*100:.0f}% do size base)\n"
+                details += f"<b>Confiança:</b> {confidence}/10\n"
+            details += f"\n<i>{reasoning}</i>"
+
+        elif decision_type == "pre_trade":
+            title = f"{icon} <b>IA: ANÁLISE PRÉ-TRADE</b>"
+            details = f"<b>Par:</b> {symbol}\n"
+            if data:
+                should_enter = data.get("should_enter", True)
+                sentiment = data.get("sentiment", "neutral")
+                urgency = data.get("urgency", "NORMAL")
+
+                status = "✅ VIA LIVRE" if should_enter else "⛔ NÃO ENTRAR"
+                details += f"<b>Status:</b> {status}\n"
+                details += f"<b>Sentimento:</b> {sentiment.upper()}\n"
+
+                if urgency != "NORMAL":
+                    details += f"<b>Urgência:</b> {urgency}\n"
+
+                risk_events = data.get("risk_events", [])
+                if risk_events:
+                    details += f"\n<b>Eventos de Risco:</b>\n"
+                    for event in risk_events[:3]:  # Max 3 eventos
+                        details += f"  • {event}\n"
+
+            details += f"\n<i>{reasoning}</i>"
+
+        elif decision_type == "skip_trade":
+            title = f"{icon} <b>IA: TRADE REJEITADO</b>"
+            details = f"<b>Par:</b> {symbol}\n"
+            if data:
+                primary = data.get("primary_reason", "Motivo não especificado")
+                details += f"<b>Motivo:</b> {primary}\n"
+
+                factors = data.get("contributing_factors", [])
+                if factors:
+                    details += f"\n<b>Fatores Adicionais:</b>\n"
+                    for factor in factors[:2]:  # Max 2 fatores
+                        details += f"  • {factor}\n"
+
+                suggestion = data.get("suggestion")
+                if suggestion:
+                    details += f"\n💡 <b>Sugestão:</b> {suggestion}\n"
+
+            details += f"\n<i>{reasoning}</i>"
+
+        elif decision_type == "regime_adapt":
+            title = f"{icon} <b>IA: ADAPTAÇÃO DE REGIME</b>"
+            details = f"<b>Regime:</b> {symbol}\n"  # symbol = regime name
+            if data:
+                win_rate = data.get("win_rate", 0)
+                should_trade = data.get("should_trade", True)
+
+                status = "🟢 OPERANDO" if should_trade else "🔴 PAUSADO"
+                details += f"<b>Status:</b> {status}\n"
+                details += f"<b>Win Rate:</b> {win_rate:.0f}%\n"
+
+                score_adj = data.get("score_adjustment", 0)
+                stop_adj = data.get("stop_multiplier_adjustment", 1.0)
+                size_adj = data.get("size_adjustment", 1.0)
+
+                if score_adj != 0:
+                    details += f"<b>Score:</b> {score_adj:+d} pontos\n"
+                if stop_adj != 1.0:
+                    details += f"<b>Stop:</b> {stop_adj:.1f}x\n"
+                if size_adj != 1.0:
+                    details += f"<b>Size:</b> {size_adj:.0%}\n"
+
+            details += f"\n<i>{reasoning}</i>"
+
+        else:
+            title = f"{icon} <b>IA: DECISÃO</b>"
+            details = f"<b>Par:</b> {symbol}\n\n<i>{reasoning}</i>"
+
+        message = f"{title}\n\n{details}\n\n⏰ {datetime.now().strftime('%H:%M:%S')}"
         return message
 
     async def close(self):
@@ -118,23 +225,12 @@ class TelegramNotifier:
                 return False
 
             url = f"{self.base_url}/sendMessage"
-            payload = {
-                'chat_id': self.chat_id,
-                'text': message,
-                'parse_mode': 'HTML'
-            }
+            payload = {"chat_id": self.chat_id, "text": message, "parse_mode": "HTML"}
 
-            response = requests.post(
-                url,
-                json=payload,
-                timeout=10,
-                verify=self.verify_ssl
-            )
+            response = requests.post(url, json=payload, timeout=10, verify=self.verify_ssl)
             if response.status_code != 200:
                 logger.warning(
-                    "Telegram HTTP %s - Body: %s",
-                    response.status_code,
-                    response.text[:200]
+                    "Telegram HTTP %s - Body: %s", response.status_code, response.text[:200]
                 )
             return response.status_code == 200
 
@@ -171,17 +267,15 @@ class TelegramNotifier:
                 return False
 
             url = f"{self.base_url}/sendMessage"
-            payload = {
-                'chat_id': self.chat_id,
-                'text': message,
-                'parse_mode': 'HTML'
-            }
+            payload = {"chat_id": self.chat_id, "text": message, "parse_mode": "HTML"}
 
             # Criar sessao se nao existir; honra configuracao de SSL
             if not self._session or self._session.closed:
                 self._session = self._create_session()
 
-            async with self._session.post(url, json=payload, timeout=aiohttp.ClientTimeout(total=5)) as response:
+            async with self._session.post(
+                url, json=payload, timeout=aiohttp.ClientTimeout(total=5)
+            ) as response:
                 if response.status == 200:
                     logger.info("Telegram message sent successfully")
                     return True
@@ -205,21 +299,45 @@ class TelegramNotifier:
             logger.error(f"Error sending async Telegram message: {e}")
             return False
 
-    def notify_position_opened(self, symbol, side, entry_price, size, leverage,
-                               stop_loss=None, take_profit=None, ml_score=None):
+    def notify_position_opened(
+        self,
+        symbol,
+        side,
+        entry_price,
+        size,
+        leverage,
+        stop_loss=None,
+        take_profit=None,
+        ml_score=None,
+    ):
         """Notify when position is opened"""
-        message = self._format_position_opened(symbol, side, entry_price, size, leverage, stop_loss, take_profit, ml_score)
+        message = self._format_position_opened(
+            symbol, side, entry_price, size, leverage, stop_loss, take_profit, ml_score
+        )
         return self.send_message(message)
 
-    async def notify_position_opened_async(self, symbol, side, entry_price, size, leverage,
-                                           stop_loss=None, take_profit=None, ml_score=None):
-        message = self._format_position_opened(symbol, side, entry_price, size, leverage, stop_loss, take_profit, ml_score)
+    async def notify_position_opened_async(
+        self,
+        symbol,
+        side,
+        entry_price,
+        size,
+        leverage,
+        stop_loss=None,
+        take_profit=None,
+        ml_score=None,
+    ):
+        message = self._format_position_opened(
+            symbol, side, entry_price, size, leverage, stop_loss, take_profit, ml_score
+        )
         return await self.send_message_async(message)
 
     def notify_position_closed(self, symbol, side, entry_price, exit_price, pnl, roe, reason=None):
         """Notify when position is closed"""
         try:
-            message = self._format_position_closed(symbol, side, entry_price, exit_price, pnl, roe, reason)
+            message = self._format_position_closed(
+                symbol, side, entry_price, exit_price, pnl, roe, reason
+            )
             return self.send_message(message)
         except Exception as e:
             logger.error(f"Error formatting position closed notification: {e}")
@@ -230,9 +348,13 @@ class TelegramNotifier:
                 logger.error("Failed to send even simplified notification")
                 return False
 
-    async def notify_position_closed_async(self, symbol, side, entry_price, exit_price, pnl, roe, reason=None):
+    async def notify_position_closed_async(
+        self, symbol, side, entry_price, exit_price, pnl, roe, reason=None
+    ):
         try:
-            message = self._format_position_closed(symbol, side, entry_price, exit_price, pnl, roe, reason)
+            message = self._format_position_closed(
+                symbol, side, entry_price, exit_price, pnl, roe, reason
+            )
             return await self.send_message_async(message)
         except Exception as e:
             logger.error(f"Error formatting async position closed notification: {e}")
@@ -255,6 +377,17 @@ class TelegramNotifier:
 
     async def notify_monitoring_async(self, note=None):
         return await self.send_message_async(self._bot_observing_message(note))
+
+    async def notify_ai_decision_async(
+        self, decision_type: str, symbol: str, reasoning: str, data: Optional[Dict] = None
+    ):
+        """Enviar decisão da IA para o Telegram (async)"""
+        try:
+            message = self._format_ai_decision(decision_type, symbol, reasoning, data)
+            return await self.send_message_async(message)
+        except Exception as e:
+            logger.error(f"Erro ao enviar notificação da IA: {e}")
+            return False
 
 
 telegram_notifier = TelegramNotifier()

@@ -18,7 +18,7 @@ if ($DryRun) {
     Write-Host "`nMODO EXECUCAO: Aplicando mudancas" -ForegroundColor Green
 }
 
-# Arquivos que precisam ser corrigidos
+# Arquivos que precisam ser corrigidos (atualizado após limpeza)
 $scriptsToFix = @{
     "prepare_github.ps1" = @{
         'C:\Users\igor\Desktop\17-10-2025-main' = '$PSScriptRoot\..'
@@ -27,25 +27,8 @@ $scriptsToFix = @{
     "start_system_simple.ps1" = @{
         'C:\Users\igor\Desktop\17-10-2025-main' = '$PSScriptRoot\..'
     }
-    "start_system.ps1" = @{
-        'C:\Users\igor\Desktop\17-10-2025-main' = '$PSScriptRoot\..'
-    }
-    "restart_simple.ps1" = @{
-        'C:\Users\igor\Desktop\17-10-2025-main' = '$PSScriptRoot\..'
-    }
-    "start_remote_access.ps1" = @{
-        'C:\Users\igor\cloudflared.exe' = 'cloudflared.exe'
-    }
-    "start_services.bat" = @{
-        'C:\Users\igor\cloudflared.exe' = '%USERPROFILE%\cloudflared.exe'
-        'C:\Users\igor\.cloudflared' = '%USERPROFILE%\.cloudflared'
-    }
     "start_cloudflared_manual.bat" = @{
         'cd C:\Users\igor' = 'cd %USERPROFILE%'
-    }
-    "setup_autostart.bat" = @{
-        'C:\Users\igor\cloudflared.exe' = '%USERPROFILE%\cloudflared.exe'
-        'C:\Users\igor\.cloudflared' = '%USERPROFILE%\.cloudflared'
     }
     "install_cloudflare_service.bat" = @{
         'C:\Users\igor\cloudflared.exe' = '%USERPROFILE%\cloudflared.exe'
@@ -57,25 +40,25 @@ $errorCount = 0
 
 foreach ($scriptName in $scriptsToFix.Keys) {
     $scriptPath = Join-Path $PSScriptRoot $scriptName
-    
+
     if (-not (Test-Path $scriptPath)) {
         Write-Host "  Arquivo nao encontrado: $scriptName" -ForegroundColor Yellow
         continue
     }
-    
+
     Write-Host "`nProcessando: $scriptName" -ForegroundColor Cyan
-    
+
     try {
         $content = Get-Content $scriptPath -Raw -Encoding UTF8
         $originalContent = $content
         $replacements = $scriptsToFix[$scriptName]
-        
+
         foreach ($oldValue in $replacements.Keys) {
             $newValue = $replacements[$oldValue]
-            
+
             if ($content -match [regex]::Escape($oldValue)) {
                 $content = $content -replace [regex]::Escape($oldValue), $newValue
-                
+
                 if ($DryRun) {
                     Write-Host "  DRY-RUN: '$oldValue' -> '$newValue'" -ForegroundColor Yellow
                 } else {
@@ -83,7 +66,7 @@ foreach ($scriptName in $scriptsToFix.Keys) {
                 }
             }
         }
-        
+
         if ($content -ne $originalContent) {
             if (-not $DryRun) {
                 Set-Content -Path $scriptPath -Value $content -Encoding UTF8 -NoNewline
@@ -92,7 +75,7 @@ foreach ($scriptName in $scriptsToFix.Keys) {
         } else {
             Write-Host "  Nenhuma alteracao necessaria" -ForegroundColor Gray
         }
-        
+
     } catch {
         Write-Host "  ERRO ao processar: $_" -ForegroundColor Red
         $errorCount++
@@ -107,7 +90,7 @@ $problematicPaths = @()
 
 foreach ($script in $allScripts) {
     $content = Get-Content $script.FullName -Raw -ErrorAction SilentlyContinue
-    
+
     if ($content -match 'C:\\Users\\[^\\]+' -or $content -match 'C:/Users/[^/]+') {
         $problematicPaths += $script.Name
     }
