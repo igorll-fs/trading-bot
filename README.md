@@ -27,14 +27,14 @@
 
 Um **sistema end-to-end de trading automatizado** conectado à Binance Testnet, composto por:
 
-| Camada | Tecnologia | Responsabilidade |
-|--------|-----------|-----------------|
-| **Backend** | Python 3.11 + FastAPI | API REST, lógica de trading, ML, WebSocket |
-| **Frontend** | React 18 + TailwindCSS | Dashboard em tempo real, glassmorphism UI |
-| **Banco de Dados** | MongoDB (async Motor) | Histórico de trades, modelos ML, reflexões |
-| **IA Local** | Ollama + Mistral 7B | Análise de risco contextual com LLM |
-| **ML** | Scikit-Learn + RandomForest | Filtro de sinais com auto-treinamento |
-| **Integração** | Binance API + Telegram Bot | Execução de ordens + alertas em tempo real |
+| Camada             | Tecnologia                  | Responsabilidade                           |
+| ------------------ | --------------------------- | ------------------------------------------ |
+| **Backend**        | Python 3.11 + FastAPI       | API REST, lógica de trading, ML, WebSocket |
+| **Frontend**       | React 18 + TailwindCSS      | Dashboard em tempo real, glassmorphism UI  |
+| **Banco de Dados** | MongoDB (async Motor)       | Histórico de trades, modelos ML, reflexões |
+| **IA Local**       | Ollama + Mistral 7B         | Análise de risco contextual com LLM        |
+| **ML**             | Scikit-Learn + RandomForest | Filtro de sinais com auto-treinamento      |
+| **Integração**     | Binance API + Telegram Bot  | Execução de ordens + alertas em tempo real |
 
 ---
 
@@ -42,13 +42,13 @@ Um **sistema end-to-end de trading automatizado** conectado à Binance Testnet, 
 
 ### 🧠 Motor de Inteligência Artificial
 
-| Feature | Detalhes |
-|---------|---------|
-| **ML Signal Filter** | RandomForest + GradientBoosting com TimeSeriesSplit CV — filtra sinais antes de executar |
-| **Auto-Learning Pipeline** | Loop de 60min: coleta → limpeza → geração de dataset → treino → validação |
-| **LLM Risk Advisor** | Ollama (Mistral 7B) analisa contexto de mercado e sugere ajustes de posição |
-| **Reflection System** | Bot analisa performance a cada hora, gera *learnings* e ajusta parâmetros automaticamente |
-| **Advanced Pattern Analyzer** | Detecta padrões por símbolo, direção, período e ROE histórico |
+| Feature                       | Detalhes                                                                                  |
+| ----------------------------- | ----------------------------------------------------------------------------------------- |
+| **ML Signal Filter**          | RandomForest + GradientBoosting com TimeSeriesSplit CV — filtra sinais antes de executar  |
+| **Auto-Learning Pipeline**    | Loop de 60min: coleta → limpeza → geração de dataset → treino → validação                 |
+| **LLM Risk Advisor**          | Ollama (Mistral 7B) analisa contexto de mercado e sugere ajustes de posição               |
+| **Reflection System**         | Bot analisa performance a cada hora, gera _learnings_ e ajusta parâmetros automaticamente |
+| **Advanced Pattern Analyzer** | Detecta padrões por símbolo, direção, período e ROE histórico                             |
 
 ### 📊 Análise Técnica Avançada
 
@@ -151,38 +151,38 @@ Interface **glassmorphism** (dark mode) com Server-Sent Events (SSE):
 
 ### Backend (Python 3.11+)
 
-| Biblioteca | Uso |
-|-----------|-----|
-| `FastAPI 0.110` | API REST assíncrona com tipagem Pydantic |
-| `Motor 3.3` | Driver MongoDB assíncrono (pool 10-50 conexões) |
-| `python-binance` | Wrapper Binance API com retry automático |
-| `scikit-learn 1.6` | RandomForest, GradientBoosting, TimeSeriesSplit |
-| `numpy / pandas` | Cálculo vetorizado de indicadores técnicos |
-| `asyncio` | Concorrência total em I/O (nunca blocking no event loop) |
-| `psutil` | Hardware profiling (CPU, RAM, latência) |
-| `python-telegram-bot` | Notificações em tempo real |
-| `mypy` | Type checking estrito (100% type hints) |
+| Biblioteca            | Uso                                                      |
+| --------------------- | -------------------------------------------------------- |
+| `FastAPI 0.110`       | API REST assíncrona com tipagem Pydantic                 |
+| `Motor 3.3`           | Driver MongoDB assíncrono (pool 10-50 conexões)          |
+| `python-binance`      | Wrapper Binance API com retry automático                 |
+| `scikit-learn 1.6`    | RandomForest, GradientBoosting, TimeSeriesSplit          |
+| `numpy / pandas`      | Cálculo vetorizado de indicadores técnicos               |
+| `asyncio`             | Concorrência total em I/O (nunca blocking no event loop) |
+| `psutil`              | Hardware profiling (CPU, RAM, latência)                  |
+| `python-telegram-bot` | Notificações em tempo real                               |
+| `mypy`                | Type checking estrito (100% type hints)                  |
 
 ### Frontend (React 18)
 
-| Biblioteca | Uso |
-|-----------|-----|
-| `React 18 + Vite` | SPA com code-splitting por rota (lazy loading) |
-| `TailwindCSS 3` | Estilização utilitária + glassmorphism customizado |
-| `Recharts 3` | PnL charts, Win Rate area charts |
-| `React Query 3` | Caching de dados, invalidação automática via SSE |
-| `Radix UI` | Componentes acessíveis (22 primitivos) |
-| `Framer Motion` | Animações performáticas |
-| `react-window` | Virtualização de listas longas de trades |
-| `Zod + React Hook Form` | Validação de formulários tipada |
+| Biblioteca              | Uso                                                |
+| ----------------------- | -------------------------------------------------- |
+| `React 18 + Vite`       | SPA com code-splitting por rota (lazy loading)     |
+| `TailwindCSS 3`         | Estilização utilitária + glassmorphism customizado |
+| `Recharts 3`            | PnL charts, Win Rate area charts                   |
+| `React Query 3`         | Caching de dados, invalidação automática via SSE   |
+| `Radix UI`              | Componentes acessíveis (22 primitivos)             |
+| `Framer Motion`         | Animações performáticas                            |
+| `react-window`          | Virtualização de listas longas de trades           |
+| `Zod + React Hook Form` | Validação de formulários tipada                    |
 
 ### Banco de Dados e Infraestrutura
 
-| Tecnologia | Detalhes |
-|-----------|---------|
-| **MongoDB** | Índices em `timestamp`, `symbol`, `profit`, `status` → queries <2ms |
-| **Cloudflare Tunnel** | Acesso remoto seguro sem abrir portas |
-| **Docker** (opcional) | Containerização para deploy |
+| Tecnologia            | Detalhes                                                            |
+| --------------------- | ------------------------------------------------------------------- |
+| **MongoDB**           | Índices em `timestamp`, `symbol`, `profit`, `status` → queries <2ms |
+| **Cloudflare Tunnel** | Acesso remoto seguro sem abrir portas                               |
+| **Docker** (opcional) | Containerização para deploy                                         |
 
 ---
 
@@ -226,6 +226,7 @@ cd frontend && npm start
 ```
 
 **Acesso:**
+
 - 🖥️ Dashboard: `http://localhost:3000`
 - 🔌 API: `http://localhost:8001`
 - 📚 Docs Swagger: `http://localhost:8001/docs`
@@ -246,6 +247,7 @@ npx playwright test --project=performance
 ```
 
 **Cobertura atual:**
+
 - ✅ 20 testes unitários (ML Guardrails, Risk Manager, Strategy, Selector)
 - ✅ 10 testes E2E Playwright (Dashboard, Reflections, navegação, acessibilidade)
 - ✅ Testes de performance com budget para hardware limitado
@@ -254,14 +256,14 @@ npx playwright test --project=performance
 
 ## 📊 Fases de Desenvolvimento (6 Sprints Autônomos)
 
-| Fase | Nome | Entregável | Resultado |
-|------|------|-----------|-----------|
-| **1** | Safe Parameters | Sincronização config ↔ learning_params + HARD LIMITS | 100% safety compliance |
-| **2** | Reflection Dashboard | UI glassmorphism + Win Rate charts + Polling | Dashboard funcional React 18 |
-| **3** | ML Guardrails | Dual-layer validation + 20 unit tests | >30 bloqueios em produção |
-| **4** | Network Learning | State persistence + Active Hours + Bounded Autonomy | Memória entre restarts |
-| **5** | Hardware Optimization | GC agressivo + MongoDB indexing + Hardware profiler | Queries 2ms (-96%) |
-| **6** | E2E Tests & Docs | Playwright tests + Arquitetura consolidada | 30+ testes passando |
+| Fase  | Nome                  | Entregável                                           | Resultado                    |
+| ----- | --------------------- | ---------------------------------------------------- | ---------------------------- |
+| **1** | Safe Parameters       | Sincronização config ↔ learning_params + HARD LIMITS | 100% safety compliance       |
+| **2** | Reflection Dashboard  | UI glassmorphism + Win Rate charts + Polling         | Dashboard funcional React 18 |
+| **3** | ML Guardrails         | Dual-layer validation + 20 unit tests                | >30 bloqueios em produção    |
+| **4** | Network Learning      | State persistence + Active Hours + Bounded Autonomy  | Memória entre restarts       |
+| **5** | Hardware Optimization | GC agressivo + MongoDB indexing + Hardware profiler  | Queries 2ms (-96%)           |
+| **6** | E2E Tests & Docs      | Playwright tests + Arquitetura consolidada           | 30+ testes passando          |
 
 ---
 
@@ -381,15 +383,15 @@ async def event_stream(request: Request):
 
 ## 📈 Métricas de Performance
 
-| Métrica | Valor | Contexto |
-|---------|-------|---------|
-| CPU average | < 25% | i5-5300U dual-core |
-| RAM do bot | 22.6 MB | Sistema com 12GB / 95% uso |
-| MongoDB queries | < 2ms | Com índices cobertos (era 50ms) |
-| Chamadas Binance API | -70% | Cache TTL 5s |
-| Testes passando | 30+ | Unit + E2E Playwright |
-| ML Guardrail blocks | > 30 | Parâmetros suicidas bloqueados |
-| Scan loop | 15s | 50 pares monitorados simultaneamente |
+| Métrica              | Valor   | Contexto                             |
+| -------------------- | ------- | ------------------------------------ |
+| CPU average          | < 25%   | i5-5300U dual-core                   |
+| RAM do bot           | 22.6 MB | Sistema com 12GB / 95% uso           |
+| MongoDB queries      | < 2ms   | Com índices cobertos (era 50ms)      |
+| Chamadas Binance API | -70%    | Cache TTL 5s                         |
+| Testes passando      | 30+     | Unit + E2E Playwright                |
+| ML Guardrail blocks  | > 30    | Parâmetros suicidas bloqueados       |
+| Scan loop            | 15s     | 50 pares monitorados simultaneamente |
 
 ---
 
@@ -405,14 +407,14 @@ async def event_stream(request: Request):
 
 ## 📚 Documentação
 
-| Documento | Conteúdo |
-|----------|---------|
-| [QUICK_START.md](QUICK_START.md) | Setup em 5 minutos |
-| [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | Diagrama completo da arquitetura |
-| [docs/MACHINE_LEARNING.md](docs/MACHINE_LEARNING.md) | Pipeline ML detalhado |
-| [docs/ESTRATEGIAS.md](docs/ESTRATEGIAS.md) | Lógica das estratégias de trading |
-| [docs/OPERATION_GUIDE.md](docs/OPERATION_GUIDE.md) | Guia de operação diária |
-| [docs/SECURITY_GUIDE.md](docs/SECURITY_GUIDE.md) | Guia de segurança |
+| Documento                                            | Conteúdo                          |
+| ---------------------------------------------------- | --------------------------------- |
+| [QUICK_START.md](QUICK_START.md)                     | Setup em 5 minutos                |
+| [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)         | Diagrama completo da arquitetura  |
+| [docs/MACHINE_LEARNING.md](docs/MACHINE_LEARNING.md) | Pipeline ML detalhado             |
+| [docs/ESTRATEGIAS.md](docs/ESTRATEGIAS.md)           | Lógica das estratégias de trading |
+| [docs/OPERATION_GUIDE.md](docs/OPERATION_GUIDE.md)   | Guia de operação diária           |
+| [docs/SECURITY_GUIDE.md](docs/SECURITY_GUIDE.md)     | Guia de segurança                 |
 
 ---
 
@@ -426,7 +428,7 @@ Este projeto foi desenvolvido com **constraint-driven architecture** — hardwar
 - **Cache TTL** para reduzir chamadas de API → 70% menos requests à Binance
 - **Bounded Autonomy** → IA com regras explícitas é mais confiável que IA sem limites
 
-> *"Constraints don't limit creativity — they define it."*
+> _"Constraints don't limit creativity — they define it."_
 
 ---
 
