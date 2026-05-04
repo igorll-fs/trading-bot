@@ -94,9 +94,8 @@ query
 *.dump
 mongo_backup/
 
-# TEMPORARIOS
-*.tmp
-*.bak
-*.backup
-temp/
-tmp/
+# RUNTIME STATE (auto-generated)
+.reflection_state.json
+.ai_status.json
+.ai_work_log.jsonl
+.SessionB_Progress.md
