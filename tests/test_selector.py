@@ -44,7 +44,7 @@ class TestCryptoSelectorInit:
         selector = CryptoSelector(client=mock_client, strategy=mock_strategy)
         
         assert selector.trending_refresh_interval == 120
-        assert selector.min_change_percent == 0.5
+        assert selector.min_change_percent == 1.0  # Increased from 0.5 for momentum focus
         assert selector.trending_pool_size == 10
         assert selector.min_quote_volume == 50_000.0
         assert selector.max_spread_percent == 0.25

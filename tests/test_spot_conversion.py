@@ -11,76 +11,41 @@ sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'backend'))
 
 def test_binance_client_imports():
     """Test that binance_client can be imported and has Spot methods"""
-    try:
-        from bot.binance_client import BinanceClientManager
-        print("✅ BinanceClientManager imported successfully")
+    from bot.binance_client import BinanceClientManager
 
-        # Check that the class has Spot methods
-        manager = BinanceClientManager()
-        assert hasattr(manager, 'get_open_orders'), "❌ Missing get_open_orders method"
-        assert hasattr(manager, 'cancel_order'), "❌ Missing cancel_order method"
-        assert not hasattr(manager, 'set_leverage'), "❌ set_leverage should be removed"
-
-        print("✅ BinanceClientManager has correct Spot methods")
-        return True
-
-    except Exception as e:
-        print(f"❌ Error importing BinanceClientManager: {e}")
-        return False
+    manager = BinanceClientManager()
+    assert hasattr(manager, 'get_open_orders'), "Missing get_open_orders method"
+    assert hasattr(manager, 'cancel_order'), "Missing cancel_order method"
+    assert not hasattr(manager, 'set_leverage'), "set_leverage should be removed"
 
 def test_risk_manager():
     """Test that RiskManager uses leverage=1"""
-    try:
-        from bot.risk_manager import RiskManager
-        print("✅ RiskManager imported successfully")
-        
-        # Create instance
-        rm = RiskManager(risk_percentage=2.0, max_positions=3, leverage=1)
-        assert rm.default_leverage == 1, f"❌ Expected leverage=1, got {rm.default_leverage}"
-        
-        print("✅ RiskManager correctly uses leverage=1")
-        
-        # Test position size calculation
-        position_params = rm.calculate_position_size(1000.0, 50000.0)
-        
-        if position_params:
-            assert position_params['leverage'] == 1, "❌ Position leverage should be 1"
-            print(f"✅ Position size calculation works (leverage={position_params['leverage']})")
-        
-        # Test PnL calculation
-        pnl_data = rm.calculate_pnl(
-            entry_price=100.0,
-            exit_price=110.0,
-            quantity=1.0,
-            side='BUY',
-            leverage=1
-        )
-        
-        if pnl_data:
-            # ROE should be 10% (not 50% with 5x leverage)
-            expected_roe = 10.0
-            assert pnl_data['roe'] == expected_roe, f"❌ Expected ROE {expected_roe}%, got {pnl_data['roe']}%"
-            print(f"✅ PnL calculation correct (ROE={pnl_data['roe']}% for 10% price change)")
-        
-        return True
-        
-    except Exception as e:
-        print(f"❌ Error testing RiskManager: {e}")
-        import traceback
-        traceback.print_exc()
-        return False
+    from bot.risk_manager import RiskManager
+    
+    rm = RiskManager(risk_percentage=2.0, max_positions=3, leverage=1)
+    assert rm.default_leverage == 1, f"Expected leverage=1, got {rm.default_leverage}"
+    
+    position_params = rm.calculate_position_size(1000.0, 50000.0)
+    if position_params:
+        assert position_params['leverage'] == 1, "Position leverage should be 1"
+    
+    pnl_data = rm.calculate_pnl(
+        entry_price=100.0,
+        exit_price=110.0,
+        quantity=1.0,
+        side='BUY',
+        leverage=1
+    )
+    if pnl_data:
+        assert pnl_data['roe'] == 10.0, f"Expected ROE 10.0%, got {pnl_data['roe']}%"
 
 def test_strategy_imports():
-    """Test that Strategy uses Spot klines"""
-    try:
-        # Just check if it imports without errors
-        # Full testing would require MongoDB and Binance client
-        print("✅ Strategy module structure validated (imports not tested to avoid dependencies)")
-        return True
-        
-    except Exception as e:
-        print(f"❌ Error testing Strategy: {e}")
-        return False
+    """Test that Strategy module structure is valid"""
+    # Full testing would require MongoDB and Binance client
+    # Verify the module can be discovered
+    import importlib
+    spec = importlib.util.find_spec('bot.strategy')
+    assert spec is not None, "Strategy module not found"
 
 def main():
     """Run all validation tests"""

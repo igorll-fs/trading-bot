@@ -123,34 +123,32 @@ class TestUpdateParam:
         assert abs(system.adjustable_params['min_confidence_score'] - expected) < 0.01
         
     def test_update_param_clamped_high(self):
-        """Valores acima do limite são suavizados e depois clamped."""
+        """Valores acima do guardrail são rejeitados antes do smoothing."""
         from bot.learning_system import BotLearningSystem
         
         mock_db = Mock()
         system = BotLearningSystem(db=mock_db)
         
-        # Suavização com target=1.5, current=0.5:
-        # smoothed = 0.15 * 1.5 + 0.85 * 0.5 = 0.225 + 0.425 = 0.65
-        # Como 0.65 < 0.9 (max), não precisa clampar
-        system._update_param('min_confidence_score', 1.5, 'teste')
+        # Guardrail rejeita target=1.5 (> 0.75 danger zone max)
+        # O valor deve permanecer inalterado
+        result = system._update_param('min_confidence_score', 1.5, 'teste')
         
-        expected = 0.15 * 1.5 + 0.85 * 0.5  # ~0.65
-        assert abs(system.adjustable_params['min_confidence_score'] - expected) < 0.01
+        assert result == 0.5  # Rejected, returns current value
+        assert system.adjustable_params['min_confidence_score'] == 0.5  # Unchanged
         
     def test_update_param_clamped_low(self):
-        """Valores abaixo do limite são suavizados e depois clamped."""
+        """Valores abaixo do guardrail são rejeitados antes do smoothing."""
         from bot.learning_system import BotLearningSystem
         
         mock_db = Mock()
         system = BotLearningSystem(db=mock_db)
         
-        # Suavização com target=0.1, current=0.5:
-        # smoothed = 0.15 * 0.1 + 0.85 * 0.5 = 0.015 + 0.425 = 0.44
-        # Como 0.44 > 0.3 (min), não precisa clampar
-        system._update_param('min_confidence_score', 0.1, 'teste')
+        # Guardrail rejeita target=0.1 (< 0.35 danger zone min)
+        # O valor deve permanecer inalterado
+        result = system._update_param('min_confidence_score', 0.1, 'teste')
         
-        expected = 0.15 * 0.1 + 0.85 * 0.5  # ~0.44
-        assert abs(system.adjustable_params['min_confidence_score'] - expected) < 0.01
+        assert result == 0.5  # Rejected, returns current value
+        assert system.adjustable_params['min_confidence_score'] == 0.5  # Unchanged
     
     def test_update_param_converges_with_repeated_calls(self):
         """Chamadas repetidas convergem para o valor alvo."""
