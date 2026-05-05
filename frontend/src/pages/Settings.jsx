@@ -12,6 +12,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { notify } from '@/lib/notify';
 import { Save, Key, MessageSquare, Settings as SettingsIcon } from 'lucide-react';
 import { apiClient } from '@/lib/api';
+import RuntimeConfigGrid from '@/pages/RuntimeConfigGrid';
 
 const isMaskedValue = (value) => typeof value === 'string' && /(\*\*\*|\.\.\.|\u2022{3,})/.test(value);
 
@@ -144,6 +145,7 @@ const SettingsSkeleton = () => (
 const Settings = () => {
   const [loading, setLoading] = useState(true);
   const [previousTestnetState, setPreviousTestnetState] = useState(true);
+  const [paperTrade, setPaperTrade] = useState(true);
   const [storedCredentials, setStoredCredentials] = useState({
     binance_api_key: '',
     binance_api_secret: '',
@@ -227,6 +229,7 @@ const Settings = () => {
           telegram_bot_token: normalized.telegram_bot_token,
         });
 
+        setPaperTrade(Boolean(payload.paper_trade ?? true));
         setPreviousTestnetState(normalized.binance_testnet);
 
         reset({
@@ -281,6 +284,31 @@ const Settings = () => {
       clearErrors(['binance_api_key', 'binance_api_secret']);
     },
     [clearErrors, previousTestnetState, setValue]
+  );
+
+  const handlePaperTradeChange = useCallback(
+    async (checked) => {
+      setPaperTrade(checked);
+      const mode = checked ? 'Paper Trading' : 'Real Trading';
+      if (!checked) {
+        notify.warning(
+          '⚠️ MODO REAL ATIVADO!',
+          'Ordens serão executadas na Binance Mainnet com dinheiro REAL.',
+          { duration: 8000 }
+        );
+      }
+      try {
+        await apiClient.post('/bot/control', { action: 'set_paper_mode', enabled: checked });
+        notify.success(`Modo alterado: ${mode}`, checked
+          ? 'Ordens simuladas. Dados reais. Zero risco.'
+          : 'Ordens reais na Binance Mainnet.'
+        );
+      } catch (err) {
+        notify.error('Erro ao alterar modo', err?.response?.data?.detail || err.message);
+        setPaperTrade(!checked); // Reverte em caso de erro
+      }
+    },
+    [notify]
   );
 
   const hasMaskedBinanceKey = isMaskedValue(storedCredentials.binance_api_key);
@@ -460,6 +488,38 @@ const Settings = () => {
                   </div>
                 )}
               />
+
+              {/* Paper Trading Toggle */}
+              <div
+                className={`p-4 rounded-lg border-2 transition-all ${
+                  paperTrade
+                    ? 'bg-amber-50 dark:bg-amber-950/30 border-amber-500'
+                    : 'bg-emerald-50 dark:bg-emerald-950/30 border-emerald-500'
+                }`}
+              >
+                <div className="flex items-start gap-3">
+                  <Switch
+                    id="paper-trade"
+                    checked={paperTrade}
+                    onCheckedChange={handlePaperTradeChange}
+                    className="mt-1"
+                  />
+                  <div className="flex-1 space-y-2">
+                    <Label htmlFor="paper-trade" className="cursor-pointer font-semibold text-base">
+                      {paperTrade ? '📝 Paper Trading ativado' : '💰 Live Trading ativado'}
+                    </Label>
+                    <p
+                      className={`text-sm font-medium ${
+                        paperTrade ? 'text-amber-700 dark:text-amber-400' : 'text-emerald-700 dark:text-emerald-400'
+                      }`}
+                    >
+                      {paperTrade
+                        ? 'Ordens SIMULADAS com preços reais. Aprenda sem risco financeiro.'
+                        : '⚠️ Ordens REAIS na Binance Mainnet. Dinheiro real em risco.'}
+                    </p>
+                  </div>
+                </div>
+              </div>
 
               <div className="space-y-4">
                 <FormField
@@ -738,6 +798,24 @@ const Settings = () => {
                   As operações utilizam alavancagem fixa de 1x. O tamanho da posição depende do percentual de risco configurado.
                 </p>
               </div>
+            </CardContent>
+          </Card>
+
+          <Card className="glass-card hover:shadow-glow-amber transition-all duration-300">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <div className="p-2 rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 shadow-lg shadow-amber-500/30">
+                  <SettingsIcon size={18} className="text-white" />
+                </div>
+                <span className="text-white">Ajustes Avançados</span>
+                <span className="text-xs bg-amber-500/20 text-amber-400 px-2 py-0.5 rounded ml-auto">.env</span>
+              </CardTitle>
+              <CardDescription className="text-white/50">
+                Parâmetros de tuning carregados do arquivo .env (leitura automática)
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <RuntimeConfigGrid />
             </CardContent>
           </Card>
 

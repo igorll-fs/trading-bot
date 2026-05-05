@@ -57,8 +57,9 @@ class ConfigResponse(BaseModel):
 
 
 class BotControlRequest(BaseModel):
-    """Modelo para controle do bot (start/stop)."""
-    action: str  # "start" or "stop"
+    """Modelo para controle do bot (start/stop/paper_mode)."""
+    action: str  # "start", "stop", or "set_paper_mode"
+    enabled: Optional[bool] = None  # For set_paper_mode: true=paper, false=real
 
 
 class SyncResponse(BaseModel):

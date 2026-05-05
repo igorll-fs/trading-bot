@@ -171,6 +171,10 @@ class TradingBot:
         self._circuit_breaker_cooldown = DEFAULT_CIRCUIT_BREAKER_COOLDOWN
         self._circuit_open_until: float = 0.0
 
+        # Cooldown por símbolo após stop loss (evita recomprar o que caiu)
+        self._sl_cooldown_minutes = int(os.getenv("SYMBOL_SL_COOLDOWN_MINUTES", "0"))
+        self._sl_cooldown: Dict[str, float] = {}  # symbol → timestamp do SL
+
         # Asyncio locks para proteger estado compartilhado
         self._positions_lock = asyncio.Lock()
         self._balance_lock = asyncio.Lock()
@@ -556,6 +560,56 @@ class TradingBot:
             logger.error("Error stopping bot: %s", e)
             return False
 
+    async def set_paper_mode(self, enabled: bool) -> bool:
+        """Toggle paper trading mode on/off at runtime.
+        
+        PAPER MODE (enabled=True):  Simulated orders, real market data.
+        REAL MODE  (enabled=False): Real orders on Binance mainnet.
+        
+        Safety: only switches the internal flag. The binance_client
+        checks this flag before every order — no restart required.
+        """
+        import os
+        from bot.binance_client import binance_manager
+
+        try:
+            mode_name = "Paper Trading" if enabled else "REAL TRADING"
+            if not enabled:
+                # Switching to real money — safety checks
+                balance = await self._get_account_balance()
+                logger.warning(
+                    "⚠️ SWITCHING TO REAL TRADING MODE — orders will execute on Binance Mainnet!"
+                )
+                logger.warning(
+                    "Account balance: %.2f USDT — ensure this is intentional", balance
+                )
+
+            binance_manager._paper_trade = enabled
+            self.config.paper_trade = enabled
+
+            # Update env var so it survives restart
+            os.environ["PAPER_TRADE"] = str(enabled).lower()
+
+            logger.info("Trading mode changed: %s (paper_trade=%s)", mode_name, enabled)
+
+            if not enabled:
+                await telegram_notifier.send_message_async(
+                    f"⚠️ <b>REAL TRADING MODE ACTIVATED</b>\n\n"
+                    f"Orders will execute on <b>Binance Mainnet</b> with real funds.\n"
+                    f"Account: {balance:.2f} USDT\n"
+                    f"Risk per trade: {self.config.risk_percentage}%"
+                )
+            else:
+                await telegram_notifier.send_message_async(
+                    "📝 <b>Paper Trading Mode</b>\n\n"
+                    "Orders are SIMULATED. Real market data, zero financial risk."
+                )
+
+            return True
+        except Exception as e:
+            logger.error("Error setting paper mode: %s", e)
+            return False
+
     async def _trading_loop(self):
         """Main trading loop"""
         while self.is_running:
@@ -647,12 +701,39 @@ class TradingBot:
 
     async def _check_btc_health(self) -> bool:
         """
-        Verifica se BTC está em condição favorável para longs em altcoins.
-        Retorna False se BTC está em queda forte (evita entradas).
+        Verifica se BTC está em condição favorável para longs.
+        Retorna False se BTC está em queda (evita entradas em BTC e alts).
+        MELHORIA: Verifica queda recente de preço (>2% em 15min) e bloqueia TUDO.
         """
         try:
             if not self.strategy:
                 return True
+
+            # Buscar preço atual e preço de 15 minutos atrás
+            import time as _time_btc
+            btc_ticker = await self._run_blocking(
+                self.strategy.get_historical_data, "BTCUSDT", timeframe="1m", limit=20
+            )
+            
+            if btc_ticker is not None and len(btc_ticker) >= 15:
+                current_price = float(btc_ticker.iloc[-1]["close"])
+                price_15min_ago = float(btc_ticker.iloc[-15]["close"])
+                btc_change_pct = ((current_price - price_15min_ago) / price_15min_ago) * 100
+                
+                if btc_change_pct < -2.0:
+                    logger.warning(
+                        "⛔ BTC caiu %.1f%% nos últimos 15min (%.2f → %.2f) — BLOQUEANDO TODAS AS ENTRADAS",
+                        btc_change_pct, price_15min_ago, current_price,
+                    )
+                    return False
+                elif btc_change_pct < -1.0:
+                    logger.warning(
+                        "⚠️ BTC em queda de %.1f%% — cautela, mas permitindo trades",
+                        btc_change_pct,
+                    )
+            else:
+                current_price = None
+                price_15min_ago = None
 
             btc_analysis = await self._run_blocking(self.strategy.analyze_symbol, "BTCUSDT")
 
@@ -664,21 +745,19 @@ class TradingBot:
             btc_rsi = btc_analysis.get("rsi", 50)
             btc_trend_bias = btc_analysis.get("trend_bias", "neutral")
 
-            # BTC em queda forte = não entrar em alts
+            # BTC em queda forte = não entrar em NADA (nem BTC, nem alts)
             if btc_trend == "bearish" and btc_rsi < 35:
                 logger.warning(
-                    "BTC em queda forte (trend=%s, RSI=%.1f) - evitando entradas em alts",
-                    btc_trend,
-                    btc_rsi,
+                    "⛔ BTC em queda forte (trend=%s, RSI=%.1f) - bloqueando BTC e alts",
+                    btc_trend, btc_rsi,
                 )
                 return False
 
-            # BTC em tendência de baixa no timeframe maior = cautela
+            # BTC em tendência de baixa = não entrar em NADA
             if btc_trend_bias == "bearish" and btc_rsi < 40:
                 logger.warning(
-                    "BTC com viés bearish (bias=%s, RSI=%.1f) - evitando entradas em alts",
-                    btc_trend_bias,
-                    btc_rsi,
+                    "⛔ BTC com viés bearish (bias=%s, RSI=%.1f) - bloqueando BTC e alts",
+                    btc_trend_bias, btc_rsi,
                 )
                 return False
 
@@ -804,6 +883,19 @@ class TradingBot:
                 opportunity.get("score", 0),
                 opportunity.get("unified_score", 0),
             )
+
+            # MELHORIA: Cooldown pós stop-loss — não recomprar símbolo que acabou de cair
+            if self._sl_cooldown_minutes > 0 and opportunity["symbol"] in self._sl_cooldown:
+                elapsed = time.time() - self._sl_cooldown[opportunity["symbol"]]
+                if elapsed < self._sl_cooldown_minutes * 60:
+                    remaining = int(self._sl_cooldown_minutes * 60 - elapsed)
+                    logger.info(
+                        "⏳ %s em cooldown pós-STOP_LOSS — faltam %ds",
+                        opportunity["symbol"], remaining,
+                    )
+                    return
+                else:
+                    del self._sl_cooldown[opportunity["symbol"]]
 
             # MELHORIA: Unified score as primary gate — must meet min_signal_strength
             unified_score = opportunity.get("unified_score", 0)
@@ -1911,7 +2003,7 @@ class TradingBot:
                 reason_label = {
                     "STOP_LOSS": "Stop Loss atingido",
                     "TAKE_PROFIT": "Take Profit atingido",
-                    "TIME_STOP": "Tempo limite atingido (4h)",
+                    "TIME_STOP": "Tempo limite atingido (8h)",
                 }.get(reason, reason)
 
                 await telegram_notifier.notify_position_closed_async(
@@ -1926,6 +2018,14 @@ class TradingBot:
                 logger.info("Notificacao Telegram enviada")
             except Exception as e:
                 logger.error(f"Erro ao enviar notificacao Telegram: {e}")
+
+            # Cooldown pós stop loss: registrar símbolo para não recomprar imediatamente
+            if reason == "STOP_LOSS" and self._sl_cooldown_minutes > 0:
+                self._sl_cooldown[position["symbol"]] = time.time()
+                logger.info(
+                    "⏳ Cooldown %dmin ativado para %s após STOP_LOSS",
+                    self._sl_cooldown_minutes, position["symbol"],
+                )
 
             if not self.positions:
                 await self._notify_observing(
@@ -2134,6 +2234,7 @@ class TradingBot:
                 "max_positions": self.risk_manager.max_positions,
                 "positions": sanitized_positions,
                 "testnet_mode": binance_manager.use_testnet,
+                "paper_trade": getattr(binance_manager, "_paper_trade", False),
             }
         except Exception as e:
             logger.error("Error getting status: %s", e)
@@ -2141,6 +2242,7 @@ class TradingBot:
                 "is_running": False,
                 "balance": 0,
                 "testnet_mode": binance_manager.use_testnet,
+                "paper_trade": getattr(binance_manager, "_paper_trade", False),
                 "error": str(e),
             }
 

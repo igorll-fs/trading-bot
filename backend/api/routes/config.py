@@ -34,7 +34,29 @@ class PartialConfigModel(BaseModel):
 
 def create_config_router(db, get_bot_func):
     """Factory function para criar router com dependências injetadas."""
-    
+
+    @router.get("/config/runtime")
+    async def get_runtime_config():
+        """Retorna config efetiva (DB + env vars) com parâmetros avançados."""
+        try:
+            import os
+            config = await load_bot_config(db)
+            base = config.to_public_dict()
+            # Parâmetros runtime do .env (fonte da verdade para tuning avançado)
+            base["api_latency_threshold"] = float(os.getenv("API_LATENCY_THRESHOLD", "2.0"))
+            base["learning_min_trades"] = int(os.getenv("LEARNING_MIN_TRADES", "15"))
+            base["learning_min_confidence"] = float(os.getenv("LEARNING_MIN_CONFIDENCE", "0.50"))
+            base["symbol_sl_cooldown_minutes"] = int(os.getenv("SYMBOL_SL_COOLDOWN_MINUTES", "0"))
+            base["risk_max_hold_hours"] = int(os.getenv("RISK_MAX_HOLD_HOURS", "4"))
+            base["llm_risk_advisor_enabled"] = os.getenv("LLM_RISK_ADVISOR_ENABLED", "false").lower() == "true"
+            base["trading_time_filter"] = os.getenv("TRADING_TIME_FILTER", "false").lower() == "true"
+            base["capital_inicial"] = float(os.getenv("CAPITAL_INICIAL", "1000.0"))
+            base["use_testnet"] = os.getenv("USE_TESTNET", "true").lower() == "true"
+            base["paper_trade"] = os.getenv("PAPER_TRADE", "false").lower() == "true"
+            return base
+        except Exception as e:
+            raise HTTPException(status_code=500, detail=str(e))
+
     @router.get("/config")
     async def get_config():
         """Retorna configuração atual do bot."""

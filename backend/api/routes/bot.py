@@ -42,6 +42,13 @@ def create_bot_router(db, get_bot_func):
                 else:
                     raise HTTPException(status_code=400, detail="Failed to stop bot")
             
+            elif body.action == "set_paper_mode":
+                if body.enabled is None:
+                    raise HTTPException(status_code=400, detail="'enabled' field required for set_paper_mode")
+                success = await bot.set_paper_mode(body.enabled)
+                mode_name = "Paper Trading" if body.enabled else "Real Trading"
+                return {"status": "success", "message": f"Trading mode set to: {mode_name}", "paper_trade": body.enabled}
+            
             else:
                 raise HTTPException(status_code=400, detail="Invalid action")
                 
