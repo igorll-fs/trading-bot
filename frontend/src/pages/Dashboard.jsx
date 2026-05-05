@@ -946,6 +946,195 @@ const Dashboard = () => {
           </GlassCard>
         </section>
 
+        {/* Active Positions — real-time PnL tracking */}
+        {positions.length > 0 && (
+          <section>
+            <GlassCard gradient glow="emerald">
+              <div className="p-4 sm:p-6">
+                <div className="flex items-center gap-2 sm:gap-3 mb-4">
+                  <div className="p-1.5 sm:p-2 rounded-lg bg-gradient-to-br from-emerald-500 to-teal-500 shadow-lg shadow-emerald-500/30">
+                    <Activity className="w-4 sm:w-5 h-4 sm:h-5 text-white" />
+                  </div>
+                  <div>
+                    <h2 className="text-sm sm:text-lg font-semibold text-white">
+                      Posições Ativas
+                    </h2>
+                    <p className="text-[10px] sm:text-xs text-white/40">
+                      {positions.length} posiç{positions.length === 1 ? "ão" : "ões"} em monitoramento
+                    </p>
+                  </div>
+                </div>
+                <div className="space-y-3">
+                  {positions.map((pos, idx) => {
+                    const entry = pos.entry_price || 0;
+                    const current = pos.current_price || entry;
+                    const pnlPct = pos.unrealized_pnl_pct || 0;
+                    const isProfit = pnlPct >= 0;
+                    const sl = pos.stop_loss || 0;
+                    const tp = pos.take_profit || 0;
+                    const slDist = entry > 0 ? Math.abs(((entry - sl) / entry) * 100).toFixed(2) : 0;
+                    const tpDist = entry > 0 ? Math.abs(((tp - entry) / entry) * 100).toFixed(2) : 0;
+                    const progressToTp = tp > entry ? Math.min(((current - entry) / (tp - entry)) * 100, 100) : 0;
+                    const progressToSl = sl < entry ? Math.max(((current - sl) / (entry - sl)) * 100, 0) : 0;
+
+                    return (
+                      <div
+                        key={`pos-${pos.symbol}-${idx}`}
+                        className="p-3 sm:p-4 rounded-xl bg-emerald-500/5 border border-emerald-500/20"
+                      >
+                        <div className="flex items-center justify-between mb-3">
+                          <div className="flex items-center gap-2">
+                            <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-500/20 text-emerald-400">
+                              {pos.side || "BUY"}
+                            </span>
+                            <span className="text-sm font-bold text-white">
+                              {pos.symbol?.replace("USDT", "/USDT")}
+                            </span>
+                            <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                          </div>
+                          <div className="text-right">
+                            <p className={`text-lg font-bold ${isProfit ? "text-emerald-400" : "text-rose-400"}`}>
+                              {isProfit ? "+" : ""}{pnlPct.toFixed(3)}%
+                            </p>
+                            <p className="text-[10px] text-white/40">
+                              ${current?.toFixed(current >= 1000 ? 0 : current >= 1 ? 2 : 4)}
+                            </p>
+                          </div>
+                        </div>
+
+                        {/* Entry / Current / PnL row */}
+                        <div className="grid grid-cols-3 gap-2 mb-3">
+                          <div>
+                            <p className="text-[9px] text-white/40">Entry</p>
+                            <p className="text-xs font-medium text-white">
+                              ${entry?.toFixed(entry >= 1000 ? 0 : 2)}
+                            </p>
+                          </div>
+                          <div>
+                            <p className="text-[9px] text-white/40">Qtd</p>
+                            <p className="text-xs font-medium text-white">
+                              {pos.quantity?.toFixed(4) || "-"}
+                            </p>
+                          </div>
+                          <div>
+                            <p className="text-[9px] text-white/40">Size</p>
+                            <p className="text-xs font-medium text-white">
+                              ${pos.position_size_usdt?.toFixed(0) || "-"}
+                            </p>
+                          </div>
+                        </div>
+
+                        {/* SL / TP progress bar */}
+                        <div className="space-y-1.5">
+                          <div className="flex items-center justify-between text-[10px]">
+                            <span className="text-rose-400">SL ${sl?.toFixed(2)}</span>
+                            <span className="text-white/30">-{slDist}%</span>
+                            <span className="text-emerald-400">+{tpDist}%</span>
+                            <span className="text-emerald-400">TP ${tp?.toFixed(2)}</span>
+                          </div>
+                          <div className="relative h-2 bg-white/5 rounded-full overflow-hidden">
+                            {/* SL zone (red) */}
+                            <div
+                              className="absolute h-full bg-rose-500/20 rounded-l-full"
+                              style={{ left: 0, width: `${Math.min(progressToSl, 40)}%` }}
+                            />
+                            {/* Profit zone (green) */}
+                            <div
+                              className="absolute h-full bg-emerald-500/30 rounded-r-full"
+                              style={{ left: "40%", width: `${Math.min(progressToTp - 40, 55)}%` }}
+                            />
+                            {/* Current price marker */}
+                            <div
+                              className="absolute top-0 w-0.5 h-full bg-white shadow-lg shadow-white/50 transition-all duration-1000"
+                              style={{ left: `${Math.min(Math.max(progressToSl, 5), 95)}%` }}
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </GlassCard>
+          </section>
+        )}
+
+        {/* Activity Feed — bot action timeline */}
+        <section>
+          <GlassCard>
+            <div className="p-3 sm:p-5">
+              <div className="flex items-center gap-2 mb-3">
+                <div className="p-1.5 sm:p-2 rounded-lg bg-gradient-to-br from-cyan-500 to-blue-500 shadow-lg shadow-cyan-500/30">
+                  <Radio className="w-3.5 sm:w-4 h-3.5 sm:h-4 text-white animate-pulse" />
+                </div>
+                <div>
+                  <h3 className="text-xs sm:text-sm font-semibold text-white">
+                    Activity Feed
+                  </h3>
+                  <p className="text-[9px] sm:text-[10px] text-white/40">
+                    {status?.is_running ? "Bot em execução" : "Bot parado"}
+                  </p>
+                </div>
+                <div className="ml-auto flex items-center gap-1.5">
+                  <span className={`w-1.5 h-1.5 rounded-full ${status?.is_running ? "bg-emerald-400 animate-pulse" : "bg-rose-400"}`} />
+                  <span className="text-[10px] text-white/40">
+                    {status?.is_running ? "Live" : "Offline"}
+                  </span>
+                </div>
+              </div>
+              <div className="space-y-2 max-h-40 overflow-y-auto">
+                {status?.is_running && (
+                  <>
+                    <div className="flex items-start gap-2 text-[10px] sm:text-xs">
+                      <div className="w-1 h-1 mt-1.5 rounded-full bg-cyan-400 flex-shrink-0" />
+                      <div>
+                        <span className="text-white/60">Escaneando </span>
+                        <span className="text-white/80">{monitoredCoins.length} pares</span>
+                        <span className="text-white/40"> a cada {15}s</span>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-2 text-[10px] sm:text-xs">
+                      <div className="w-1 h-1 mt-1.5 rounded-full bg-amber-400 flex-shrink-0" />
+                      <div>
+                        <span className="text-white/60">Mercado: </span>
+                        <span className={`font-medium ${marketRegime?.regime === "trending" ? "text-emerald-400" : marketRegime?.regime === "volatile" ? "text-amber-400" : "text-rose-400"}`}>
+                          {marketRegime?.regime || "analisando"}
+                        </span>
+                        <span className="text-white/40"> ADX {marketRegime?.adx || "-"}</span>
+                      </div>
+                    </div>
+                    {positions.length > 0 && positions.map((pos, idx) => (
+                      <div key={`act-${pos.symbol}-${idx}`} className="flex items-start gap-2 text-[10px] sm:text-xs">
+                        <div className="w-1 h-1 mt-1.5 rounded-full bg-emerald-400 flex-shrink-0" />
+                        <div>
+                          <span className="text-white/80 font-medium">{pos.symbol?.replace("USDT", "")} </span>
+                          <span className="text-emerald-400">BUY @ ${pos.entry_price?.toFixed(2)} </span>
+                          <span className={`${(pos.unrealized_pnl_pct || 0) >= 0 ? "text-emerald-400" : "text-rose-400"}`}>
+                            {(pos.unrealized_pnl_pct || 0) >= 0 ? "+" : ""}{pos.unrealized_pnl_pct?.toFixed(2)}%
+                          </span>
+                        </div>
+                      </div>
+                    ))}
+                    <div className="flex items-start gap-2 text-[10px] sm:text-xs">
+                      <div className="w-1 h-1 mt-1.5 rounded-full bg-violet-400 flex-shrink-0" />
+                      <div>
+                        <span className="text-white/60">Risk: </span>
+                        <span className="text-white/80">{status?.max_positions || 3} max positions</span>
+                        <span className="text-white/40"> · {status?.testnet_mode ? "Testnet" : "Mainnet"}</span>
+                      </div>
+                    </div>
+                  </>
+                )}
+                {!status?.is_running && (
+                  <p className="text-xs text-white/40 text-center py-4">
+                    Bot parado — inicie para ver a atividade
+                  </p>
+                )}
+              </div>
+            </div>
+          </GlassCard>
+        </section>
+
         {/* Sinais Ativos + Regime de Mercado + Status ML */}
         <section className="grid grid-cols-1 lg:grid-cols-3 gap-3 sm:gap-4">
           {/* Sinais Ativos */}

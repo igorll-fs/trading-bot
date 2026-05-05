@@ -358,6 +358,33 @@ def create_performance_router(db, get_bot_func):
                     bot = await get_bot_func(db)
                     status = await bot.get_status()
                     performance = await _build_performance_snapshot(db)
+
+                    # Enrich positions with real-time prices
+                    enriched_positions = []
+                    for pos in status.get("positions", []):
+                        try:
+                            current_price = await asyncio.get_event_loop().run_in_executor(
+                                None, binance_manager.get_symbol_price, pos["symbol"]
+                            ) if binance_manager.client else None
+                        except Exception:
+                            current_price = pos.get("entry_price", 0)
+
+                        if current_price and pos.get("entry_price"):
+                            entry = pos["entry_price"]
+                            if pos["side"] == "BUY":
+                                unrealized_pnl_pct = ((current_price - entry) / entry) * 100
+                            else:
+                                unrealized_pnl_pct = ((entry - current_price) / entry) * 100
+                            pos["current_price"] = current_price
+                            pos["unrealized_pnl_pct"] = round(unrealized_pnl_pct, 3)
+                        else:
+                            pos["current_price"] = pos.get("entry_price", 0)
+                            pos["unrealized_pnl_pct"] = 0
+
+                        enriched_positions.append(pos)
+
+                    status["positions"] = enriched_positions
+
                     payload = {
                         "type": "snapshot",
                         "timestamp": datetime.now(timezone.utc).isoformat(),
