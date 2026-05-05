@@ -385,13 +385,6 @@ const Dashboard = () => {
                     Paper
                   </span>
                 </div>
-              ) : status?.testnet_mode ? (
-                <div className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/30">
-                  <Sparkles className="w-3 sm:w-3.5 h-3 sm:h-3.5 text-cyan-400" />
-                  <span className="text-[10px] sm:text-xs font-medium text-cyan-400">
-                    Testnet
-                  </span>
-                </div>
               ) : (
                 <div className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30">
                   <Sparkles className="w-3 sm:w-3.5 h-3 sm:h-3.5 text-emerald-400" />
@@ -913,17 +906,13 @@ const Dashboard = () => {
                   {/* Links uteis - Responsivo, oculto em mobile */}
                   <div className="hidden sm:flex items-center justify-center gap-4 pt-4 border-t border-white/5">
                     <a
-                      href={
-                        status?.testnet_mode
-                          ? "https://testnet.binance.vision/"
-                          : "https://www.binance.com/en/markets"
-                      }
+                      href="https://www.binance.com/en/markets"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-[10px] sm:text-xs text-cyan-400 hover:text-cyan-300 flex items-center gap-1"
                     >
                       <ExternalLink className="w-3 h-3" />
-                      {status?.testnet_mode ? "Binance Testnet" : status?.paper_trade ? "Binance (Paper)" : "Binance Live"}
+                      {status?.paper_trade ? "Binance (Paper)" : "Binance Live"}
                     </a>
                     <span className="text-white/20">|</span>
                     <a
@@ -1128,7 +1117,7 @@ const Dashboard = () => {
                       <div>
                         <span className="text-white/60">Risk: </span>
                         <span className="text-white/80">{status?.max_positions || 3} max positions</span>
-                        <span className="text-white/40"> · {status?.paper_trade ? "Paper" : status?.testnet_mode ? "Testnet" : "Live"}</span>
+                        <span className="text-white/40"> · {status?.paper_trade ? "Paper" : "Live"}</span>
                       </div>
                     </div>
                   </>

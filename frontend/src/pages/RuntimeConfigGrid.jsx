@@ -41,7 +41,6 @@ const CONFIG_GROUPS = [
     bgColor: 'bg-green-500/10',
     title: 'Modo',
     items: [
-      { key: 'use_testnet', label: 'Binance', suffix: '', format: (v) => v ? '🧪 Testnet' : '🌐 Mainnet' },
       { key: 'paper_trade', label: 'Modo Trading', suffix: '', format: (v) => v ? '📝 Paper (simulado)' : '💰 Live (real)' },
       { key: 'llm_risk_advisor_enabled', label: 'LLM Risk Advisor', suffix: '', format: (v) => v ? '🧠 Ativo (Ollama)' : '⏸️ Desligado' },
       { key: 'trading_time_filter', label: 'Filtro de horário', suffix: '', format: (v) => v ? '🕐 Sim' : '🌐 24/7' },

@@ -25,7 +25,6 @@ const createSchema = ({
     .object({
       binance_api_key: z.string().trim(),
       binance_api_secret: z.string().trim(),
-      binance_testnet: z.boolean(),
       telegram_bot_token: z.string().trim(),
       telegram_chat_id: z.string().trim().min(1, 'Informe o Chat ID'),
       max_positions: z
@@ -144,7 +143,6 @@ const SettingsSkeleton = () => (
 
 const Settings = () => {
   const [loading, setLoading] = useState(true);
-  const [previousTestnetState, setPreviousTestnetState] = useState(true);
   const [paperTrade, setPaperTrade] = useState(true);
   const [storedCredentials, setStoredCredentials] = useState({
     binance_api_key: '',
@@ -168,7 +166,6 @@ const Settings = () => {
     defaultValues: {
       binance_api_key: '',
       binance_api_secret: '',
-      binance_testnet: true,
       telegram_bot_token: '',
       telegram_chat_id: '',
       max_positions: 3,
@@ -183,7 +180,6 @@ const Settings = () => {
   const { control, handleSubmit, reset, watch, setValue, clearErrors, setError, formState } = form;
   const isSubmitting = formState.isSubmitting;
 
-  const binanceTestnet = watch('binance_testnet');
   const binanceApiKeyValue = watch('binance_api_key');
   const binanceApiSecretValue = watch('binance_api_secret');
   const telegramTokenValue = watch('telegram_bot_token');
@@ -200,7 +196,6 @@ const Settings = () => {
         const normalized = {
           binance_api_key: payload.binance_api_key ?? '',
           binance_api_secret: payload.binance_api_secret ?? '',
-          binance_testnet: Boolean(payload.binance_testnet ?? true),
           telegram_bot_token: payload.telegram_bot_token ?? '',
           telegram_chat_id: payload.telegram_chat_id ? String(payload.telegram_chat_id) : '',
           max_positions: typeof payload.max_positions === 'number'
@@ -230,12 +225,10 @@ const Settings = () => {
         });
 
         setPaperTrade(Boolean(payload.paper_trade ?? true));
-        setPreviousTestnetState(normalized.binance_testnet);
 
         reset({
           binance_api_key: normalized.binance_api_key,
           binance_api_secret: normalized.binance_api_secret,
-          binance_testnet: normalized.binance_testnet,
           telegram_bot_token: normalized.telegram_bot_token,
           telegram_chat_id: normalized.telegram_chat_id,
           max_positions: normalized.max_positions,
@@ -264,27 +257,6 @@ const Settings = () => {
   useEffect(() => {
     fetchConfig();
   }, [fetchConfig]);
-
-  const handleTestnetChange = useCallback(
-    (checked) => {
-      if (!checked && previousTestnetState) {
-        notify.warning('Atenção: modo real ativado. Cole as API Keys da Binance principal.');
-      }
-      if (checked && !previousTestnetState) {
-        notify.info('Modo testnet ativado. Cole as API Keys de teste.');
-      }
-
-      setValue('binance_api_key', '', { shouldDirty: true });
-      setValue('binance_api_secret', '', { shouldDirty: true });
-      setStoredCredentials((prev) => ({
-        ...prev,
-        binance_api_key: '',
-        binance_api_secret: '',
-      }));
-      clearErrors(['binance_api_key', 'binance_api_secret']);
-    },
-    [clearErrors, previousTestnetState, setValue]
-  );
 
   const handlePaperTradeChange = useCallback(
     async (checked) => {
@@ -398,7 +370,6 @@ const Settings = () => {
       try {
         await apiClient.post('/config', payload, { skipGlobalErrorHandler: true });
         notify.success('Configurações salvas com sucesso.');
-        setPreviousTestnetState(payload.binance_testnet);
         await fetchConfig({ silent: true });
       } catch (error) {
         if (error?.isNetworkError) {
@@ -448,46 +419,6 @@ const Settings = () => {
               <CardDescription className="text-white/50">Configure suas credenciais da Binance Spot API</CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
-              <FormField
-                control={control}
-                name="binance_testnet"
-                render={({ field }) => (
-                  <div
-                    className={`p-4 rounded-lg border-2 transition-all ${
-                      field.value
-                        ? 'bg-green-50 dark:bg-green-950/30 border-green-500'
-                        : 'bg-red-50 dark:bg-red-950/30 border-red-500'
-                    }`}
-                  >
-                    <div className="flex items-start gap-3">
-                      <Switch
-                        id="testnet"
-                        data-testid="binance-testnet-switch"
-                        checked={field.value}
-                        onCheckedChange={(checked) => {
-                          field.onChange(checked);
-                          handleTestnetChange(checked);
-                        }}
-                        className="mt-1"
-                      />
-                      <div className="flex-1 space-y-2">
-                        <Label htmlFor="testnet" className="cursor-pointer font-semibold text-base">
-                          {field.value ? 'Modo Testnet ativado' : 'Modo Mainnet ativado'}
-                        </Label>
-                        <p
-                          className={`text-sm font-medium ${
-                            field.value ? 'text-green-700 dark:text-green-400' : 'text-red-700 dark:text-red-400'
-                          }`}
-                        >
-                          {field.value
-                            ? 'Operando com fundos virtuais. Ideal para testar sem riscos.'
-                            : 'Operando com fundos reais. Revise suas chaves antes de continuar.'}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                )}
-              />
 
               {/* Paper Trading Toggle */}
               <div
@@ -529,15 +460,9 @@ const Settings = () => {
                     <FormItem>
                       <FormLabel className="flex items-center gap-2">
                         API Key *
-                        {binanceTestnet ? (
-                          <span className="text-xs bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 px-2 py-0.5 rounded">
-                            Testnet
-                          </span>
-                        ) : (
-                          <span className="text-xs bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-300 px-2 py-0.5 rounded">
-                            Mainnet
-                          </span>
-                        )}
+                        <span className="text-xs bg-amber-100 dark:bg-amber-900 text-amber-700 dark:text-amber-300 px-2 py-0.5 rounded">
+                          Mainnet
+                        </span>
                       </FormLabel>
                       <FormControl>
                         <Input
@@ -547,15 +472,9 @@ const Settings = () => {
                           placeholder={
                             hasMaskedBinanceKey
                               ? 'API Key configurada. Cole a chave completa para atualizar.'
-                              : binanceTestnet
-                                ? 'Cole sua API Key do testnet.'
-                                : 'Cole sua API Key da Binance.'
+                              : 'Cole sua API Key da Binance.'
                           }
-                          className={
-                            binanceTestnet
-                              ? 'border-green-300 focus-visible:border-green-500 focus-visible:ring-green-500'
-                              : 'border-red-300 focus-visible:border-red-500 focus-visible:ring-red-500'
-                          }
+                          className="border-amber-300 focus-visible:border-amber-500 focus-visible:ring-amber-500"
                         />
                       </FormControl>
                       {hasMaskedBinanceKey && !field.value && (
@@ -575,15 +494,9 @@ const Settings = () => {
                     <FormItem>
                       <FormLabel className="flex items-center gap-2">
                         API Secret *
-                        {binanceTestnet ? (
-                          <span className="text-xs bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 px-2 py-0.5 rounded">
-                            Testnet
-                          </span>
-                        ) : (
-                          <span className="text-xs bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-300 px-2 py-0.5 rounded">
-                            Mainnet
-                          </span>
-                        )}
+                        <span className="text-xs bg-amber-100 dark:bg-amber-900 text-amber-700 dark:text-amber-300 px-2 py-0.5 rounded">
+                          Mainnet
+                        </span>
                       </FormLabel>
                       <FormControl>
                         <Input
@@ -593,15 +506,9 @@ const Settings = () => {
                           placeholder={
                             hasMaskedBinanceSecret
                               ? 'API Secret configurado. Cole o valor completo para atualizar.'
-                              : binanceTestnet
-                                ? 'Cole seu Secret do testnet.'
-                                : 'Cole seu Secret da Binance.'
+                              : 'Cole seu Secret da Binance.'
                           }
-                          className={
-                            binanceTestnet
-                              ? 'border-green-300 focus-visible:border-green-500 focus-visible:ring-green-500'
-                              : 'border-red-300 focus-visible:border-red-500 focus-visible:ring-red-500'
-                          }
+                          className="border-amber-300 focus-visible:border-amber-500 focus-visible:ring-amber-500"
                         />
                       </FormControl>
                       {hasMaskedBinanceSecret && !field.value && (
@@ -615,29 +522,15 @@ const Settings = () => {
                 />
               </div>
 
-              <div
-                className={`p-3 rounded-lg border ${
-                  binanceTestnet
-                    ? 'bg-green-50/50 dark:bg-green-950/20 border-green-200 dark:border-green-800'
-                    : 'bg-amber-50/50 dark:bg-amber-950/20 border-amber-200 dark:border-amber-800'
-                }`}
-              >
+              <div className="p-3 rounded-lg border bg-amber-50/50 dark:bg-amber-950/20 border-amber-200 dark:border-amber-800">
                 <p className="text-sm font-semibold mb-2">
-                  {binanceTestnet ? 'Como obter credenciais do testnet:' : 'Como obter credenciais da Binance:'}
+                  Como obter credenciais da Binance:
                 </p>
-                {binanceTestnet ? (
-                  <div className="space-y-1 text-sm text-green-700 dark:text-green-400">
-                    <p>Acesse https://testnet.binance.vision e faça login.</p>
-                    <p>Abra Dashboard &gt; API Keys e gere uma Spot Testnet API Key.</p>
-                    <p>Copie a API Key e o Secret e cole acima.</p>
-                  </div>
-                ) : (
-                  <div className="space-y-1 text-sm text-amber-700 dark:text-amber-400">
-                    <p>Acesse https://www.binance.com/en/my/settings/api-management.</p>
-                    <p>Crie uma nova chave apenas com permissão Spot &amp; Margin Trading.</p>
-                    <p>Recomenda-se configurar restrições de IP antes de ativar.</p>
-                  </div>
-                )}
+                <div className="space-y-1 text-sm text-amber-700 dark:text-amber-400">
+                  <p>Acesse https://www.binance.com/en/my/settings/api-management.</p>
+                  <p>Crie uma nova chave apenas com permissão Spot &amp; Margin Trading.</p>
+                  <p>Recomenda-se configurar restrições de IP antes de ativar.</p>
+                </div>
               </div>
             </CardContent>
           </Card>
