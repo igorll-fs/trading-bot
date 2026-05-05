@@ -55,6 +55,7 @@ class BotConfig:
     strategy_confirmation_timeframe: str = "1h"
     strategy_klines_limit: int = 200
     strategy_min_signal_strength: int = 80  # CORREÇÃO: Aumentado de 60 para 80
+    strategy_activation_threshold: float = 9.0  # Raw score threshold for signal activation
     selector_base_symbols: List[str] = field(default_factory=_default_selector_symbols)
     selector_trending_refresh_interval: int = 120
     selector_min_change_percent: float = 1.0  # CORREÇÃO: Aumentado de 0.5 para 1.0 (mais momentum)
@@ -92,6 +93,7 @@ class BotConfig:
             "strategy_confirmation_timeframe",
             "strategy_klines_limit",
             "strategy_min_signal_strength",
+            "strategy_activation_threshold",
             "selector_base_symbols",
             "selector_trending_refresh_interval",
             "selector_min_change_percent",
@@ -138,6 +140,11 @@ class BotConfig:
                 os.getenv("STRATEGY_MIN_SIGNAL_STRENGTH", 60),
                 default=60,
                 minimum=0,
+            ),
+            strategy_activation_threshold=_to_float(
+                os.getenv("STRATEGY_ACTIVATION_THRESHOLD", 9.0),
+                default=9.0,
+                minimum=3.0,
             ),
             selector_base_symbols=_parse_symbol_list(os.getenv("SELECTOR_BASE_SYMBOLS")),
             selector_trending_refresh_interval=_to_int(
@@ -213,6 +220,7 @@ class BotConfig:
             strategy_confirmation_timeframe=str(self.strategy_confirmation_timeframe or "1h"),
             strategy_klines_limit=max(10, int(self.strategy_klines_limit or 200)),
             strategy_min_signal_strength=max(0, min(100, int(self.strategy_min_signal_strength or 60))),
+            strategy_activation_threshold=max(3.0, float(self.strategy_activation_threshold or 9.0)),
             selector_base_symbols=_sanitize_symbol_list(self.selector_base_symbols),
             selector_trending_refresh_interval=max(30, int(self.selector_trending_refresh_interval or 120)),
             selector_min_change_percent=max(0.0, float(self.selector_min_change_percent or 0.0)),

@@ -16,6 +16,7 @@ class TradingStrategy:
         self,
         client: Client,
         min_signal_strength: int = 60,
+        activation_threshold: float = 9.0,
         timeframe: str = "15m",
         confirmation_timeframe: str = "1h",
         limit: int = 200,
@@ -26,6 +27,7 @@ class TradingStrategy:
         self.limit = max(10, int(limit or 200))
         self.cache = get_cache()  # Cache com TTL de 5 segundos
         self.min_signal_strength = max(0, min(100, int(min_signal_strength)))
+        self.activation_threshold = max(3.0, float(activation_threshold))
 
     def set_min_signal_strength(self, strength: float) -> None:
         """Atualiza o threshold mínimo (0-100) para aceitar um sinal."""
@@ -407,6 +409,8 @@ class TradingStrategy:
         higher_df: pd.DataFrame = None,
         volume_ratio: float = 1.0,
         signal: str = "HOLD",
+        btc_correlation: float = 0.0,
+        btc_bearish: bool = False,
     ) -> Dict:
         """
         Calcula score unificado de 0-100 com pesos configuráveis.
@@ -604,6 +608,21 @@ class TradingStrategy:
                             bb_score = 6
             components["bollinger"] = bb_score
             total_score += bb_score
+
+            # 8. BTC Correlation Penalty (up to -15 points for altcoin longs vs bearish BTC)
+            btc_penalty = 0
+            if signal == "BUY" and btc_bearish and btc_correlation > 0.7:
+                btc_penalty = -15
+                logger.debug(
+                    "BTC penalty applied: corr=%.2f, bearish=True → -15 pts", btc_correlation
+                )
+            elif signal == "BUY" and btc_bearish and btc_correlation > 0.5:
+                btc_penalty = -8
+                logger.debug(
+                    "BTC moderate penalty: corr=%.2f, bearish=True → -8 pts", btc_correlation
+                )
+            components["btc_correlation"] = btc_penalty
+            total_score += btc_penalty
 
             # Determinar qualidade do sinal
             if total_score >= 70:
@@ -915,7 +934,7 @@ class TradingStrategy:
                 logger.debug(f"Strong ADX {current_adx:.1f} - bonus for BUY")
 
             activation_threshold = (
-                9.0  # CORREÇÃO: Aumentado de 7.0 para 9.0 para filtrar sinais fracos
+                self.activation_threshold
             )
 
             # NOVO: Bloquear trading em mercados ranging (ADX < 25)
@@ -980,9 +999,7 @@ class TradingStrategy:
                 "risk_reward": risk_reward,
                 "atr": round(float(atr_value), 6),
             }
-            min_strength_required = max(
-                self.min_signal_strength, 80
-            )  # CORREÇÃO: Aumentado de 75 para 80
+            min_strength_required = self.min_signal_strength
             if result["signal"] in ("BUY", "SELL") and result["strength"] < min_strength_required:
                 logger.debug(
                     f"Signal strength {result['strength']} < required {min_strength_required}, converting to HOLD"
@@ -1019,9 +1036,20 @@ class TradingStrategy:
 
             signal_data = self.generate_signal(df, higher_df, volume_ratio)
 
-            # MELHORIA: Calcular score unificado
+            # MELHORIA: Calcular score unificado com penalidade BTC
+            btc_correlation = 0.0
+            btc_bearish = False
+            if "BTC" not in symbol:
+                btc_correlation = self.calculate_btc_correlation(symbol)
+                regime_data = self.detect_market_regime(symbol="BTCUSDT")
+                if regime_data.get("regime") == "trending":
+                    btc_df = self.get_historical_data("BTCUSDT", limit=20)
+                    if btc_df is not None and len(btc_df) >= 5:
+                        btc_bearish = btc_df["close"].iloc[-1] < btc_df["close"].iloc[-5]
+
             unified = self.calculate_unified_score(
-                df, higher_df, volume_ratio, signal_data.get("signal", "HOLD")
+                df, higher_df, volume_ratio, signal_data.get("signal", "HOLD"),
+                btc_correlation=btc_correlation, btc_bearish=btc_bearish,
             )
 
             # Calculate volatility

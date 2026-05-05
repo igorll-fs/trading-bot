@@ -371,6 +371,7 @@ class TradingBot:
                 self.strategy = TradingStrategy(
                     binance_manager.client,
                     min_signal_strength=self.config.strategy_min_signal_strength,
+                    activation_threshold=self.config.strategy_activation_threshold,
                     timeframe=self.config.strategy_timeframe,
                     confirmation_timeframe=self.config.strategy_confirmation_timeframe,
                     limit=self.config.strategy_klines_limit,
@@ -797,11 +798,29 @@ class TradingBot:
                 return
 
             logger.info(
-                "Opportunity found: %s | Signal: %s | Score: %.2f",
+                "Opportunity found: %s | Signal: %s | Score: %.2f | Unified: %d",
                 opportunity["symbol"],
                 opportunity["signal"],
                 opportunity.get("score", 0),
+                opportunity.get("unified_score", 0),
             )
+
+            # MELHORIA: Unified score as primary gate — must meet min_signal_strength
+            unified_score = opportunity.get("unified_score", 0)
+            min_required = self.strategy.min_signal_strength
+            if unified_score < min_required:
+                logger.info(
+                    "Unified score %d < minimum %d — skipping %s (quality: %s)",
+                    unified_score,
+                    min_required,
+                    opportunity["symbol"],
+                    opportunity.get("signal_quality", "unknown"),
+                )
+                await self._notify_observing(
+                    f"Sinal fraco para {opportunity['symbol']} "
+                    f"(score {unified_score} < {min_required})"
+                )
+                return
 
             # 🧠 FUNCIONALIDADE #5: REGIME ADAPTATIVO COM FEEDBACK
             if self.risk_advisor:
@@ -2219,6 +2238,7 @@ class TradingBot:
             self.strategy.confirmation_timeframe = sanitized.strategy_confirmation_timeframe
             self.strategy.limit = sanitized.strategy_klines_limit
             self.strategy.set_min_signal_strength(sanitized.strategy_min_signal_strength)
+            self.strategy.activation_threshold = sanitized.strategy_activation_threshold
         if self.selector:
             self.selector.update_settings(
                 base_symbols=sanitized.selector_base_symbols,
