@@ -49,6 +49,7 @@ class BinanceClientManager:
         self._last_time_sync = 0.0
         self._time_sync_min_interval = 30.0  # Sync a cada 30s ao invés de 60s
         self._recv_window = 60000  # 60 segundos de tolerância para timestamp
+        self._paper_trade = str(os.getenv("PAPER_TRADE", "")).strip().lower() in {"1", "true", "yes", "y", "on"}
 
     def initialize(self, api_key=None, api_secret=None, testnet=None):
         """Initialize Binance client with provided or env credentials"""
@@ -367,7 +368,12 @@ class BinanceClientManager:
         return adjusted
 
     def place_order(self, symbol, side, quantity, price=None, order_type="MARKET"):
-        """Place a Spot order"""
+        """Place a Spot order (simulated when PAPER_TRADE=true)"""
+
+        # ── PAPER TRADING SAFETY LOCK ──────────────────────────────────
+        if _is_paper_trade(self):
+            return _simulate_fill_order(symbol, side, quantity, "PAPER_TRADE")
+
         if not self.client:
             raise RuntimeError("Binance client not initialized")
 
@@ -423,6 +429,11 @@ class BinanceClientManager:
 
         Retorna o resultado da API ou None se OCO não suportado/falhou.
         """
+        # ── PAPER TRADING SAFETY LOCK ──────────────────────────────────
+        if _is_paper_trade(self):
+            logger.info("[OCO] %s: PAPER TRADE — OCO não necessário (monitoramento em memória)", symbol)
+            return None
+
         if not self.client:
             return None
 
@@ -506,6 +517,63 @@ class BinanceClientManager:
             critical=False,
         )
         return True
+
+
+# ── Paper Trading Helpers ──────────────────────────────────────────────
+
+def _is_paper_trade(manager: "BinanceClientManager") -> bool:
+    """Check if paper trading mode is active (safety: never hits real API for orders)."""
+    return getattr(manager, "_paper_trade", False)
+
+
+def _simulate_fill_order(symbol: str, side: str, quantity: float, source: str = "PAPER") -> dict:
+    """Create a simulated FILLED order dict with current market price.
+    
+    The returned dict mimics Binance's create_order response so the rest of the
+    bot (position tracking, P&L, learning) works identically — just with simulated
+    fills at real market prices.
+    """
+    import time as _time
+    
+    # Get current price from the manager's price cache
+    current_price = 0.0
+    try:
+        cached = binance_manager._price_cache.get(symbol)
+        if cached and _time.time() - cached.get("ts", 0) < 30:
+            current_price = float(cached.get("price", 0))
+    except Exception:
+        pass
+    
+    order_id = int(_time.time() * 1000) % 10_000_000_000  # Pseudo-unique ID
+    transact_time = int(_time.time() * 1000)
+    
+    logger.info(
+        "📝 PAPER TRADE: %s %s %s qty=%.6f @ %.4f (SIMULATED — no real order)",
+        symbol, side, source, quantity, current_price,
+    )
+    
+    return {
+        "symbol": symbol,
+        "orderId": order_id,
+        "clientOrderId": f"paper_{order_id}",
+        "transactTime": transact_time,
+        "price": str(current_price),
+        "origQty": str(quantity),
+        "executedQty": str(quantity),
+        "cummulativeQuoteQty": str(quantity * current_price),
+        "status": "FILLED",
+        "type": "MARKET",
+        "side": side.upper(),
+        "fills": [
+            {
+                "price": str(current_price),
+                "qty": str(quantity),
+                "commission": "0",
+                "commissionAsset": "USDT",
+            }
+        ],
+        "_paper_trade": True,
+    }
 
 
 binance_manager = BinanceClientManager()

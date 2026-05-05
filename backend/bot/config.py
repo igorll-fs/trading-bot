@@ -43,6 +43,7 @@ class BotConfig:
     binance_api_key: str = ""
     binance_api_secret: str = ""
     binance_testnet: bool = True
+    paper_trade: bool = False
     telegram_bot_token: str = ""
     telegram_chat_id: str = ""
     telegram_verify_ssl: bool = True
@@ -81,6 +82,7 @@ class BotConfig:
             "binance_api_key",
             "binance_api_secret",
             "binance_testnet",
+            "paper_trade",
             "telegram_bot_token",
             "telegram_chat_id",
             "max_positions",
@@ -121,6 +123,7 @@ class BotConfig:
             binance_api_key=os.getenv("BINANCE_API_KEY", ""),
             binance_api_secret=os.getenv("BINANCE_API_SECRET", ""),
             binance_testnet=_str_to_bool(os.getenv("BINANCE_TESTNET", "true")),
+            paper_trade=_str_to_bool(os.getenv("PAPER_TRADE", "false")),
             telegram_bot_token=os.getenv("TELEGRAM_BOT_TOKEN", ""),
             telegram_chat_id=os.getenv("TELEGRAM_CHAT_ID", ""),
             telegram_verify_ssl=_str_to_bool(os.getenv("TELEGRAM_VERIFY_SSL", "true")),
@@ -208,6 +211,7 @@ class BotConfig:
             binance_api_key=self.binance_api_key.strip(),
             binance_api_secret=self.binance_api_secret.strip(),
             binance_testnet=bool(self.binance_testnet),
+            paper_trade=bool(self.paper_trade),
             telegram_bot_token=self.telegram_bot_token.strip(),
             telegram_chat_id=str(self.telegram_chat_id).strip(),
             telegram_verify_ssl=bool(self.telegram_verify_ssl),
