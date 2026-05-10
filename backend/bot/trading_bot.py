@@ -219,7 +219,16 @@ class TradingBot:
             self._last_observation_notice = current_time
 
     async def _get_account_balance(self, force_refresh: bool = False) -> Optional[float]:
-        """Return cached account balance to avoid hitting the API on every iteration"""
+        """Return cached account balance to avoid hitting the API on every iteration.
+        
+        In paper trading mode, returns the configured paper balance (default 8000 USDT).
+        In live mode, fetches real balance from Binance API with caching.
+        """
+        # Paper mode: use configured paper balance, no API call needed
+        if getattr(binance_manager, "_paper_trade", False):
+            paper_balance = float(os.getenv("PAPER_TRADE_BALANCE", 8000.0))
+            return paper_balance
+        
         async with self._balance_lock:
             loop = asyncio.get_running_loop()
             elapsed = loop.time() - self._balance_cache["timestamp"]
@@ -2219,8 +2228,15 @@ class TradingBot:
         """Get bot status"""
         try:
             await self._refresh_positions_cache()
+            
+            paper_trade = getattr(binance_manager, "_paper_trade", False)
             balance = 0
-            if binance_manager.client:
+            
+            if paper_trade:
+                # Paper mode: use configured paper balance from env
+                balance = float(os.getenv("PAPER_TRADE_BALANCE", 1000.0))
+            elif binance_manager.client:
+                # Live mode: fetch real balance from Binance
                 cached_balance = await self._get_account_balance()
                 balance = cached_balance if cached_balance is not None else 0
 
@@ -2234,7 +2250,7 @@ class TradingBot:
                 "max_positions": self.risk_manager.max_positions,
                 "positions": sanitized_positions,
                 "testnet_mode": binance_manager.use_testnet,
-                "paper_trade": getattr(binance_manager, "_paper_trade", False),
+                "paper_trade": paper_trade,
             }
         except Exception as e:
             logger.error("Error getting status: %s", e)

@@ -19,14 +19,14 @@ from starlette.middleware.cors import CORSMiddleware
 from motor.motor_asyncio import AsyncIOMotorClient
 from dotenv import load_dotenv
 
+# ⚠️ Load environment FIRST — before any bot imports that read os.getenv()
+ROOT_DIR = Path(__file__).parent
+load_dotenv(ROOT_DIR / '.env')
+
 from bot.trading_bot import get_bot
 from bot.config import BotConfig
 from bot.logging_config import setup_logging, get_logger
 from bot.reflection_service import ReflectionService
-
-# Load environment
-ROOT_DIR = Path(__file__).parent
-load_dotenv(ROOT_DIR / '.env')
 
 # Configure centralized logging
 setup_logging()

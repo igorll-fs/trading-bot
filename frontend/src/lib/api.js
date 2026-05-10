@@ -28,8 +28,8 @@ const getBackendUrl = () => {
         return sanitizeUrl(storedBackendUrl);
       }
       
-      // Se não tem no localStorage, retornar null para indicar que precisa configurar
-      return null;
+      // Proxy unificado: frontend + API na mesma origem — usar a própria URL
+      return sanitizeUrl(`${protocol}//${hostname}`);
     }
     
     // Se tem URL de ambiente, usar ela

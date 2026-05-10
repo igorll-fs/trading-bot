@@ -439,11 +439,11 @@ const Dashboard = () => {
         {/* Stats Grid - 2 colunas sempre, responsivo */}
         <section className="grid grid-cols-2 gap-3 sm:gap-6 stagger-children">
           <StatCard
-            label="Saldo Total"
+            label={status?.paper_trade ? "Saldo Paper" : "Saldo Real"}
             value={formatCurrency(balance)}
             icon={Wallet}
             color="from-violet-500 to-violet-600 bg-violet-500"
-            subtext="Disponivel para trading"
+            subtext={status?.paper_trade ? "Simulado — 8,000 USDT" : "Disponivel para trading"}
             glowColor="violet"
             compact
             sparklineData={sparkline?.points}
@@ -1204,9 +1204,15 @@ const Dashboard = () => {
                     ))}
                   </div>
                 ) : (
-                  <p className="text-xs text-white/40 text-center py-4">
-                    Nenhum sinal forte no momento
-                  </p>
+                  <div className="text-center py-4 space-y-2">
+                    <Radio className="w-5 h-5 text-white/20 mx-auto" />
+                    <p className="text-xs text-white/40">
+                      Nenhum sinal forte no momento
+                    </p>
+                    <p className="text-[10px] text-white/20">
+                      Score mínimo: 80 · Aguardando oportunidade
+                    </p>
+                  </div>
                 )
               ) : null}
             </div>
@@ -1284,7 +1290,7 @@ const Dashboard = () => {
             </div>
           </GlassCard>
 
-          {/* Status do ML */}
+          {/* Status do ML — Card enriquecido com parâmetros e progresso real */}
           <GlassCard>
             <div className="p-3 sm:p-5">
               <div className="flex items-center gap-2 mb-3">
@@ -1296,52 +1302,97 @@ const Dashboard = () => {
                     Machine Learning
                   </h3>
                   <p className="text-[9px] sm:text-[10px] text-white/40">
-                    Sistema de aprendizado
+                    {mlStatus?.is_learning ? "Sistema ativo — auto-ajuste" : "Sistema pausado"}
                   </p>
                 </div>
               </div>
 
               <div className="space-y-3">
+                {/* Barra de progresso: trades analisados / mínimo para aprender */}
                 <div>
                   <div className="flex items-center justify-between mb-1">
                     <span className="text-[10px] sm:text-xs text-white/40">
-                      Trades Analisados
+                      Trades para aprendizado
                     </span>
                     <span className="text-xs sm:text-sm font-bold text-white">
-                      {mlStatus?.statistics?.total_analyzed_trades || 0}/50
+                      {mlStatus?.statistics?.total_analyzed_trades || 0}/{mlStatus?.current_parameters?.min_confidence_score ? 15 : 15}
                     </span>
                   </div>
-                  <div className="w-full h-1.5 bg-white/10 rounded-full overflow-hidden">
+                  <div className="w-full h-2 bg-white/10 rounded-full overflow-hidden">
                     <div
-                      className="h-full bg-gradient-to-r from-violet-500 to-cyan-500 transition-all duration-500"
+                      className="h-full bg-gradient-to-r from-violet-500 to-cyan-500 transition-all duration-500 rounded-full"
                       style={{
-                        width: `${Math.min(((mlStatus?.statistics?.total_analyzed_trades || 0) / 50) * 100, 100)}%`,
+                        width: `${Math.min(((mlStatus?.statistics?.total_analyzed_trades || 0) / 15) * 100, 100)}%`,
                       }}
                     />
                   </div>
+                  <p className="text-[9px] sm:text-[10px] text-amber-400/70 mt-1">
+                    {(mlStatus?.statistics?.total_analyzed_trades || 0) < 15
+                      ? `Faltam ${15 - (mlStatus?.statistics?.total_analyzed_trades || 0)} trades para iniciar otimização`
+                      : "Otimização ativa — ajustando parâmetros"}
+                  </p>
                 </div>
 
+                {/* Parâmetros atuais do ML */}
+                <div className="grid grid-cols-2 gap-x-3 gap-y-1.5 p-2 rounded-lg bg-white/[0.03] border border-white/5">
+                  <div className="flex justify-between">
+                    <span className="text-[9px] sm:text-[10px] text-white/40">Min Confidence</span>
+                    <span className="text-[9px] sm:text-[10px] text-violet-400 font-medium">
+                      {mlStatus?.current_parameters?.min_confidence_score?.toFixed(2) || "0.60"}
+                    </span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-[9px] sm:text-[10px] text-white/40">Stop Loss</span>
+                    <span className="text-[9px] sm:text-[10px] text-rose-400 font-medium">
+                      {mlStatus?.current_parameters?.stop_loss_multiplier?.toFixed(2) || "1.00"}x
+                    </span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-[9px] sm:text-[10px] text-white/40">Take Profit</span>
+                    <span className="text-[9px] sm:text-[10px] text-emerald-400 font-medium">
+                      {mlStatus?.current_parameters?.take_profit_multiplier?.toFixed(2) || "1.00"}x
+                    </span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-[9px] sm:text-[10px] text-white/40">Pos. Size</span>
+                    <span className="text-[9px] sm:text-[10px] text-cyan-400 font-medium">
+                      {mlStatus?.current_parameters?.position_size_multiplier?.toFixed(2) || "1.00"}x
+                    </span>
+                  </div>
+                </div>
+
+                {/* Ajustes acumulados */}
+                <div className="flex items-center justify-between">
+                  <span className="text-[10px] sm:text-xs text-white/40">
+                    Ajustes realizados
+                  </span>
+                  <span className="text-xs font-bold text-amber-400">
+                    {mlStatus?.current_parameters?.total_adjustments || 0}
+                  </span>
+                </div>
+
+                {/* Status do aprendizado */}
                 <div className="flex items-center justify-between">
                   <span className="text-[10px] sm:text-xs text-white/40">
                     Status
                   </span>
                   <span
                     className={`text-xs font-medium px-2 py-0.5 rounded-full ${
-                      (mlStatus?.statistics?.total_analyzed_trades || 0) >= 50
+                      (mlStatus?.statistics?.total_analyzed_trades || 0) >= 15
                         ? "bg-emerald-500/10 text-emerald-400"
                         : "bg-amber-500/10 text-amber-400"
                     }`}
                   >
-                    {(mlStatus?.statistics?.total_analyzed_trades || 0) >= 50
+                    {(mlStatus?.statistics?.total_analyzed_trades || 0) >= 15
                       ? "Otimizando"
                       : "Coletando dados"}
                   </span>
                 </div>
 
-                {mlStatus?.statistics?.win_rate !== undefined && (
+                {mlStatus?.statistics?.win_rate !== undefined && mlStatus?.statistics?.win_rate > 0 && (
                   <div className="flex items-center justify-between">
                     <span className="text-[10px] sm:text-xs text-white/40">
-                      Win Rate
+                      Win Rate (analisado)
                     </span>
                     <span
                       className={`text-xs font-bold ${mlStatus.statistics.win_rate >= 50 ? "text-emerald-400" : "text-amber-400"}`}

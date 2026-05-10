@@ -14,6 +14,26 @@ const RemoteSetup = ({ onConfigured }) => {
     if (initialized.current) return;
     initialized.current = true;
     
+    const hostname = window.location.hostname;
+    
+    // Auto-detect: localhost/127.0.0.1 always use localhost:8000 backend
+    if (hostname === 'localhost' || hostname === '127.0.0.1' || hostname.startsWith('192.168.') || hostname.startsWith('10.')) {
+      const localUrl = `http://${hostname}:8000`;
+      localStorage.setItem('remote_backend_url', localUrl);
+      setBackendUrl(localUrl);
+      onConfigured?.(localUrl);
+      return;
+    }
+    
+    // Se está no trycloudflare.com, o proxy unificado já resolve — usar mesma origem
+    if (hostname.includes('trycloudflare.com')) {
+      const sameOrigin = `${window.location.protocol}//${hostname}`;
+      localStorage.setItem('remote_backend_url', sameOrigin);
+      setBackendUrl(sameOrigin);
+      onConfigured?.(sameOrigin);
+      return;
+    }
+    
     const stored = localStorage.getItem('remote_backend_url');
     if (stored) {
       setBackendUrl(stored);
@@ -33,6 +53,17 @@ const RemoteSetup = ({ onConfigured }) => {
     }
   };
   
+  // Auto-configurado para trycloudflare — sem badge, dashboard limpo
+  if (!isConfiguring && backendUrl && window.location.hostname.includes('trycloudflare.com')) {
+    return null;
+  }
+  
+  // Também esconder para localhost/local network — conexão direta
+  const hostname = window.location.hostname;
+  if (!isConfiguring && backendUrl && (hostname === 'localhost' || hostname === '127.0.0.1' || hostname.startsWith('192.168.') || hostname.startsWith('10.'))) {
+    return null;
+  }
+
   if (!isConfiguring && backendUrl) {
     // Versão minificada para mobile
     if (isMinimized) {

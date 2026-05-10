@@ -158,8 +158,9 @@ class AdvancedLearningSystem:
         )  # Max 10% por ajuste
 
         # Parâmetros ajustáveis
+        initial_confidence = float(os.getenv("LEARNING_MIN_CONFIDENCE", "0.5"))
         self.params = {
-            "min_confidence_score": 0.5,
+            "min_confidence_score": initial_confidence,
             "stop_loss_percent": 2.0,  # % de SL
             "take_profit_percent": 3.0,  # % de TP
             "position_size_percent": 5.0,  # % do capital

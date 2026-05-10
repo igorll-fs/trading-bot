@@ -86,18 +86,18 @@ const Layout = () => {
 
   const modeMeta = useMemo(
     () =>
-      (status?.testnet_mode ?? true)
+      (status?.paper_trade ?? true)
         ? {
-            label: "Modo Testnet",
+            label: "📝 Paper",
             Icon: FlaskConical,
-            className: "bg-cyan-500/10 text-cyan-400 border-cyan-500/30",
+            className: "bg-amber-500/10 text-amber-400 border-amber-500/30",
           }
         : {
-            label: "Modo Real",
+            label: "💰 Live",
             Icon: ShieldCheck,
-            className: "bg-violet-500/10 text-violet-400 border-violet-500/30",
+            className: "bg-emerald-500/10 text-emerald-400 border-emerald-500/30",
           },
-    [status?.testnet_mode],
+    [status?.paper_trade],
   );
 
   const runningMeta = useMemo(

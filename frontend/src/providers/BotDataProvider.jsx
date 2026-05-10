@@ -31,6 +31,15 @@ export const BotDataProvider = ({ children }) => {
       return undefined;
     }
 
+    // Túnel Cloudflare: SSE não funciona através do proxy (buffering).
+    // Usar apenas polling — status já atualiza a cada 45s via refetchInterval.
+    const isTunnel = window.location.hostname.includes('trycloudflare.com');
+    if (isTunnel) {
+      setStreamState('open'); // fake — polling cobre as atualizações
+      queryClient.setQueryData(BOT_STREAM_STATE_KEY, 'open');
+      return undefined;
+    }
+
     const connect = () => {
       if (eventSourceRef.current) {
         eventSourceRef.current.close();

@@ -38,7 +38,6 @@ function App() {
   );
 
   useEffect(() => {
-    // Handle browser/tab close - rely on latest synced status without async requests
     const handleBeforeUnload = (e) => {
       try {
         const isRunning =
@@ -63,18 +62,13 @@ function App() {
     return () => window.removeEventListener("beforeunload", handleBeforeUnload);
   }, []);
 
-  // Detectar acesso remoto (Cloudflare Tunnel)
-  const isRemoteAccess =
-    typeof window !== "undefined" &&
-    window.location.hostname.includes("trycloudflare.com");
-
   return (
     <ErrorBoundary>
       <QueryClientProvider client={queryClient}>
         <BotDataProvider>
           <ThemeProvider defaultTheme="dark" storageKey="trading-bot-theme">
             <div className="App" translate="no">
-              {isRemoteAccess && <RemoteSetup />}
+              <RemoteSetup />
               <BrowserRouter>
                 <ErrorBoundary>
                   <Suspense fallback={<PageFallback />}>
