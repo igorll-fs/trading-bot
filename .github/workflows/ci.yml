@@ -17,10 +17,15 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Install system dependencies
+      - name: Install TA-Lib from source
         run: |
-          sudo apt-get update -qq
-          sudo apt-get install -y -qq libta-lib-dev
+          wget -q http://prdownloads.sourceforge.net/ta-lib/ta-lib-0.4.0-src.tar.gz
+          tar -xzf ta-lib-0.4.0-src.tar.gz
+          cd ta-lib/
+          ./configure --prefix=/usr
+          make -j$(nproc)
+          sudo make install
+          sudo ldconfig
 
       - name: Install pip dependencies
         run: |
