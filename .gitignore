@@ -22,8 +22,6 @@ temp_trades.json
 *trades_backup*.json
 data_raw/*.json
 data_raw/*.csv
-cUsersigor*
-
 # PYTHON
 __pycache__/
 *.py[cod]
@@ -99,4 +97,4 @@ mongo_backup/
 .ai_status.json
 .ai_work_log.jsonl
 .SessionB_Progress.md
-cUsersigorDesktop*
+
