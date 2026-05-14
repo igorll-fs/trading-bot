@@ -6,11 +6,9 @@ Loop de feedback a cada 60 minutos para aprender com trades recentes.
 """
 
 import asyncio
-from datetime import datetime, timedelta, time
-from typing import Dict, List, Optional, Tuple
-from pathlib import Path
 import json
-import os
+from datetime import datetime, timedelta
+from pathlib import Path
 
 from motor.motor_asyncio import AsyncIOMotorDatabase
 
@@ -40,7 +38,7 @@ class ReflectionService:
         """
         self.db = db
         self.interval = timedelta(minutes=interval_minutes)
-        self.last_reflection: Optional[datetime] = None
+        self.last_reflection: datetime | None = None
         self.memory_path = Path(memory_path)
         self.memory_path.mkdir(parents=True, exist_ok=True)
         self.state_file = Path(state_file)
@@ -120,7 +118,7 @@ class ReflectionService:
         # Caso overnight: start > end (ex: 22h-6h)
         return current_hour >= start_hour or current_hour < end_hour
 
-    async def reflect(self) -> Dict:
+    async def reflect(self) -> dict:
         """
         Processo principal de reflexão.
 
@@ -164,7 +162,7 @@ class ReflectionService:
             print(f"[REFLECTION] ❌ Erro durante reflexão: {e}")
             return {"error": str(e), "timestamp": datetime.utcnow().isoformat()}
 
-    async def _get_recent_trades(self, limit: int = 50) -> List[Dict]:
+    async def _get_recent_trades(self, limit: int = 50) -> list[dict]:
         """
         Busca trades recentes.
 
@@ -185,7 +183,7 @@ class ReflectionService:
             print(f"[REFLECTION] Erro ao buscar trades: {e}")
             return []
 
-    async def _get_recent_errors(self) -> List[Dict]:
+    async def _get_recent_errors(self) -> list[dict]:
         """
         Busca erros recentes dos logs.
 
@@ -206,7 +204,7 @@ class ReflectionService:
             print(f"[REFLECTION] Erro ao buscar errors: {e}")
             return []
 
-    def _analyze_patterns(self, trades: List[Dict], errors: List[Dict]) -> Dict:
+    def _analyze_patterns(self, trades: list[dict], errors: list[dict]) -> dict:
         """
         Analisa padrões em trades e erros para gerar learnings.
 
@@ -315,7 +313,7 @@ class ReflectionService:
 
         return learnings
 
-    async def _log_learnings(self, learnings: Dict) -> None:
+    async def _log_learnings(self, learnings: dict) -> None:
         """
         Salva reflexão em memória episódica.
 
@@ -347,7 +345,7 @@ class ReflectionService:
         except Exception as e:
             print(f"[REFLECTION] ⚠️ Erro ao salvar log: {e}")
 
-    def _generate_markdown_report(self, learnings: Dict) -> str:
+    def _generate_markdown_report(self, learnings: dict) -> str:
         """Gera relatório markdown da reflexão."""
         timestamp = learnings["timestamp"]
 
@@ -407,7 +405,7 @@ class ReflectionService:
 
         return content
 
-    async def _apply_safe_corrections(self, learnings: Dict) -> List[str]:
+    async def _apply_safe_corrections(self, learnings: dict) -> list[str]:
         """
         Aplica correções automáticas SEGURAS baseado em learnings.
 
@@ -452,7 +450,7 @@ class ReflectionService:
 
         return actions
 
-    async def get_status(self) -> Dict:
+    async def get_status(self) -> dict:
         """
         Retorna status do serviço de reflexão.
 

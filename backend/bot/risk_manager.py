@@ -1,6 +1,5 @@
 import logging
-from typing import Dict, Optional
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 logger = logging.getLogger(__name__)
 
@@ -34,9 +33,9 @@ class RiskManager:
         self,
         balance: float,
         entry_price: float,
-        atr: Optional[float] = None,
+        atr: float | None = None,
         volatility_regime: str = 'normal'
-    ) -> Dict:
+    ) -> dict:
         """
         Calculate position size for Spot trading (no leverage).
 
@@ -130,7 +129,7 @@ class RiskManager:
         entry_price: float,
         side: str,
         volatility_regime: str = 'normal'
-    ) -> Dict:
+    ) -> dict:
         """
         Calculate dynamic stop loss and take profit based on ATR.
 
@@ -215,7 +214,7 @@ class RiskManager:
             True if position should be closed
         """
         try:
-            now = datetime.now(timezone.utc)
+            now = datetime.now(UTC)
             if isinstance(opened_at, str):
                 opened_at = datetime.fromisoformat(opened_at.replace('Z', '+00:00'))
 
@@ -232,7 +231,7 @@ class RiskManager:
             return False
 
     def calculate_pnl(self, entry_price: float, exit_price: float, 
-                     quantity: float, side: str, leverage: int = 1) -> Dict:
+                     quantity: float, side: str, leverage: int = 1) -> dict:
         """Calculate profit and loss for Spot trading"""
         try:
             if side == 'BUY':

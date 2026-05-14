@@ -9,31 +9,31 @@ Endpoints:
 - GET /stream - SSE stream de updates
 """
 
-import json
 import asyncio
+import json
 import os
-import psutil
 import time
-from datetime import datetime, timezone, timedelta
-from typing import Dict, Any, Optional
+from datetime import UTC, datetime, timedelta
+from typing import Any
 
+import psutil
 from fastapi import APIRouter, HTTPException, Request
 from fastapi.responses import StreamingResponse
 
 router = APIRouter(tags=["Performance"])
 
 # Cache para realtime stats (update a cada 5s)
-_realtime_cache: Dict[str, Any] = {"data": None, "ts": 0.0}
+_realtime_cache: dict[str, Any] = {"data": None, "ts": 0.0}
 _realtime_cache_ttl = 5.0
 
 # Cache para sparkline (update a cada 30s)
-_sparkline_cache: Dict[str, Any] = {"data": None, "ts": 0.0}
+_sparkline_cache: dict[str, Any] = {"data": None, "ts": 0.0}
 _sparkline_cache_ttl = 30.0
 
 # Cache de performance (throttle queries custosas)
-_performance_cache: Dict[str, Any] = {"data": None, "ts": 0.0}
+_performance_cache: dict[str, Any] = {"data": None, "ts": 0.0}
 _performance_cache_ttl = float(os.environ.get("PERFORMANCE_CACHE_TTL", "5"))
-_performance_lock: Optional[asyncio.Lock] = None
+_performance_lock: asyncio.Lock | None = None
 
 
 async def _get_performance_lock() -> asyncio.Lock:
@@ -44,7 +44,7 @@ async def _get_performance_lock() -> asyncio.Lock:
     return _performance_lock
 
 
-async def _build_performance_snapshot(db) -> Dict[str, Any]:
+async def _build_performance_snapshot(db) -> dict[str, Any]:
     """Monta métricas de performance com throttling em memória."""
     global _performance_cache
 
@@ -193,7 +193,7 @@ def create_performance_router(db, get_bot_func):
             )
             return trades
         except Exception as e:
-            raise HTTPException(status_code=500, detail=str(e))
+            raise HTTPException(status_code=500, detail=str(e)) from None
 
     @router.get("/performance")
     async def get_performance():
@@ -201,7 +201,7 @@ def create_performance_router(db, get_bot_func):
         try:
             return await _build_performance_snapshot(db)
         except Exception as e:
-            raise HTTPException(status_code=500, detail=str(e))
+            raise HTTPException(status_code=500, detail=str(e)) from None
 
     @router.get("/sparkline")
     async def get_sparkline(points: int = 50):
@@ -260,14 +260,14 @@ def create_performance_router(db, get_bot_func):
                 "points": sparkline_data,
                 "count": len(sparkline_data),
                 "total_pnl": round(cumulative_pnl, 2),
-                "generated_at": datetime.now(timezone.utc).isoformat(),
+                "generated_at": datetime.now(UTC).isoformat(),
             }
 
             _sparkline_cache = {"data": result, "ts": now}
             return result
 
         except Exception as e:
-            raise HTTPException(status_code=500, detail=f"Erro ao gerar sparkline: {str(e)}")
+            raise HTTPException(status_code=500, detail=f"Erro ao gerar sparkline: {e!s}") from None
 
     @router.get("/realtime")
     async def get_realtime_stats():
@@ -311,7 +311,7 @@ def create_performance_router(db, get_bot_func):
                 latency_ms = -1  # -1 indica erro de conexão
 
             # Trades per minute (últimos 5 minutos) - apenas reais
-            five_min_ago = datetime.now(timezone.utc) - timedelta(minutes=5)
+            five_min_ago = datetime.now(UTC) - timedelta(minutes=5)
             recent_trades_count = await db.trades.count_documents(
                 {"closed_at": {"$gte": five_min_ago}, "simulated": {"$ne": True}}
             )
@@ -333,14 +333,14 @@ def create_performance_router(db, get_bot_func):
                 "tpm": tpm,  # Trades per minute
                 "bot_running": bot_running,
                 "positions_open": positions_count,
-                "timestamp": datetime.now(timezone.utc).isoformat(),
+                "timestamp": datetime.now(UTC).isoformat(),
             }
 
             _realtime_cache = {"data": result, "ts": now}
             return result
 
         except Exception as e:
-            raise HTTPException(status_code=500, detail=f"Erro ao obter stats: {str(e)}")
+            raise HTTPException(status_code=500, detail=f"Erro ao obter stats: {e!s}") from None
 
     @router.get("/stream")
     async def stream_bot_updates(request: Request):
@@ -387,7 +387,7 @@ def create_performance_router(db, get_bot_func):
 
                     payload = {
                         "type": "snapshot",
-                        "timestamp": datetime.now(timezone.utc).isoformat(),
+                        "timestamp": datetime.now(UTC).isoformat(),
                         "status": status,
                         "performance": performance,
                     }
@@ -397,7 +397,7 @@ def create_performance_router(db, get_bot_func):
                     error_payload = {
                         "type": "error",
                         "message": str(exc),
-                        "timestamp": datetime.now(timezone.utc).isoformat(),
+                        "timestamp": datetime.now(UTC).isoformat(),
                     }
                     yield f"data: {json.dumps(error_payload, default=str)}\n\n"
                     await asyncio.sleep(retry_delay)

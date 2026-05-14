@@ -1,10 +1,10 @@
-import os
-import requests
 import logging
-from datetime import datetime
-from typing import Dict, Optional
-import aiohttp
+import os
 import ssl
+from datetime import datetime
+
+import aiohttp
+import requests
 from aiohttp import ClientConnectorCertificateError
 from requests.exceptions import SSLError
 
@@ -91,7 +91,7 @@ class TelegramNotifier:
         return message
 
     def _format_ai_decision(
-        self, decision_type: str, symbol: str, reasoning: str, data: Optional[Dict] = None
+        self, decision_type: str, symbol: str, reasoning: str, data: dict | None = None
     ):
         """Formatar decisões da IA para Telegram"""
         icons = {
@@ -140,7 +140,7 @@ class TelegramNotifier:
 
                 risk_events = data.get("risk_events", [])
                 if risk_events:
-                    details += f"\n<b>Eventos de Risco:</b>\n"
+                    details += "\n<b>Eventos de Risco:</b>\n"
                     for event in risk_events[:3]:  # Max 3 eventos
                         details += f"  • {event}\n"
 
@@ -155,7 +155,7 @@ class TelegramNotifier:
 
                 factors = data.get("contributing_factors", [])
                 if factors:
-                    details += f"\n<b>Fatores Adicionais:</b>\n"
+                    details += "\n<b>Fatores Adicionais:</b>\n"
                     for factor in factors[:2]:  # Max 2 fatores
                         details += f"  • {factor}\n"
 
@@ -379,7 +379,7 @@ class TelegramNotifier:
         return await self.send_message_async(self._bot_observing_message(note))
 
     async def notify_ai_decision_async(
-        self, decision_type: str, symbol: str, reasoning: str, data: Optional[Dict] = None
+        self, decision_type: str, symbol: str, reasoning: str, data: dict | None = None
     ):
         """Enviar decisão da IA para o Telegram (async)"""
         try:

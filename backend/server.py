@@ -10,23 +10,33 @@ Este arquivo foi refatorado para usar módulos separados:
 - api/routes/learning.py: Estatísticas de ML
 """
 
+import asyncio
 import os
 from pathlib import Path
-from typing import Dict, Any
+from typing import Any
 
-from fastapi import FastAPI, APIRouter
-from starlette.middleware.cors import CORSMiddleware
-from motor.motor_asyncio import AsyncIOMotorClient
 from dotenv import load_dotenv
+from fastapi import APIRouter, FastAPI
+from motor.motor_asyncio import AsyncIOMotorClient
+from starlette.middleware.cors import CORSMiddleware
 
 # ⚠️ Load environment FIRST — before any bot imports that read os.getenv()
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
 
-from bot.trading_bot import get_bot
+from api.rate_limiting import setup_rate_limiting
+from api.routes.bot import create_bot_router
+from api.routes.config import create_config_router
+from api.routes.health import create_health_router
+from api.routes.learning import create_learning_router
+from api.routes.llm import create_llm_router
+from api.routes.market import create_market_router
+from api.routes.performance import create_performance_router
+from api.routes.reflection import create_reflection_router
 from bot.config import BotConfig
-from bot.logging_config import setup_logging, get_logger
+from bot.logging_config import get_logger, setup_logging
 from bot.reflection_service import ReflectionService
+from bot.trading_bot import get_bot
 
 # Configure centralized logging
 setup_logging()
@@ -50,7 +60,7 @@ reflection_service = ReflectionService(
 )
 
 
-def _sanitize_config(config: BotConfig) -> Dict[str, Any]:
+def _sanitize_config(config: BotConfig) -> dict[str, Any]:
     """Remove segredos da configuração para resposta pública."""
     data = config.to_public_dict()
     for secret_key in [
@@ -91,17 +101,6 @@ app = FastAPI(
 
 # Create main API router
 api_router = APIRouter(prefix="/api")
-
-# Import and configure route modules
-from api.routes.health import create_health_router
-from api.routes.config import create_config_router
-from api.routes.bot import create_bot_router
-from api.routes.performance import create_performance_router
-from api.routes.learning import create_learning_router
-from api.routes.market import create_market_router
-from api.routes.llm import create_llm_router
-from api.routes.reflection import create_reflection_router
-from api.rate_limiting import setup_rate_limiting
 
 # Create routers with dependencies
 health_router = create_health_router(db, get_bot, _sanitize_config)
@@ -152,8 +151,7 @@ async def on_startup():
     await ensure_indexes()
 
     # Start self-reflection heartbeat (autonomous learning loop)
-    import asyncio
-    asyncio.create_task(reflection_service.heartbeat())
+    _ = asyncio.create_task(reflection_service.heartbeat())
     logger.info("🪞 Self-reflection service started")
 
     logger.info("Server started successfully")

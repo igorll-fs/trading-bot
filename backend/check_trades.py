@@ -1,5 +1,7 @@
-from motor.motor_asyncio import AsyncIOMotorClient
 import asyncio
+
+from motor.motor_asyncio import AsyncIOMotorClient
+
 
 async def check():
     client = AsyncIOMotorClient('mongodb://localhost:27017')

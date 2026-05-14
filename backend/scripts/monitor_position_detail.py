@@ -6,13 +6,13 @@ Mostra P&L, distância do SL/TP e métricas de estratégia.
 import asyncio
 import os
 import sys
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from motor.motor_asyncio import AsyncIOMotorClient
-from dotenv import load_dotenv
 import httpx
+from dotenv import load_dotenv
+from motor.motor_asyncio import AsyncIOMotorClient
 
 load_dotenv(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), '.env'))
 
@@ -66,9 +66,9 @@ async def monitor():
     # Calcular tempo na posição
     try:
         opened_dt = datetime.fromisoformat(opened_at.replace('Z', '+00:00'))
-        duration = datetime.now(timezone.utc) - opened_dt
+        duration = datetime.now(UTC) - opened_dt
         duration_str = str(duration).split('.')[0]  # Remover microsegundos
-    except:
+    except Exception:
         duration_str = "N/A"
     
     # Status visual

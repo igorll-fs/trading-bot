@@ -1,35 +1,35 @@
 import asyncio
+import json
 import logging
 import os
 import time
-import json
-import pandas as pd
 from collections import deque
-from datetime import datetime, timezone, timedelta
-from typing import Dict, List, Optional, Any
-from motor.motor_asyncio import AsyncIOMotorClient
+from datetime import UTC, datetime, timedelta
+from typing import Any
 
-from binance.exceptions import BinanceAPIException, BinanceOrderException
+import pandas as pd
 
 # Circuit breaker defaults - mais tolerante para evitar pausas desnecessárias
 DEFAULT_MAX_CONSECUTIVE_FAILURES = 10  # Aumentado de 5 para 10
 DEFAULT_CIRCUIT_BREAKER_COOLDOWN = 120  # Reduzido de 5 min para 2 min
 
+logger = logging.getLogger(__name__)
+
+from bot.advanced_learning import AdvancedLearningSystem
 from bot.binance_client import (
-    binance_manager,
-    BinanceTransientError,
     BinanceCriticalError,
+    BinanceTransientError,
+    binance_manager,
 )
 from bot.config import BotConfig, load_bot_config
-from bot.telegram_client import telegram_notifier
-from bot.strategy import TradingStrategy
-from bot.selector import CryptoSelector
 from bot.risk_manager import RiskManager
-from bot.advanced_learning import AdvancedLearningSystem
+from bot.selector import CryptoSelector
+from bot.strategy import TradingStrategy
+from bot.telegram_client import telegram_notifier
 
 # ML Signal Filter - modelo treinado com dados historicos
 try:
-    from ml.ml_signal_filter import get_ml_filter, MLSignalFilter
+    from ml.ml_signal_filter import get_ml_filter
 
     ML_FILTER_AVAILABLE = True
 except ImportError:
@@ -46,7 +46,7 @@ except ImportError:
 
 # LLM Market Analyzer - Advanced market regime analysis with AI
 try:
-    from bot.llm_market_analyzer import get_market_analyzer, MarketRegime
+    from bot.llm_market_analyzer import get_market_analyzer
 
     LLM_MARKET_ANALYZER_AVAILABLE = True
 except ImportError:
@@ -62,14 +62,12 @@ except ImportError:
     LLM_RISK_ADVISOR_AVAILABLE = False
     logger.warning("LLM Risk Advisor not available - using base risk management")
 
-logger = logging.getLogger(__name__)
-
 
 class TradingBot:
     def __init__(self, db):
         self.db = db
         self.is_running = False
-        self.positions: List[Dict] = []
+        self.positions: list[dict] = []
         self.config = BotConfig.from_env()
         self.risk_manager = RiskManager(
             risk_percentage=self.config.risk_percentage,
@@ -134,14 +132,14 @@ class TradingBot:
         self.selector = None
         self.strategy = None
         self.check_interval = self.config.loop_interval_seconds
-        self._loop_task: Optional[asyncio.Task] = None
+        self._loop_task: asyncio.Task | None = None
         self._balance_cache = {"value": 0.0, "timestamp": 0.0}
         self.balance_cache_ttl = self.config.balance_cache_ttl
         self.observation_alert_interval = self.config.observation_alert_interval
         self._last_observation_notice = 0.0
         self._positions_cache_limit = 500
-        self.last_error: Optional[str] = None
-        self.last_risk_snapshot: Optional[Dict[str, Any]] = None
+        self.last_error: str | None = None
+        self.last_risk_snapshot: dict[str, Any] | None = None
 
         # Risco e proteções adicionais
         self.use_position_cap = getattr(self.config, "risk_use_position_cap", True)
@@ -150,7 +148,7 @@ class TradingBot:
         self.api_latency_threshold = float(os.getenv("API_LATENCY_THRESHOLD", "2.0"))
         self._current_drawdown_pct: float = 0.0  # Atualizado em _check_drawdown_limits
         # Cache para _check_drawdown_limits — evita 2 queries MongoDB a cada ciclo de 15s
-        self._drawdown_cache: Dict[str, Any] = {"result": True, "ts": 0.0, "ttl": 60.0}
+        self._drawdown_cache: dict[str, Any] = {"result": True, "ts": 0.0, "ttl": 60.0}
         # Contador de sinais na última hora (para regime adaptation)
         # deque sem maxlen: entradas antigas são removidas via popleft
         # (limpeza lazy por tempo, não por quantidade — sinais por hora variam)
@@ -173,7 +171,7 @@ class TradingBot:
 
         # Cooldown por símbolo após stop loss (evita recomprar o que caiu)
         self._sl_cooldown_minutes = int(os.getenv("SYMBOL_SL_COOLDOWN_MINUTES", "0"))
-        self._sl_cooldown: Dict[str, float] = {}  # symbol → timestamp do SL
+        self._sl_cooldown: dict[str, float] = {}  # symbol → timestamp do SL
 
         # Asyncio locks para proteger estado compartilhado
         self._positions_lock = asyncio.Lock()
@@ -198,7 +196,7 @@ class TradingBot:
         # get_orderbook_ticker, etc.) apaguem falhas legítimas.
         return result
 
-    async def _notify_observing(self, note: Optional[str] = None, force: bool = False):
+    async def _notify_observing(self, note: str | None = None, force: bool = False):
         """Send observation update to Telegram when bot is idle"""
         if self.positions:
             return
@@ -218,7 +216,7 @@ class TradingBot:
         if current_time is not None:
             self._last_observation_notice = current_time
 
-    async def _get_account_balance(self, force_refresh: bool = False) -> Optional[float]:
+    async def _get_account_balance(self, force_refresh: bool = False) -> float | None:
         """Return cached account balance to avoid hitting the API on every iteration.
         
         In paper trading mode, returns the configured paper balance (default 8000 USDT).
@@ -303,7 +301,7 @@ class TradingBot:
         if (now_ts - cache["ts"]) < cache["ttl"]:
             return cache["result"]
 
-        now = datetime.now(timezone.utc)
+        now = datetime.now(UTC)
         day_start = now.replace(hour=0, minute=0, second=0, microsecond=0)
         week_start = day_start - timedelta(days=day_start.weekday())
 
@@ -355,7 +353,7 @@ class TradingBot:
         self._drawdown_cache = {"result": True, "ts": now_ts, "ttl": 60.0}
         return True
 
-    async def initialize(self, config: Optional[BotConfig] = None):
+    async def initialize(self, config: BotConfig | None = None):
         """Initialize bot components"""
         try:
             config_obj = config or await load_bot_config(self.db)
@@ -479,7 +477,7 @@ class TradingBot:
             self.last_error = None
 
             # Start main loop
-            self._loop_task = asyncio.create_task(self._trading_loop(), name="trading_loop")
+            self._loop_task = _ = asyncio.create_task(self._trading_loop(), name="trading_loop")
 
             return True
 
@@ -579,6 +577,7 @@ class TradingBot:
         checks this flag before every order — no restart required.
         """
         import os
+
         from bot.binance_client import binance_manager
 
         try:
@@ -661,7 +660,7 @@ class TradingBot:
         Retorna True se faltam menos de threshold_seconds para fechar.
         Isso evita entrar em sinais que podem mudar antes da vela fechar.
         """
-        now = datetime.now(timezone.utc)
+        now = datetime.now(UTC)
 
         # Mapear timeframe para minutos
         tf_minutes = {"1m": 1, "3m": 3, "5m": 5, "15m": 15, "30m": 30, "1h": 60, "4h": 240}
@@ -719,7 +718,6 @@ class TradingBot:
                 return True
 
             # Buscar preço atual e preço de 15 minutos atrás
-            import time as _time_btc
             btc_ticker = await self._run_blocking(
                 self.strategy.get_historical_data, "BTCUSDT", timeframe="1m", limit=20
             )
@@ -804,7 +802,7 @@ class TradingBot:
         if not filter_enabled:
             return True, "Filtro de horário desabilitado"
 
-        now = datetime.now(timezone.utc)
+        now = datetime.now(UTC)
         hour = now.hour
 
         # Definir qualidade dos horários
@@ -1005,7 +1003,7 @@ class TradingBot:
         except Exception as e:
             logger.error("Error finding and opening position: %s", e)
 
-    async def _open_position(self, opportunity: Dict):
+    async def _open_position(self, opportunity: dict):
         """Open a trading position with ML-based filtering"""
         try:
             # 📰 FUNCIONALIDADE #3: ANÁLISE DE SENTIMENTO PRÉ-TRADE
@@ -1123,7 +1121,7 @@ class TradingBot:
                             )
                             logger.info(f"[AI Skip] {skip_reasoning.primary_reason}")
                             await self._notify_observing(f"❌ {skip_reasoning.primary_reason[:80]}")
-                        except Exception as e:
+                        except Exception:
                             logger.info(f"Trade rejeitado por ML Filter - {ml_reason}")
                             await self._notify_observing(f"Filtro ML rejeitou: {ml_reason}")
                     else:
@@ -1498,7 +1496,7 @@ class TradingBot:
                     "risk_effective": position_params.get("risk_amount"),
                     "risk_pct_effective": position_params.get("risk_percent_effective", 0.0),
                     "position_size_usdt": position_params.get("position_size_usdt"),
-                    "timestamp": datetime.now(timezone.utc).isoformat(),
+                    "timestamp": datetime.now(UTC).isoformat(),
                 }
             except Exception:
                 pass
@@ -1560,7 +1558,7 @@ class TradingBot:
                     exc,
                 )
                 await telegram_notifier.send_message_async(
-                    f"Erro inesperado ao executar ordem para {opportunity['symbol']}: {str(exc)}"
+                    f"Erro inesperado ao executar ordem para {opportunity['symbol']}: {exc!s}"
                 )
                 await self._notify_observing("Erro ao enviar ordem - verifique os logs.")
                 return
@@ -1575,7 +1573,7 @@ class TradingBot:
                 "leverage": 1,  # Spot trading = no leverage
                 "stop_loss": position_params["stop_loss"],
                 "take_profit": position_params["take_profit"],
-                "opened_at": datetime.now(timezone.utc).isoformat(),
+                "opened_at": datetime.now(UTC).isoformat(),
                 "status": "open",
                 "ml_score": opportunity_score,  # Salvar score de ML
                 "risk_amount": position_params.get("risk_amount"),
@@ -1671,7 +1669,7 @@ class TradingBot:
             # Atualizar métricas de ordem
             self.metrics["orders_submitted"] += 1
             self.metrics["last_order_symbol"] = opportunity["symbol"]
-            self.metrics["last_order_timestamp"] = datetime.now(timezone.utc).isoformat()
+            self.metrics["last_order_timestamp"] = datetime.now(UTC).isoformat()
             await self._get_account_balance(force_refresh=True)
 
             try:
@@ -1703,7 +1701,7 @@ class TradingBot:
             logger.error("Error opening position: %s", e)
 
     async def _try_close_position_with_retry(
-        self, position: Dict, reason: str, max_attempts: int = 1
+        self, position: dict, reason: str, max_attempts: int = 1
     ) -> bool:
         """Tenta fechar uma posição, retornando True se sucesso, False se falhar."""
         for attempt in range(max_attempts):
@@ -1809,7 +1807,7 @@ class TradingBot:
                                 stop_updated = True
 
                 if stop_updated:
-                    trailing_cfg["last_update"] = datetime.now(timezone.utc).isoformat()
+                    trailing_cfg["last_update"] = datetime.now(UTC).isoformat()
                     try:
                         await self.db.positions.update_one(
                             {"_id": position["_id"]},
@@ -1859,7 +1857,7 @@ class TradingBot:
         except Exception as e:
             logger.error("Error checking positions: %s", e)
 
-    async def _close_position(self, position: Dict, exit_price: float, reason: str):
+    async def _close_position(self, position: dict, exit_price: float, reason: str):
         """Close a position"""
         try:
             # Place closing order
@@ -1923,7 +1921,7 @@ class TradingBot:
             position["exit_price"] = exit_price
             position["pnl"] = pnl_data["pnl"]
             position["roe"] = pnl_data["roe"]
-            position["closed_at"] = datetime.now(timezone.utc).isoformat()
+            position["closed_at"] = datetime.now(UTC).isoformat()
             position["close_reason"] = reason
             position["status"] = "closed"
 
@@ -2055,7 +2053,7 @@ class TradingBot:
 
             logger.error(traceback.format_exc())
 
-    async def _refresh_positions_cache(self) -> List[Dict]:
+    async def _refresh_positions_cache(self) -> list[dict]:
         """Reload open positions from MongoDB so the DB stays the source of truth."""
         try:
             cursor = self.db.positions.find({"status": "open"}).sort("opened_at", 1)
@@ -2199,15 +2197,15 @@ class TradingBot:
 
         except Exception as e:
             logger.error("Erro na limpeza de posicoes: %s", e)
-            await telegram_notifier.send_message_async(f"Erro na limpeza: {str(e)}")
+            await telegram_notifier.send_message_async(f"Erro na limpeza: {e!s}")
             return {"status": "error", "found_orders": 0, "canceled_orders": 0, "error": str(e)}
 
-    async def sync_account(self) -> Dict:
+    async def sync_account(self) -> dict:
         """Public method to trigger account synchronization/cleanup"""
         result = await self._cleanup_existing_positions()
         return result or {"status": "unknown", "found_orders": 0, "canceled_orders": 0}
 
-    def _sanitize_positions(self, positions: List[Dict]) -> List[Dict]:
+    def _sanitize_positions(self, positions: list[dict]) -> list[dict]:
         """Convert MongoDB ObjectId to string for JSON serialization."""
         sanitized = []
         for pos in positions:
@@ -2224,7 +2222,7 @@ class TradingBot:
             sanitized.append(clean_pos)
         return sanitized
 
-    async def get_status(self) -> Dict:
+    async def get_status(self) -> dict:
         """Get bot status"""
         try:
             await self._refresh_positions_cache()
@@ -2297,7 +2295,7 @@ class TradingBot:
             self._circuit_breaker_cooldown,
         )
         # Notificar via Telegram (fire-and-forget)
-        asyncio.create_task(
+        _ = asyncio.create_task(
             telegram_notifier.send_message_async(
                 f"⚠️ CIRCUIT BREAKER ATIVADO\n"
                 f"Falhas consecutivas: {self._consecutive_failures}\n"
@@ -2323,7 +2321,7 @@ class TradingBot:
             self._circuit_open_until = 0.0
             self._consecutive_failures = 0
             logger.info("Circuit breaker FECHADO - retomando operacoes")
-            asyncio.create_task(
+            _ = asyncio.create_task(
                 telegram_notifier.send_message_async(
                     "✅ Circuit breaker desativado. Retomando operações."
                 )

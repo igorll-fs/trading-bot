@@ -5,13 +5,12 @@ Análise profunda da estratégia para identificar problemas.
 import asyncio
 import os
 import sys
-from datetime import datetime, timezone
 from collections import defaultdict
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from motor.motor_asyncio import AsyncIOMotorClient
 from dotenv import load_dotenv
+from motor.motor_asyncio import AsyncIOMotorClient
 
 load_dotenv(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), '.env'))
 
@@ -54,7 +53,7 @@ async def analyze():
     print(f"  Profit Factor:    {abs(total_win/total_loss):.2f}" if total_loss else "  N/A")
     
     # 🚨 PROBLEMA 1: Stop Loss vs Take Profit
-    print(f"\n🚨 PROBLEMA 1: CONFIGURAÇÃO DE SL/TP")
+    print("\n🚨 PROBLEMA 1: CONFIGURAÇÃO DE SL/TP")
     print("-" * 80)
     
     for t in trades:
@@ -63,8 +62,8 @@ async def analyze():
         tp = t['take_profit']
         
         # Calcular distâncias
-        sl_dist = abs((sl - entry) / entry) * 100
-        tp_dist = abs((tp - entry) / entry) * 100
+        abs((sl - entry) / entry) * 100
+        abs((tp - entry) / entry) * 100
         
         # Verificar se SL está no lado errado (acima do entry para BUY)
         sl_wrong_side = (t['side'] == 'BUY' and sl > entry) or (t['side'] == 'SELL' and sl < entry)
@@ -72,10 +71,10 @@ async def analyze():
         if sl_wrong_side:
             print(f"  ❌ {t['symbol']}: SL NO LADO ERRADO!")
             print(f"     Entry: ${entry} | SL: ${sl} | Side: {t['side']}")
-            print(f"     SL deveria ser ABAIXO do entry para BUY")
+            print("     SL deveria ser ABAIXO do entry para BUY")
     
     # Análise de R/R
-    print(f"\n📈 ANÁLISE DE RISK/REWARD")
+    print("\n📈 ANÁLISE DE RISK/REWARD")
     print("-" * 80)
     
     for t in trades:
@@ -108,7 +107,7 @@ async def analyze():
         print(f"  {status} {t['symbol']:10} | PnL: ${pnl:>8.2f} | SL:{sl_pct:>5.1f}% | TP:{tp_pct:>5.1f}% | RR 1:{rr:.1f} {rr_status} {issue_str}")
     
     # 🚨 PROBLEMA 2: Trailing Stop mal configurado
-    print(f"\n🚨 PROBLEMA 2: TRAILING STOP")
+    print("\n🚨 PROBLEMA 2: TRAILING STOP")
     print("-" * 80)
     
     trailing_active = 0
@@ -123,7 +122,7 @@ async def analyze():
     print(f"  Trades com trailing ativo: {trailing_active}/{total_trades}")
     
     # 🚨 PROBLEMA 3: Grandes perdas
-    print(f"\n🚨 PROBLEMA 3: MAIORES PERDAS")
+    print("\n🚨 PROBLEMA 3: MAIORES PERDAS")
     print("-" * 80)
     
     big_losses = sorted([t for t in trades if t.get('pnl', 0) < -20], key=lambda x: x.get('pnl', 0))
@@ -134,9 +133,7 @@ async def analyze():
         
         # O preço de saída está muito longe do SL?
         if t['side'] == 'BUY':
-            sl_should_trigger = sl
-            actual_exit = exit_p
-            slippage = ((sl - exit_p) / sl) * 100 if sl > 0 else 0
+            ((sl - exit_p) / sl) * 100 if sl > 0 else 0
         
         print(f"  💀 {t['symbol']}: Perdeu ${t.get('pnl', 0):.2f}")
         print(f"     Entry: ${entry:.4f} → Exit: ${exit_p:.4f}")
@@ -145,7 +142,7 @@ async def analyze():
             print(f"     ⚠️ SLIPPAGE: Saiu ${exit_p:.4f} vs SL ${sl:.4f}")
     
     # 🚨 PROBLEMA 4: Por símbolo
-    print(f"\n🚨 PROBLEMA 4: PERFORMANCE POR SÍMBOLO")
+    print("\n🚨 PROBLEMA 4: PERFORMANCE POR SÍMBOLO")
     print("-" * 80)
     
     by_symbol = defaultdict(list)
@@ -159,7 +156,7 @@ async def analyze():
         print(f"  {status} {symbol:10}: {len(symbol_trades)} trades | PnL: ${pnl:>8.2f} | Wins: {w}/{len(symbol_trades)}")
     
     # 🔧 DIAGNÓSTICO FINAL
-    print(f"\n" + "=" * 80)
+    print("\n" + "=" * 80)
     print("              💡 DIAGNÓSTICO E RECOMENDAÇÕES")
     print("=" * 80)
     
@@ -189,7 +186,7 @@ async def analyze():
     else:
         print("\n  ✅ Nenhum problema crítico identificado")
     
-    print(f"\n📋 RECOMENDAÇÕES:")
+    print("\n📋 RECOMENDAÇÕES:")
     print("-" * 80)
     print("  1. VERIFICAR CÁLCULO DO STOP LOSS - parece estar invertido em alguns trades")
     print("  2. Aumentar distância do TP para melhorar R/R (mínimo 1:2)")

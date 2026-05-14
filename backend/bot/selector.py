@@ -1,12 +1,11 @@
 import concurrent.futures
 import logging
 import time
-from typing import List, Dict, Optional, Tuple
 
 import pandas as pd
 
-from bot.market_cache import get_stats_cache, get_price_cache
 from bot.config import DEFAULT_SELECTOR_BASE_SYMBOLS
+from bot.market_cache import get_price_cache, get_stats_cache
 
 logger = logging.getLogger(__name__)
 
@@ -19,7 +18,7 @@ class CryptoSelector:
         client,
         strategy,
         *,
-        base_symbols: Optional[List[str]] = None,
+        base_symbols: list[str] | None = None,
         trending_refresh_interval: int = 120,
         min_change_percent: float = 1.0,  # Increased for momentum focus
         trending_pool_size: int = 10,
@@ -51,7 +50,7 @@ class CryptoSelector:
 
         # Runtime state for trending filtering
         self.symbols = list(self.base_symbols)
-        self._trending_cache: Dict[str, Tuple[float, float]] = {}
+        self._trending_cache: dict[str, tuple[float, float]] = {}
         self.trending_refresh_interval = trending_refresh_interval  # seconds
         self.min_change_percent = min_change_percent  # focus em ativos em alta
         self.trending_pool_size = trending_pool_size
@@ -69,7 +68,7 @@ class CryptoSelector:
             tickers = self._stats_cache.get_or_set("ticker_24h_snapshot", self.client.get_ticker)
             if not tickers:
                 raise ValueError("ticker snapshot vazio")
-            snapshot: Dict[str, Tuple[float, float]] = {}
+            snapshot: dict[str, tuple[float, float]] = {}
 
             for ticker in tickers:
                 symbol = ticker.get("symbol")
@@ -113,12 +112,12 @@ class CryptoSelector:
     def update_settings(
         self,
         *,
-        base_symbols: Optional[List[str]] = None,
-        trending_refresh_interval: Optional[int] = None,
-        min_change_percent: Optional[float] = None,
-        trending_pool_size: Optional[int] = None,
-        min_quote_volume: Optional[float] = None,
-        max_spread_percent: Optional[float] = None,
+        base_symbols: list[str] | None = None,
+        trending_refresh_interval: int | None = None,
+        min_change_percent: float | None = None,
+        trending_pool_size: int | None = None,
+        min_quote_volume: float | None = None,
+        max_spread_percent: float | None = None,
     ):
         """Atualiza parâmetros do seletor em tempo de execução."""
         if base_symbols:
@@ -135,7 +134,7 @@ class CryptoSelector:
         if max_spread_percent is not None:
             self.max_spread_percent = max(0.0, float(max_spread_percent))
 
-    def _analyze_candidate(self, symbol: str) -> Optional[Dict]:
+    def _analyze_candidate(self, symbol: str) -> dict | None:
         """Analisa um único símbolo; retorna None se filtrado ou HOLD."""
         if not self._passes_liquidity_filters(symbol):
             logger.info("%s filtrado por spread/volume insuficiente", symbol)
@@ -167,7 +166,7 @@ class CryptoSelector:
             analysis["score"] += min(trending_info[0], 5)  # cap bonus
         return analysis
 
-    def select_best_crypto(self, excluded_symbols: List[str] = None) -> Optional[Dict]:
+    def select_best_crypto(self, excluded_symbols: list[str] | None = None) -> dict | None:
         """Select the best cryptocurrency to trade.
 
         Analisa os símbolos em paralelo (ThreadPoolExecutor, max 4 workers)
@@ -182,7 +181,7 @@ class CryptoSelector:
             symbols_to_check = [s for s in self.symbols if s not in excluded_symbols]
 
             # Análise paralela — max_workers=4 respeita os 4 threads do E7450
-            candidates: List[Dict] = []
+            candidates: list[dict] = []
             with concurrent.futures.ThreadPoolExecutor(max_workers=4) as pool:
                 for result in pool.map(self._analyze_candidate, symbols_to_check):
                     if result is not None:
@@ -201,7 +200,7 @@ class CryptoSelector:
             logger.error("Error selecting crypto: %s", e)
             return None
 
-    def _calculate_score(self, analysis: Dict) -> float:
+    def _calculate_score(self, analysis: dict) -> float:
         """Calculate opportunity score"""
         score = 0.0
 

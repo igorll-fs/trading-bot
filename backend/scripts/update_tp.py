@@ -6,8 +6,8 @@ import sys
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from motor.motor_asyncio import AsyncIOMotorClient
 from dotenv import load_dotenv
+from motor.motor_asyncio import AsyncIOMotorClient
 
 load_dotenv(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), '.env'))
 
@@ -19,7 +19,7 @@ async def update_tp():
     NEW_TP_PCT = 4.5  # Novo Take Profit em %
     
     # 1. Atualizar config para novos trades
-    result = await db.configs.update_one(
+    await db.configs.update_one(
         {'_id': 'main'},
         {'$set': {'take_profit_percent': NEW_TP_PCT}},
         upsert=True

@@ -13,9 +13,8 @@ DIFERENÇAS DO SISTEMA ANTERIOR:
 import logging
 import os
 import statistics
-from datetime import datetime, timezone
-from typing import Dict, List, Optional, Tuple
 from collections import defaultdict
+from datetime import UTC, datetime
 
 logger = logging.getLogger(__name__)
 
@@ -26,7 +25,7 @@ class PatternAnalyzer:
     def __init__(self):
         self.patterns = defaultdict(lambda: {"wins": 0, "losses": 0, "total_pnl": 0})
 
-    def add_trade(self, trade: Dict):
+    def add_trade(self, trade: dict):
         """Adiciona trade para análise de padrões"""
         # Criar chaves de padrão
         patterns = self._extract_patterns(trade)
@@ -40,7 +39,7 @@ class PatternAnalyzer:
                 self.patterns[pattern]["losses"] += 1
             self.patterns[pattern]["total_pnl"] += pnl
 
-    def _extract_patterns(self, trade: Dict) -> List[str]:
+    def _extract_patterns(self, trade: dict) -> list[str]:
         """Extrai padrões identificáveis do trade"""
         patterns = []
 
@@ -71,7 +70,7 @@ class PatternAnalyzer:
                 else:
                     period = "evening"
                 patterns.append(f"period:{period}")
-        except:
+        except Exception:
             pass
 
         # Padrão por ROE esperado vs realizado
@@ -107,12 +106,12 @@ class PatternAnalyzer:
                     patterns.append("duration:medium")
                 else:
                     patterns.append("duration:long")
-        except:
+        except Exception:
             pass
 
         return patterns
 
-    def get_best_patterns(self, min_trades: int = 5) -> List[Tuple[str, float, int]]:
+    def get_best_patterns(self, min_trades: int = 5) -> list[tuple[str, float, int]]:
         """Retorna padrões com melhor win rate"""
         results = []
         for pattern, stats in self.patterns.items():
@@ -126,7 +125,7 @@ class PatternAnalyzer:
         results.sort(key=lambda x: x[1], reverse=True)
         return results
 
-    def get_worst_patterns(self, min_trades: int = 5) -> List[Tuple[str, float, int]]:
+    def get_worst_patterns(self, min_trades: int = 5) -> list[tuple[str, float, int]]:
         """Retorna padrões com pior win rate"""
         results = self.get_best_patterns(min_trades)
         results.reverse()
@@ -289,7 +288,7 @@ class AdvancedLearningSystem:
                 max_dd = dd
         self.metrics["max_drawdown"] = max_dd
 
-    async def learn_from_trade(self, trade: Dict):
+    async def learn_from_trade(self, trade: dict):
         """Aprende com um trade fechado"""
         if not self.learning_enabled:
             return
@@ -451,7 +450,7 @@ class AdvancedLearningSystem:
         bounds = self.param_bounds["position_size_percent"]
         self.params["position_size_percent"] = max(bounds[0], min(bounds[1], target))
 
-    def calculate_opportunity_score(self, opportunity: Dict, market_conditions: Dict) -> float:
+    def calculate_opportunity_score(self, opportunity: dict, market_conditions: dict) -> float:
         """
         Calcula score de oportunidade baseado em múltiplos fatores.
         Retorna um valor entre 0.0 e 1.0
@@ -510,7 +509,7 @@ class AdvancedLearningSystem:
             logger.warning(f"Erro ao calcular opportunity score: {e}")
             return 0.5  # Score neutro em caso de erro
 
-    def should_take_trade(self, score: float, context: Dict = None) -> Tuple[bool, str]:
+    def should_take_trade(self, score: float, context: dict | None = None) -> tuple[bool, str]:
         """Decide se deve entrar no trade com explicação"""
         min_score = self.params["min_confidence_score"]
 
@@ -529,7 +528,7 @@ class AdvancedLearningSystem:
         else:
             return False, f"Score {score:.2f} < {min_score:.2f}"
 
-    def get_position_params(self) -> Dict:
+    def get_position_params(self) -> dict:
         """Retorna parâmetros para nova posição"""
         return {
             "stop_loss_percent": self.params["stop_loss_percent"],
@@ -537,7 +536,7 @@ class AdvancedLearningSystem:
             "position_size_percent": self.params["position_size_percent"],
         }
 
-    async def _save_state(self, trigger_trade: Dict):
+    async def _save_state(self, trigger_trade: dict):
         """Salva estado atual do sistema"""
         try:
             record = {
@@ -548,7 +547,7 @@ class AdvancedLearningSystem:
                     "symbol": trigger_trade.get("symbol"),
                     "pnl": trigger_trade.get("pnl"),
                 },
-                "timestamp": datetime.now(timezone.utc),
+                "timestamp": datetime.now(UTC),
             }
 
             await self.db.advanced_learning.insert_one(record)
@@ -557,7 +556,7 @@ class AdvancedLearningSystem:
         except Exception as e:
             logger.error(f"Erro ao salvar estado: {e}")
 
-    async def _save_analysis(self, trade: Dict):
+    async def _save_analysis(self, trade: dict):
         """Salva análise do trade"""
         try:
             analysis = {
@@ -567,7 +566,7 @@ class AdvancedLearningSystem:
                 "pnl": trade.get("pnl"),
                 "roe": trade.get("roe"),
                 "patterns": self.pattern_analyzer._extract_patterns(trade),
-                "timestamp": datetime.now(timezone.utc),
+                "timestamp": datetime.now(UTC),
             }
 
             await self.db.advanced_learning.insert_one(analysis)
@@ -580,7 +579,7 @@ class AdvancedLearningSystem:
     # Usam os parâmetros nativos do AdvancedLearningSystem (unidade: %)
     # ------------------------------------------------------------------
 
-    def adjust_stop_loss(self, base_stop_loss: float, entry_price: float = None) -> float:
+    def adjust_stop_loss(self, base_stop_loss: float, entry_price: float | None = None) -> float:
         """Ajusta SL pela distância aprendida (stop_loss_percent em %).
 
         - SL base calculado pelo RiskManager em preço absoluto.
@@ -607,7 +606,7 @@ class AdvancedLearningSystem:
             logger.warning("adjust_stop_loss erro: %s", e)
             return base_stop_loss
 
-    def adjust_take_profit(self, base_take_profit: float, entry_price: float = None) -> float:
+    def adjust_take_profit(self, base_take_profit: float, entry_price: float | None = None) -> float:
         """Ajusta TP pelo % aprendido (take_profit_percent em %)."""
         if not self.learning_enabled or entry_price is None:
             return base_take_profit
@@ -651,7 +650,7 @@ class AdvancedLearningSystem:
             logger.warning("adjust_position_size erro: %s", e)
             return base_position_size
 
-    async def get_learning_report(self) -> Dict:
+    async def get_learning_report(self) -> dict:
         """Gera relatório completo do aprendizado"""
         best_patterns = self.pattern_analyzer.get_best_patterns(min_trades=5)
         worst_patterns = self.pattern_analyzer.get_worst_patterns(min_trades=5)

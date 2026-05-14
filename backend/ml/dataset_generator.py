@@ -3,21 +3,19 @@ Gerador de Dataset Rotulado para ML
 Simula trades e rotula como WIN/LOSS para treinamento
 """
 
+import logging
 import os
 import sys
-import logging
-from datetime import datetime, timezone, timedelta
-from typing import Dict, List, Optional, Tuple
-import numpy as np
+from datetime import UTC, datetime
+
 import pandas as pd
-from pymongo import MongoClient
 from dotenv import load_dotenv
+from pymongo import MongoClient
 
 # Adicionar path do projeto
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from bot.strategy import TradingStrategy
-from bot.risk_manager import RiskManager
 
 load_dotenv()
 
@@ -57,7 +55,7 @@ class DatasetGenerator:
         """Calcula todos os indicadores tecnicos"""
         return self.strategy.calculate_indicators(df)
 
-    def _generate_simple_signal(self, row: pd.Series, df: pd.DataFrame, idx: int) -> Dict:
+    def _generate_simple_signal(self, row: pd.Series, df: pd.DataFrame, idx: int) -> dict:
         """
         Gera sinais simples baseados em indicadores
         Mais permissivo que a estrategia original para gerar mais amostras
@@ -128,7 +126,7 @@ class DatasetGenerator:
 
         return signal
 
-    def _extract_features(self, row: pd.Series, df: pd.DataFrame, idx: int) -> Dict:
+    def _extract_features(self, row: pd.Series, df: pd.DataFrame, idx: int) -> dict:
         """Extrai features de uma vela para ML"""
         features = {}
 
@@ -221,7 +219,7 @@ class DatasetGenerator:
         entry_idx: int,
         side: str,
         entry_price: float
-    ) -> Tuple[str, float, int]:
+    ) -> tuple[str, float, int]:
         """
         Simula o resultado de um trade
         Retorna: (resultado, pnl_pct, duracao_candles)
@@ -276,8 +274,8 @@ class DatasetGenerator:
         self,
         symbol: str,
         timeframe: str = '15m',
-        start_date: datetime = None,
-        end_date: datetime = None
+        start_date: datetime | None = None,
+        end_date: datetime | None = None
     ) -> pd.DataFrame:
         """Gera dataset a partir de dados OHLCV salvos"""
 
@@ -350,7 +348,7 @@ class DatasetGenerator:
 
     def generate_full_dataset(
         self,
-        symbols: List[str] = None,
+        symbols: list[str] | None = None,
         timeframe: str = '15m'
     ) -> pd.DataFrame:
         """Gera dataset completo para todos os simbolos"""
@@ -398,7 +396,7 @@ class DatasetGenerator:
 
         # Adicionar metadata
         for r in records:
-            r['generated_at'] = datetime.now(timezone.utc)
+            r['generated_at'] = datetime.now(UTC)
             r['dataset_name'] = name
 
         # Salvar
@@ -458,7 +456,7 @@ def run_generator():
             print(f"\nDataset: {args.name}")
             print(f"Amostras: {len(dataset)}")
             print(f"Features: {len(dataset.columns)}")
-            print(f"\nDistribuicao:")
+            print("\nDistribuicao:")
             print(dataset['is_win'].value_counts())
             print(f"\nPnL medio: {dataset['pnl_pct'].mean():.2f}%")
     else:

@@ -3,14 +3,14 @@ Coletor de Dados OHLCV Historicos
 Baixa dados da Binance e salva para treinamento ML
 """
 
-import os
 import logging
-from datetime import datetime, timezone, timedelta
-from typing import Dict, List, Optional
+import os
+from datetime import UTC, datetime, timedelta
+
 import pandas as pd
 from binance.client import Client
-from pymongo import MongoClient
 from dotenv import load_dotenv
+from pymongo import MongoClient
 
 load_dotenv()
 
@@ -32,10 +32,10 @@ class OHLCVCollector:
 
     def __init__(
         self,
-        symbols: List[str] = None,
-        timeframes: List[str] = None,
+        symbols: list[str] | None = None,
+        timeframes: list[str] | None = None,
         days_back: int = 14,
-        use_testnet: bool = None
+        use_testnet: bool | None = None
     ):
         self.symbols = symbols or DEFAULT_SYMBOLS
         self.timeframes = timeframes or TIMEFRAMES
@@ -151,7 +151,7 @@ class OHLCVCollector:
                 'volume': float(row['volume']),
                 'quote_volume': float(row['quote_volume']),
                 'trades': int(row['trades']),
-                'collected_at': datetime.now(timezone.utc)
+                'collected_at': datetime.now(UTC)
             }
             documents.append(doc)
 
@@ -174,9 +174,9 @@ class OHLCVCollector:
 
         return saved
 
-    def collect_symbol(self, symbol: str) -> Dict:
+    def collect_symbol(self, symbol: str) -> dict:
         """Coleta todos os timeframes de um simbolo"""
-        now = datetime.now(timezone.utc)
+        now = datetime.now(UTC)
         start_time = now - timedelta(days=self.days_back)
 
         result = {
@@ -206,14 +206,14 @@ class OHLCVCollector:
 
         return result
 
-    def collect_all(self) -> Dict:
+    def collect_all(self) -> dict:
         """Coleta dados de todos os simbolos"""
         logger.info(f"[Collector] Iniciando coleta de {len(self.symbols)} simbolos...")
         logger.info(f"[Collector] Timeframes: {self.timeframes}")
         logger.info(f"[Collector] Periodo: ultimos {self.days_back} dias")
 
         results = {
-            'started_at': datetime.now(timezone.utc).isoformat(),
+            'started_at': datetime.now(UTC).isoformat(),
             'symbols': {},
             'total_candles': 0,
             'errors': []
@@ -230,10 +230,10 @@ class OHLCVCollector:
                 logger.error(f"[Collector] Erro em {symbol}: {e}")
                 results['errors'].append({'symbol': symbol, 'error': str(e)})
 
-        results['finished_at'] = datetime.now(timezone.utc).isoformat()
+        results['finished_at'] = datetime.now(UTC).isoformat()
 
         # Resumo
-        logger.info(f"[Collector] Coleta concluida!")
+        logger.info("[Collector] Coleta concluida!")
         logger.info(f"[Collector] Total: {results['total_candles']} velas de {len(self.symbols)} simbolos")
 
         return results
@@ -242,8 +242,8 @@ class OHLCVCollector:
         self,
         symbol: str,
         timeframe: str,
-        start_time: datetime = None,
-        end_time: datetime = None
+        start_time: datetime | None = None,
+        end_time: datetime | None = None
     ) -> pd.DataFrame:
         """Recupera dados do MongoDB"""
         query = {
@@ -271,7 +271,7 @@ class OHLCVCollector:
 
         return df
 
-    def get_stats(self) -> Dict:
+    def get_stats(self) -> dict:
         """Retorna estatisticas dos dados coletados"""
         pipeline = [
             {

@@ -13,14 +13,13 @@ Hardware Target: Dell E7450 (i5-5300U, 12GB RAM)
 
 import asyncio
 import logging
-import json
+import os
 import time
 from concurrent.futures import ThreadPoolExecutor
-from typing import Dict, Optional, Any, List, Tuple
-from datetime import datetime, timedelta
 from dataclasses import dataclass
+from datetime import datetime
 from enum import Enum
-import os
+from typing import Any
 
 logger = logging.getLogger(__name__)
 
@@ -72,9 +71,9 @@ class LLMTradeRecommendation:
     suggested_stop_multiplier: float  # Ex: 1.5 = 50% mais largo que padrão
     suggested_target_multiplier: float  # Ex: 2.0 = 2x o target padrão
     position_size_adjustment: float  # Ex: 0.5 = metade do size normal
-    max_hold_time_minutes: Optional[int]  # Limite de tempo sugerido
+    max_hold_time_minutes: int | None  # Limite de tempo sugerido
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         return {
             "action": self.action,
             "confidence": self.confidence,
@@ -117,11 +116,11 @@ class LLMMarketAnalyzer:
         self.executor = ThreadPoolExecutor(max_workers=max_workers)
 
         # Cache de análises de mercado (TTL 60s - mais longo que trades individuais)
-        self.market_context_cache: Optional[Tuple[MarketContext, float]] = None
+        self.market_context_cache: tuple[MarketContext, float] | None = None
         self.market_cache_ttl = 60
 
         # Histórico de trades para feedback loop
-        self._trade_history: List[Dict[str, Any]] = []
+        self._trade_history: list[dict[str, Any]] = []
         self.max_history = 50  # Últimos 50 trades
 
         # Métricas
@@ -133,7 +132,7 @@ class LLMMarketAnalyzer:
         }
 
         self.loaded = False
-        self.last_error: Optional[str] = None
+        self.last_error: str | None = None
 
         if self.enabled:
             self._verify_ollama()
@@ -157,7 +156,7 @@ class LLMMarketAnalyzer:
             self.enabled = False
             self.last_error = str(e)
 
-    def add_trade_to_history(self, trade_result: Dict[str, Any]) -> None:
+    def add_trade_to_history(self, trade_result: dict[str, Any]) -> None:
         """
         Adiciona resultado de trade ao histórico para aprendizado.
 
@@ -208,10 +207,10 @@ PERFORMANCE RECENTE (últimos {len(recent)} trades):
 
     async def analyze_market_regime(
         self,
-        btc_data: Dict[str, Any],
-        alt_data: Dict[str, Any],
+        btc_data: dict[str, Any],
+        alt_data: dict[str, Any],
         recent_volatility: float,
-        recent_trades: List[Dict[str, Any]],
+        recent_trades: list[dict[str, Any]],
     ) -> MarketContext:
         """
         Analisa regime completo do mercado com IA.
@@ -287,8 +286,8 @@ PERFORMANCE RECENTE (últimos {len(recent)} trades):
 
     def _build_market_analysis_prompt(
         self,
-        btc_data: Dict[str, Any],
-        alt_data: Dict[str, Any],
+        btc_data: dict[str, Any],
+        alt_data: dict[str, Any],
         volatility: float,
         winrate: float,
         avg_hold: float,
@@ -384,7 +383,7 @@ HIGH_VOLATILITY | Stop:2.0x | Target:1.5x | Size:50% | ATR elevated + erratic pr
         self,
         symbol: str,
         technical_score: int,
-        indicators: Dict[str, float],
+        indicators: dict[str, float],
         market_context: MarketContext,
     ) -> LLMTradeRecommendation:
         """
@@ -424,7 +423,7 @@ HIGH_VOLATILITY | Stop:2.0x | Target:1.5x | Size:50% | ATR elevated + erratic pr
             return self._get_default_recommendation()
 
     def _build_trade_recommendation_prompt(
-        self, symbol: str, tech_score: int, indicators: Dict[str, float], context: MarketContext
+        self, symbol: str, tech_score: int, indicators: dict[str, float], context: MarketContext
     ) -> str:
         """Constrói prompt para recomendação de trade"""
 
@@ -576,7 +575,7 @@ SKIP | Conf:70% | Stop:1.0x | Target:1.0x | Size:0% | Hold:0min | High volatilit
             max_hold_time_minutes=None,
         )
 
-    def get_metrics(self) -> Dict[str, Any]:
+    def get_metrics(self) -> dict[str, Any]:
         """Retorna métricas do analisador"""
         return {
             **self.metrics,
@@ -592,7 +591,7 @@ SKIP | Conf:70% | Stop:1.0x | Target:1.0x | Size:0% | Hold:0min | High volatilit
 
 
 # Singleton instance
-_market_analyzer: Optional[LLMMarketAnalyzer] = None
+_market_analyzer: LLMMarketAnalyzer | None = None
 
 
 def get_market_analyzer() -> LLMMarketAnalyzer:

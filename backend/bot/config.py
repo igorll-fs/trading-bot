@@ -1,11 +1,12 @@
 from __future__ import annotations
 
-"""Centralized configuration helpers for the trading bot."""
-
 import os
+from collections.abc import Mapping
 from dataclasses import asdict, dataclass, field
-from datetime import datetime, timezone
-from typing import Any, Dict, List, Mapping, Optional
+from datetime import UTC, datetime
+from typing import Any
+
+"""Centralized configuration helpers for the trading bot."""
 
 CONFIG_COLLECTION = "configs"
 CONFIG_DOCUMENT_FILTER = {"type": "bot_config"}
@@ -32,7 +33,7 @@ DEFAULT_SELECTOR_MIN_QUOTE_VOLUME = 50_000.0  # volume mínimo no timeframe conf
 DEFAULT_SELECTOR_MAX_SPREAD_PERCENT = 0.25     # spread máximo aceitável (percentual)
 
 
-def _default_selector_symbols() -> List[str]:
+def _default_selector_symbols() -> list[str]:
     return DEFAULT_SELECTOR_BASE_SYMBOLS.copy()
 
 
@@ -57,7 +58,7 @@ class BotConfig:
     strategy_klines_limit: int = 200
     strategy_min_signal_strength: int = 80  # CORREÇÃO: Aumentado de 60 para 80
     strategy_activation_threshold: float = 9.0  # Raw score threshold for signal activation
-    selector_base_symbols: List[str] = field(default_factory=_default_selector_symbols)
+    selector_base_symbols: list[str] = field(default_factory=_default_selector_symbols)
     selector_trending_refresh_interval: int = 120
     selector_min_change_percent: float = 1.0  # CORREÇÃO: Aumentado de 0.5 para 1.0 (mais momentum)
     selector_trending_pool_size: int = 10
@@ -71,10 +72,10 @@ class BotConfig:
     risk_use_position_cap: bool = True
     daily_drawdown_limit_pct: float = 0.0
     weekly_drawdown_limit_pct: float = 0.0
-    extra: Dict[str, Any] = field(default_factory=dict)
+    extra: dict[str, Any] = field(default_factory=dict)
 
     @classmethod
-    def from_mapping(cls, data: Optional[Mapping[str, Any]]) -> "BotConfig":
+    def from_mapping(cls, data: Mapping[str, Any] | None) -> BotConfig:
         if not data:
             return cls()
 
@@ -117,7 +118,7 @@ class BotConfig:
         return cls(**kwargs, extra=extras)
 
     @classmethod
-    def from_env(cls) -> "BotConfig":
+    def from_env(cls) -> BotConfig:
         """Create a config instance using environment defaults."""
         return cls(
             binance_api_key=os.getenv("BINANCE_API_KEY", ""),
@@ -205,7 +206,7 @@ class BotConfig:
             weekly_drawdown_limit_pct=_to_float(os.getenv("WEEKLY_DRAWDOWN_LIMIT_PCT", 0.0), default=0.0, minimum=0.0),
         )
 
-    def sanitized(self) -> "BotConfig":
+    def sanitized(self) -> BotConfig:
         """Return a defensive copy with normalized numeric ranges."""
         return BotConfig(
             binance_api_key=self.binance_api_key.strip(),
@@ -242,16 +243,16 @@ class BotConfig:
             extra=self.extra.copy(),
         )
 
-    def to_document(self) -> Dict[str, Any]:
+    def to_document(self) -> dict[str, Any]:
         sanitized = self.sanitized()
         payload = asdict(sanitized)
         payload.update(self.extra)
         payload.update(CONFIG_DOCUMENT_FILTER)
-        payload["updated_at"] = datetime.now(timezone.utc).isoformat()
+        payload["updated_at"] = datetime.now(UTC).isoformat()
         payload.pop("extra", None)
         return payload
 
-    def to_public_dict(self) -> Dict[str, Any]:
+    def to_public_dict(self) -> dict[str, Any]:
         data = asdict(self)
         data.pop("extra", None)
         data.update(self.extra)
@@ -295,7 +296,7 @@ def _to_float(value: Any, *, default: float, minimum: float) -> float:
         return default
 
 
-def _parse_symbol_list(value: Any) -> List[str]:
+def _parse_symbol_list(value: Any) -> list[str]:
     if value is None or value == "":
         return _default_selector_symbols()
     if isinstance(value, list):
@@ -310,7 +311,7 @@ def _parse_symbol_list(value: Any) -> List[str]:
     return cleaned or _default_selector_symbols()
 
 
-def _sanitize_symbol_list(symbols: Any) -> List[str]:
+def _sanitize_symbol_list(symbols: Any) -> list[str]:
     if isinstance(symbols, list):
         cleaned = [
             str(sym).strip().upper()

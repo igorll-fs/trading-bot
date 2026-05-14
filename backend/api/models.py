@@ -2,12 +2,12 @@
 Modelos Pydantic para a API do Trading Bot.
 """
 
-from pydantic import BaseModel, Field, ConfigDict
-from typing import Optional
+
+from pydantic import BaseModel, ConfigDict, Field
 
 from bot.config import (
-    DEFAULT_SELECTOR_MIN_QUOTE_VOLUME,
     DEFAULT_SELECTOR_MAX_SPREAD_PERCENT,
+    DEFAULT_SELECTOR_MIN_QUOTE_VOLUME,
 )
 
 
@@ -59,7 +59,7 @@ class ConfigResponse(BaseModel):
 class BotControlRequest(BaseModel):
     """Modelo para controle do bot (start/stop/paper_mode)."""
     action: str  # "start", "stop", or "set_paper_mode"
-    enabled: Optional[bool] = None  # For set_paper_mode: true=paper, false=real
+    enabled: bool | None = None  # For set_paper_mode: true=paper, false=real
 
 
 class SyncResponse(BaseModel):
@@ -67,7 +67,7 @@ class SyncResponse(BaseModel):
     status: str
     found_orders: int = Field(ge=0)
     canceled_orders: int = Field(ge=0)
-    message: Optional[str] = None
+    message: str | None = None
 
 
 class TradeResponse(BaseModel):
@@ -77,12 +77,12 @@ class TradeResponse(BaseModel):
     symbol: str
     side: str
     entry_price: float
-    exit_price: Optional[float] = None
+    exit_price: float | None = None
     quantity: float
     position_size: float
     leverage: int
-    pnl: Optional[float] = None
-    roe: Optional[float] = None
+    pnl: float | None = None
+    roe: float | None = None
     opened_at: str
-    closed_at: Optional[str] = None
+    closed_at: str | None = None
     status: str

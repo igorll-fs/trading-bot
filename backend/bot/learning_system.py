@@ -6,8 +6,7 @@ Aprende com cada trade e ajusta parametros automaticamente
 import logging
 import os
 import statistics
-from datetime import datetime, timezone
-from typing import Dict, List, Optional
+from datetime import UTC, datetime
 
 logger = logging.getLogger(__name__)
 
@@ -301,7 +300,7 @@ class BotLearningSystem:
         # ✅ PASSOU EM TODAS AS VERIFICAÇÕES
         return True, "Parameter within safe operating range"
 
-    def _log_parameter_changes(self, before: Dict[str, float]):
+    def _log_parameter_changes(self, before: dict[str, float]):
         if self.observe_only:
             return
         for key, old_value in before.items():
@@ -326,7 +325,7 @@ class BotLearningSystem:
         else:
             self._snapshot_parameters()
 
-    def calculate_opportunity_score(self, opportunity: Dict, market_conditions: Dict) -> float:
+    def calculate_opportunity_score(self, opportunity: dict, market_conditions: dict) -> float:
         """
         Calcula score de confianca para uma oportunidade (0.0 a 1.0)
         Baseado em indicadores tecnicos e condicoes de mercado
@@ -395,7 +394,7 @@ class BotLearningSystem:
 
         return should_take
 
-    def adjust_stop_loss(self, base_stop_loss: float, entry_price: float = None) -> float:
+    def adjust_stop_loss(self, base_stop_loss: float, entry_price: float | None = None) -> float:
         """Ajusta stop loss baseado em aprendizado.
 
         NOTA: O multiplicador ajusta a DISTÂNCIA do SL ao entry, não o preço em si.
@@ -437,7 +436,7 @@ class BotLearningSystem:
         )
         return round(adjusted, 4)
 
-    def adjust_take_profit(self, base_take_profit: float, entry_price: float = None) -> float:
+    def adjust_take_profit(self, base_take_profit: float, entry_price: float | None = None) -> float:
         """Ajusta take profit baseado em aprendizado.
 
         NOTA: O multiplicador ajusta a DISTÂNCIA do TP ao entry, não o preço em si.
@@ -490,7 +489,7 @@ class BotLearningSystem:
         )
         return adjusted
 
-    async def learn_from_trade(self, trade: Dict):
+    async def learn_from_trade(self, trade: dict):
         """
         Aprende com um trade fechado e ajusta parametros.
 
@@ -604,7 +603,7 @@ class BotLearningSystem:
         except Exception as e:
             logger.error(f"Erro ao aprender com trade: {e}")
 
-    async def _save_learned_parameters(self, trigger_trade: Dict):
+    async def _save_learned_parameters(self, trigger_trade: dict):
         """Salvar parametros ajustados no MongoDB"""
         try:
             learning_record = {
@@ -617,7 +616,7 @@ class BotLearningSystem:
                     "pnl": trigger_trade.get("pnl"),
                     "roe": trigger_trade.get("roe"),
                 },
-                "timestamp": datetime.now(timezone.utc).isoformat(),
+                "timestamp": datetime.now(UTC).isoformat(),
             }
 
             # Inserir novo registro (mantem historico)
@@ -628,7 +627,7 @@ class BotLearningSystem:
         except Exception as e:
             logger.error(f"Erro ao salvar parametros: {e}")
 
-    async def _save_trade_analysis(self, trade: Dict):
+    async def _save_trade_analysis(self, trade: dict):
         """Salvar analise detalhada do trade"""
         try:
             pnl = trade.get("pnl", 0)
@@ -649,8 +648,8 @@ class BotLearningSystem:
                 "exit_price": trade.get("exit_price"),
                 "duration_seconds": self._calculate_trade_duration(trade),
                 "lessons_learned": self._extract_lessons(trade),
-                "timestamp": datetime.now(timezone.utc).isoformat(),  # CORRIGIDO: era 'analyzed_at'
-                "analyzed_at": datetime.now(timezone.utc).isoformat(),
+                "timestamp": datetime.now(UTC).isoformat(),  # CORRIGIDO: era 'analyzed_at'
+                "analyzed_at": datetime.now(UTC).isoformat(),
             }
 
             await self.db.learning_data.insert_one(analysis)
@@ -661,17 +660,17 @@ class BotLearningSystem:
         except Exception as e:
             logger.error(f"Erro ao salvar analise: {e}")
 
-    def _calculate_trade_duration(self, trade: Dict) -> int:
+    def _calculate_trade_duration(self, trade: dict) -> int:
         """Calcular duracao do trade em segundos"""
         try:
             opened = datetime.fromisoformat(trade["opened_at"].replace("Z", "+00:00"))
             closed = datetime.fromisoformat(trade["closed_at"].replace("Z", "+00:00"))
             duration = (closed - opened).total_seconds()
             return int(duration)
-        except:
+        except Exception:
             return 0
 
-    def _extract_lessons(self, trade: Dict) -> Dict:
+    def _extract_lessons(self, trade: dict) -> dict:
         """Extrair licoes do trade"""
         lessons = {}
 
@@ -705,7 +704,7 @@ class BotLearningSystem:
 
         return lessons
 
-    async def get_learning_stats(self) -> Dict:
+    async def get_learning_stats(self) -> dict:
         """Retornar estatisticas de aprendizado"""
         return {
             "parameters": self.adjustable_params,

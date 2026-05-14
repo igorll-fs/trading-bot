@@ -2,9 +2,10 @@
 API Routes para dados de mercado em tempo real
 """
 
-from fastapi import APIRouter, HTTPException
-from typing import Dict, Any
 import logging
+from typing import Any
+
+from fastapi import APIRouter, HTTPException
 
 logger = logging.getLogger(__name__)
 
@@ -15,7 +16,7 @@ def create_market_router(db, get_bot):
     router = APIRouter(prefix="/market", tags=["market"])
     
     @router.get("/prices")
-    async def get_market_prices() -> Dict[str, Any]:
+    async def get_market_prices() -> dict[str, Any]:
         """
         Retorna preços em tempo real das moedas monitoradas.
         Usado pelo dashboard para mostrar variações.
@@ -52,10 +53,10 @@ def create_market_router(db, get_bot):
             
         except Exception as e:
             logger.error(f"Erro ao buscar preços: {e}")
-            raise HTTPException(status_code=500, detail=str(e))
+            raise HTTPException(status_code=500, detail=str(e)) from None
     
     @router.get("/signals")
-    async def get_active_signals() -> Dict[str, Any]:
+    async def get_active_signals() -> dict[str, Any]:
         """
         Retorna sinais ativos detectados pelo bot.
         Mostra oportunidades sem entrar automaticamente.
@@ -106,10 +107,10 @@ def create_market_router(db, get_bot):
             
         except Exception as e:
             logger.error(f"Erro ao buscar sinais: {e}")
-            raise HTTPException(status_code=500, detail=str(e))
+            raise HTTPException(status_code=500, detail=str(e)) from None
     
     @router.get("/btc-health")
-    async def get_btc_health() -> Dict[str, Any]:
+    async def get_btc_health() -> dict[str, Any]:
         """
         Retorna saúde do BTC (tendência macro).
         Usado para decidir se deve operar alts.
@@ -146,7 +147,7 @@ def create_market_router(db, get_bot):
             return {'healthy': True, 'trend': 'unknown', 'correlation_warning': False}
     
     @router.get("/regime")
-    async def get_market_regime() -> Dict[str, Any]:
+    async def get_market_regime() -> dict[str, Any]:
         """
         Retorna regime atual do mercado.
         - trending: Bom para entries
@@ -204,7 +205,7 @@ def create_market_router(db, get_bot):
             return {'regime': 'unknown', 'description': str(e)}
     
     @router.get("/monitored-coins")
-    async def get_monitored_coins() -> Dict[str, Any]:
+    async def get_monitored_coins() -> dict[str, Any]:
         """
         Retorna lista de moedas REALMENTE monitoradas pelo bot.
         Baseado em bot.selector.symbols (dados reais).
@@ -270,7 +271,7 @@ def create_market_router(db, get_bot):
             
         except Exception as e:
             logger.error(f"Erro ao buscar moedas monitoradas: {e}")
-            raise HTTPException(status_code=500, detail=str(e))
+            raise HTTPException(status_code=500, detail=str(e)) from None
     
     return router
 

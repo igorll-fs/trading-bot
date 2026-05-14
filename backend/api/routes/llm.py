@@ -3,8 +3,7 @@ Rotas da API para métricas do LLM Analyzer (Ollama).
 """
 
 import logging
-from typing import Dict, Optional
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 from fastapi import APIRouter, HTTPException, Request
 
@@ -65,7 +64,7 @@ def create_llm_router(db, get_bot_func):
                         "reasoning": analysis.get("reasoning", ""),
                         "symbol": analysis.get("symbol", ""),
                         "timestamp": analysis.get(
-                            "timestamp", datetime.now(timezone.utc).isoformat()
+                            "timestamp", datetime.now(UTC).isoformat()
                         ),
                     }
 
@@ -100,7 +99,7 @@ def create_llm_router(db, get_bot_func):
             raise
         except Exception as e:
             logger.error(f"Error getting LLM status: {e}")
-            raise HTTPException(status_code=500, detail=str(e))
+            raise HTTPException(status_code=500, detail=str(e)) from None
 
     @router.get("/llm/market-analyzer/status")
     @limiter.limit("60/minute")
@@ -158,7 +157,7 @@ def create_llm_router(db, get_bot_func):
                                 ctx.trend_strength if hasattr(ctx, "trend_strength") else 0
                             ),
                             "cached": True,
-                            "timestamp": datetime.now(timezone.utc).isoformat(),
+                            "timestamp": datetime.now(UTC).isoformat(),
                         }
                     )
 
@@ -179,7 +178,7 @@ def create_llm_router(db, get_bot_func):
                 return {
                     "enabled": True,
                     "available": False,
-                    "reason": f"Erro: {str(e)}",
+                    "reason": f"Erro: {e!s}",
                     "metrics": {},
                     "recent_analyses": [],
                     "trade_history_size": 0,
@@ -189,6 +188,6 @@ def create_llm_router(db, get_bot_func):
             raise
         except Exception as e:
             logger.error(f"Error getting Market Analyzer status: {e}")
-            raise HTTPException(status_code=500, detail=str(e))
+            raise HTTPException(status_code=500, detail=str(e)) from None
 
     return router

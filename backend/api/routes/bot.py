@@ -3,9 +3,9 @@ Rotas de Controle do Bot.
 """
 
 import asyncio
+import logging
 import os
 import signal
-import logging
 
 from fastapi import APIRouter, HTTPException, Request
 
@@ -33,29 +33,29 @@ def create_bot_router(db, get_bot_func):
                     return {"status": "success", "message": "Bot started"}
                 else:
                     detail = bot.last_error or "Failed to start bot"
-                    raise HTTPException(status_code=400, detail=detail)
+                    raise HTTPException(status_code=400, detail=detail) from None
             
             elif body.action == "stop":
                 success = await bot.stop()
                 if success:
                     return {"status": "success", "message": "Bot stopped"}
                 else:
-                    raise HTTPException(status_code=400, detail="Failed to stop bot")
+                    raise HTTPException(status_code=400, detail="Failed to stop bot") from None
             
             elif body.action == "set_paper_mode":
                 if body.enabled is None:
-                    raise HTTPException(status_code=400, detail="'enabled' field required for set_paper_mode")
+                    raise HTTPException(status_code=400, detail="'enabled' field required for set_paper_mode") from None
                 success = await bot.set_paper_mode(body.enabled)
                 mode_name = "Paper Trading" if body.enabled else "Real Trading"
                 return {"status": "success", "message": f"Trading mode set to: {mode_name}", "paper_trade": body.enabled}
             
             else:
-                raise HTTPException(status_code=400, detail="Invalid action")
+                raise HTTPException(status_code=400, detail="Invalid action") from None
                 
         except HTTPException:
             raise
         except Exception as e:
-            raise HTTPException(status_code=500, detail=str(e))
+            raise HTTPException(status_code=500, detail=str(e)) from None
     
     @router.get("/bot/status")
     @limiter.limit("60/minute")
@@ -66,7 +66,7 @@ def create_bot_router(db, get_bot_func):
             status = await bot.get_status()
             return status
         except Exception as e:
-            raise HTTPException(status_code=500, detail=str(e))
+            raise HTTPException(status_code=500, detail=str(e)) from None
     
     @router.post("/bot/sync", response_model=SyncResponse)
     @limiter.limit("5/minute")
@@ -96,7 +96,7 @@ def create_bot_router(db, get_bot_func):
         except HTTPException:
             raise
         except Exception as e:
-            raise HTTPException(status_code=500, detail=str(e))
+            raise HTTPException(status_code=500, detail=str(e)) from None
     
     @router.post("/shutdown")
     @limiter.limit("2/minute")
@@ -110,11 +110,11 @@ def create_bot_router(db, get_bot_func):
                 await asyncio.sleep(2)
             
             logger.info("Shutting down server...")
-            asyncio.create_task(_shutdown_after_delay())
+            _ = asyncio.create_task(_shutdown_after_delay())
             
             return {"status": "success", "message": "Server shutting down safely"}
         except Exception as e:
-            raise HTTPException(status_code=500, detail=str(e))
+            raise HTTPException(status_code=500, detail=str(e)) from None
     
     return router
 

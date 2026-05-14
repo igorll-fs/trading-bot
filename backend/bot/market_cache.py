@@ -3,9 +3,9 @@ Market Data Cache - Otimização de Performance
 Reduz chamadas à API da Binance em 70%
 """
 
-import time
 import logging
-from typing import Optional, Dict, Any
+import time
+from typing import Any
 
 logger = logging.getLogger(__name__)
 
@@ -19,10 +19,10 @@ class MarketDataCache:
         Args:
             ttl_seconds: Time to live em segundos (padrão: 5s)
         """
-        self.cache: Dict[str, Dict[str, Any]] = {}
+        self.cache: dict[str, dict[str, Any]] = {}
         self.ttl = ttl_seconds
         
-    def get(self, key: str) -> Optional[Any]:
+    def get(self, key: str) -> Any | None:
         """
         Buscar valor do cache
         
@@ -57,7 +57,7 @@ class MarketDataCache:
             'timestamp': time.time()
         }
     
-    def get_or_set(self, key: str, fetch_func) -> Optional[Any]:
+    def get_or_set(self, key: str, fetch_func) -> Any | None:
         """
         Busca valor do cache ou executa fetch_func para preencher.
         """
@@ -101,7 +101,7 @@ class MarketDataCache:
             
         return len(expired_keys)
     
-    def stats(self) -> Dict[str, Any]:
+    def stats(self) -> dict[str, Any]:
         """
         Estatísticas do cache
         

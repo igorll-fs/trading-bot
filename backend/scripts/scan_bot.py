@@ -3,13 +3,13 @@
 import asyncio
 import os
 import sys
-from datetime import datetime, timezone
+from datetime import datetime
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from motor.motor_asyncio import AsyncIOMotorClient
-from dotenv import load_dotenv
 import httpx
+from dotenv import load_dotenv
+from motor.motor_asyncio import AsyncIOMotorClient
 
 load_dotenv(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), '.env'))
 
@@ -19,7 +19,7 @@ async def get_price(symbol):
         async with httpx.AsyncClient() as client:
             resp = await client.get(f"https://testnet.binance.vision/api/v3/ticker/price?symbol={symbol}")
             return float(resp.json()['price'])
-    except:
+    except Exception:
         return None
 
 
@@ -67,7 +67,7 @@ async def scan():
             status = "🟢" if pnl > 0 else "🔴"
             reason = t.get('close_reason', 'N/A')
             symbol = t.get('symbol', '?')
-            closed_at = t.get('closed_at', 'N/A')
+            t.get('closed_at', 'N/A')
             print(f"  {status} {symbol} | PnL: ${pnl:+.2f} | Motivo: {reason}")
         
         print()
@@ -93,7 +93,7 @@ async def scan():
         print("  Nenhuma")
     
     # 4. Verificar se bot está rodando
-    print(f"\n🤖 STATUS DO BOT")
+    print("\n🤖 STATUS DO BOT")
     print("-" * 70)
     
     try:
@@ -113,7 +113,7 @@ async def scan():
         print(f"  ❌ Não foi possível conectar à API: {e}")
     
     # 5. Saldo
-    print(f"\n💰 SALDO (Testnet)")
+    print("\n💰 SALDO (Testnet)")
     print("-" * 70)
     try:
         async with httpx.AsyncClient(timeout=5) as http:
@@ -122,9 +122,9 @@ async def scan():
                 data = resp.json()
                 print(f"  USDT: ${data.get('balance', 0):,.2f}")
             else:
-                print(f"  ⚠️ Erro ao buscar saldo")
-    except:
-        print(f"  ❌ API indisponível")
+                print("  ⚠️ Erro ao buscar saldo")
+    except Exception:
+        print("  ❌ API indisponível")
     
     print()
     print("=" * 70)

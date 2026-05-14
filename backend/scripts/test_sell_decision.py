@@ -6,12 +6,14 @@ Simula diferentes cenários de preço e verifica as decisões.
 import asyncio
 import os
 import sys
+
 import httpx
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from motor.motor_asyncio import AsyncIOMotorClient
 from dotenv import load_dotenv
+from motor.motor_asyncio import AsyncIOMotorClient
+
 from bot.risk_manager import RiskManager
 
 load_dotenv(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), '.env'))
@@ -66,12 +68,12 @@ async def test_sell_decision():
     if should_close:
         print(f"  ✅ Decisão: FECHAR - Motivo: {reason}")
     else:
-        print(f"  ⏳ Decisão: MANTER ABERTA")
+        print("  ⏳ Decisão: MANTER ABERTA")
         print(f"     Distância SL: {((current - sl) / current) * 100:.2f}%")
         print(f"     Distância TP: {((tp - current) / current) * 100:.2f}%")
     
     # Simular cenários
-    print(f"\n🎭 SIMULAÇÃO DE CENÁRIOS")
+    print("\n🎭 SIMULAÇÃO DE CENÁRIOS")
     print("-" * 70)
     
     scenarios = [
@@ -88,30 +90,30 @@ async def test_sell_decision():
         print(f"  {desc:30} | ${test_price:.4f} | {status}")
     
     # Verificar lógica inversa (lado SELL - não usado em Spot, mas para completude)
-    print(f"\n📋 VERIFICAÇÃO DA LÓGICA")
+    print("\n📋 VERIFICAÇÃO DA LÓGICA")
     print("-" * 70)
     
     checks = []
     
     # Teste 1: Preço abaixo do SL deve fechar
     test1 = rm.should_close_position(sl - 0.001, entry, sl, tp, 'BUY')
-    checks.append(("Preço < SL (BUY) deve fechar", test1[0] == True and test1[1] == 'STOP_LOSS'))
+    checks.append(("Preço < SL (BUY) deve fechar", test1[0] and test1[1] == 'STOP_LOSS'))
     
     # Teste 2: Preço = SL deve fechar
     test2 = rm.should_close_position(sl, entry, sl, tp, 'BUY')
-    checks.append(("Preço = SL (BUY) deve fechar", test2[0] == True and test2[1] == 'STOP_LOSS'))
+    checks.append(("Preço = SL (BUY) deve fechar", test2[0] and test2[1] == 'STOP_LOSS'))
     
     # Teste 3: Preço > TP deve fechar
     test3 = rm.should_close_position(tp + 0.001, entry, sl, tp, 'BUY')
-    checks.append(("Preço > TP (BUY) deve fechar", test3[0] == True and test3[1] == 'TAKE_PROFIT'))
+    checks.append(("Preço > TP (BUY) deve fechar", test3[0] and test3[1] == 'TAKE_PROFIT'))
     
     # Teste 4: Preço = TP deve fechar
     test4 = rm.should_close_position(tp, entry, sl, tp, 'BUY')
-    checks.append(("Preço = TP (BUY) deve fechar", test4[0] == True and test4[1] == 'TAKE_PROFIT'))
+    checks.append(("Preço = TP (BUY) deve fechar", test4[0] and test4[1] == 'TAKE_PROFIT'))
     
     # Teste 5: Preço no meio não deve fechar
     test5 = rm.should_close_position(entry, entry, sl, tp, 'BUY')
-    checks.append(("Preço = Entrada (BUY) não fecha", test5[0] == False))
+    checks.append(("Preço = Entrada (BUY) não fecha", not test5[0]))
     
     all_passed = True
     for desc, passed in checks:
@@ -129,20 +131,20 @@ async def test_sell_decision():
     print("=" * 70)
     
     # Status do monitoramento
-    print(f"\n📡 STATUS DO MONITORAMENTO")
+    print("\n📡 STATUS DO MONITORAMENTO")
     print("-" * 70)
     
     if side == 'BUY':
         if current <= sl:
             print(f"  🔴 ALERTA: Preço ({current:.4f}) <= Stop Loss ({sl:.4f})")
-            print(f"     → Bot DEVERIA estar fechando a posição!")
+            print("     → Bot DEVERIA estar fechando a posição!")
         elif current >= tp:
             print(f"  🟢 ALERTA: Preço ({current:.4f}) >= Take Profit ({tp:.4f})")
-            print(f"     → Bot DEVERIA estar fechando a posição!")
+            print("     → Bot DEVERIA estar fechando a posição!")
         else:
             pct_to_sl = ((current - sl) / current) * 100
             pct_to_tp = ((tp - current) / current) * 100
-            print(f"  ⏳ Posição ATIVA - aguardando trigger")
+            print("  ⏳ Posição ATIVA - aguardando trigger")
             print(f"     Para SL: -{pct_to_sl:.2f}% (${current - sl:.4f})")
             print(f"     Para TP: +{pct_to_tp:.2f}% (${tp - current:.4f})")
     

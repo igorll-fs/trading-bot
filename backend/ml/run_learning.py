@@ -10,15 +10,16 @@ Uso:
     python ml/run_learning.py --status     # Ver status do sistema
 """
 
-import os
-import sys
 import argparse
 import logging
+import os
+import sys
 
 # Adicionar path do projeto
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from dotenv import load_dotenv
+
 load_dotenv()
 
 
@@ -70,30 +71,30 @@ def run_status():
     # Dados OHLCV
     ohlcv_count = db.ohlcv_data.count_documents({})
     ohlcv_symbols = db.ohlcv_data.distinct('symbol')
-    print(f"\n[Dados OHLCV]")
+    print("\n[Dados OHLCV]")
     print(f"  Total de velas: {ohlcv_count}")
     print(f"  Simbolos: {len(ohlcv_symbols)}")
 
     # Dataset de treinamento
     training_count = db.ml_training_data.count_documents({})
-    print(f"\n[Dataset de Treinamento]")
+    print("\n[Dataset de Treinamento]")
     print(f"  Amostras: {training_count}")
 
     # Modelo
     model = db.ml_models.find_one({'name': 'signal_filter'})
-    print(f"\n[Modelo ML]")
+    print("\n[Modelo ML]")
     if model:
         metrics = model.get('metrics', {})
-        print(f"  Status: CARREGADO")
+        print("  Status: CARREGADO")
         print(f"  Accuracy: {metrics.get('accuracy', 0):.2%}")
         print(f"  Win Rate melhoria: {metrics.get('win_rate_with_model', 0) - metrics.get('win_rate_without_model', 0):.1f}%")
         print(f"  Treinado em: {metrics.get('trained_at', 'N/A')}")
     else:
-        print(f"  Status: NAO TREINADO")
+        print("  Status: NAO TREINADO")
 
     # Trades
     trades_count = db.trades.count_documents({})
-    print(f"\n[Trades Historicos]")
+    print("\n[Trades Historicos]")
     print(f"  Total: {trades_count}")
 
     print("\n" + "=" * 60)
@@ -202,8 +203,9 @@ def main():
     elif args.train:
         run_train()
     elif args.schedule:
-        import schedule
         import time
+
+        import schedule
 
         print(f"\nAgendado para rodar a cada {args.schedule} horas")
         print("Pressione Ctrl+C para parar\n")

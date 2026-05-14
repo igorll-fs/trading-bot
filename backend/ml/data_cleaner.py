@@ -3,10 +3,10 @@ Limpeza Automatica de Dados Antigos
 Remove dados obsoletos do MongoDB para manter performance
 """
 
-import os
 import logging
-from datetime import datetime, timezone, timedelta
-from typing import Dict, List
+import os
+from datetime import UTC, datetime, timedelta
+
 from pymongo import MongoClient
 
 logger = logging.getLogger(__name__)
@@ -28,7 +28,7 @@ class DataCleaner:
         'ml_training_data': 60,    # Datasets de treino: 60 dias
     }
 
-    def __init__(self, mongo_url: str = None, db_name: str = None):
+    def __init__(self, mongo_url: str | None = None, db_name: str | None = None):
         self.mongo_url = mongo_url or os.getenv('MONGO_URL', 'mongodb://localhost:27017')
         self.db_name = db_name or os.getenv('DB_NAME', 'trading_bot')
 
@@ -36,9 +36,9 @@ class DataCleaner:
         return MongoClient(self.mongo_url)
 
     def _get_cutoff_date(self, days: int) -> datetime:
-        return datetime.now(timezone.utc) - timedelta(days=days)
+        return datetime.now(UTC) - timedelta(days=days)
 
-    def clean_collection(self, collection_name: str, date_field: str = 'timestamp') -> Dict:
+    def clean_collection(self, collection_name: str, date_field: str = 'timestamp') -> dict:
         """Limpa uma colecao especifica baseado nas regras de retencao"""
         retention_days = self.RETENTION_RULES.get(collection_name)
 
@@ -89,7 +89,7 @@ class DataCleaner:
         finally:
             client.close()
 
-    def clean_all(self) -> List[Dict]:
+    def clean_all(self) -> list[dict]:
         """Limpa todas as colecoes com regras de retencao"""
         results = []
 
@@ -105,7 +105,7 @@ class DataCleaner:
 
         return results
 
-    def clean_orphaned_data(self) -> Dict:
+    def clean_orphaned_data(self) -> dict:
         """Remove dados orfaos (trades sem posicao correspondente, etc)"""
         client = self._get_sync_client()
         try:
@@ -133,7 +133,7 @@ class DataCleaner:
         finally:
             client.close()
 
-    def get_storage_stats(self) -> Dict:
+    def get_storage_stats(self) -> dict:
         """Retorna estatisticas de armazenamento"""
         client = self._get_sync_client()
         try:
@@ -147,7 +147,7 @@ class DataCleaner:
                         'count': count,
                         'retention_days': self.RETENTION_RULES.get(collection_name)
                     }
-                except:
+                except Exception:
                     stats[collection_name] = {'count': 0, 'error': 'collection not found'}
 
             return stats

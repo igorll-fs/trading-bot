@@ -3,16 +3,15 @@ Filtro de Sinais ML
 Integra modelo treinado ao bot de trading
 """
 
-import os
-import sys
 import logging
+import os
 import pickle
-from datetime import datetime, timezone
-from typing import Dict, Tuple, Optional
+from datetime import UTC, datetime
+
 import numpy as np
 import pandas as pd
-from pymongo import MongoClient
 from dotenv import load_dotenv
+from pymongo import MongoClient
 
 load_dotenv()
 
@@ -80,7 +79,7 @@ class MLSignalFilter:
         self.loaded = False
         return self._load_model()
 
-    def extract_features(self, opportunity: Dict, indicators: Dict) -> Dict:
+    def extract_features(self, opportunity: dict, indicators: dict) -> dict:
         """Extrai features de uma oportunidade de trade"""
         features = {}
 
@@ -133,7 +132,7 @@ class MLSignalFilter:
         features['signal_strength'] = opportunity.get('strength', opportunity.get('score', 50))
 
         # Temporal
-        now = datetime.now(timezone.utc)
+        now = datetime.now(UTC)
         features['hour'] = now.hour
         features['day_of_week'] = now.weekday()
 
@@ -141,9 +140,9 @@ class MLSignalFilter:
 
     def should_take_trade(
         self,
-        opportunity: Dict,
-        indicators: Dict = None
-    ) -> Tuple[bool, float, str]:
+        opportunity: dict,
+        indicators: dict | None = None
+    ) -> tuple[bool, float, str]:
         """
         Decide se deve entrar no trade
 
@@ -191,7 +190,7 @@ class MLSignalFilter:
             logger.error(f"[MLFilter] Erro na predicao: {e}")
             return True, 0.5, f"Erro no ML: {e}"
 
-    def get_stats(self) -> Dict:
+    def get_stats(self) -> dict:
         """Retorna estatisticas de uso"""
         total = self.stats['total_signals']
         return {
@@ -206,7 +205,7 @@ class MLSignalFilter:
             'model_accuracy': self.metrics.get('accuracy', 0)
         }
 
-    def get_model_info(self) -> Dict:
+    def get_model_info(self) -> dict:
         """Retorna informacoes do modelo"""
         if not self.loaded:
             return {'loaded': False}
@@ -232,7 +231,7 @@ class MLSignalFilter:
 
 
 # Singleton para uso global
-_ml_filter_instance: Optional[MLSignalFilter] = None
+_ml_filter_instance: MLSignalFilter | None = None
 
 
 def get_ml_filter() -> MLSignalFilter:

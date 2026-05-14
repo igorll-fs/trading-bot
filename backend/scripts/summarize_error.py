@@ -8,10 +8,10 @@ import datetime as dt
 import json
 import re
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 
-def load_actions(path: Path) -> List[Dict[str, Any]]:
+def load_actions(path: Path) -> list[dict[str, Any]]:
     if not path.exists():
         return []
     with path.open("r", encoding="utf-8") as handle:
@@ -19,7 +19,7 @@ def load_actions(path: Path) -> List[Dict[str, Any]]:
     return data if isinstance(data, list) else []
 
 
-def choose_action(snippet: str, actions: List[Dict[str, Any]]) -> Dict[str, Any]:
+def choose_action(snippet: str, actions: list[dict[str, Any]]) -> dict[str, Any]:
     for action in actions:
         pattern = action.get("pattern")
         if not pattern:
@@ -46,7 +46,7 @@ def build_report(
     source: str,
     trigger_line: str,
     snippet: str,
-    action: Dict[str, Any],
+    action: dict[str, Any],
     report_path: Path,
 ) -> None:
     timestamp = dt.datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S UTC")
@@ -55,7 +55,7 @@ def build_report(
     label = action.get("label", action.get("pattern", "sem rótulo"))
     notes = action.get("notes", [])
 
-    lines: List[str] = []
+    lines: list[str] = []
     lines.append(f"# Error report ({timestamp})")
     lines.append("")
     lines.append(f"- Source: {source}")

@@ -3,23 +3,24 @@ Pipeline de Aprendizado Automatico
 Integra: Limpeza -> Coleta -> Dataset -> Treinamento -> Validacao
 """
 
+import logging
 import os
 import sys
-import logging
-from datetime import datetime, timezone
-from typing import Dict, Optional
-import schedule
 import time
+from datetime import UTC, datetime
+
+import schedule
 
 # Adicionar path do projeto
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+from dotenv import load_dotenv
 
 from ml.data_cleaner import DataCleaner
 from ml.data_collector import OHLCVCollector
 from ml.dataset_generator import DatasetGenerator
 from ml.model_trainer import ModelTrainer
 
-from dotenv import load_dotenv
 load_dotenv()
 
 logger = logging.getLogger(__name__)
@@ -44,14 +45,14 @@ class AutoLearningPipeline:
         self.last_metrics = {}
         self.run_history = []
 
-    def run_full_pipeline(self) -> Dict:
+    def run_full_pipeline(self) -> dict:
         """Executa pipeline completo"""
 
         logger.info("=" * 60)
         logger.info("PIPELINE DE APRENDIZADO AUTOMATICO")
         logger.info("=" * 60)
 
-        start_time = datetime.now(timezone.utc)
+        start_time = datetime.now(UTC)
         results = {
             'started_at': start_time.isoformat(),
             'steps': {}
@@ -87,8 +88,8 @@ class AutoLearningPipeline:
             results['status'] = 'error'
             results['error'] = str(e)
 
-        results['finished_at'] = datetime.now(timezone.utc).isoformat()
-        results['duration_seconds'] = (datetime.now(timezone.utc) - start_time).total_seconds()
+        results['finished_at'] = datetime.now(UTC).isoformat()
+        results['duration_seconds'] = (datetime.now(UTC) - start_time).total_seconds()
 
         self.last_run = start_time
         self.last_metrics = results.get('steps', {}).get('training', {})
@@ -102,7 +103,7 @@ class AutoLearningPipeline:
 
         return results
 
-    def _run_cleanup(self) -> Dict:
+    def _run_cleanup(self) -> dict:
         """Executa limpeza de dados"""
         cleaner = DataCleaner()
 
@@ -120,7 +121,7 @@ class AutoLearningPipeline:
             'stats_after': stats_after
         }
 
-    def _run_collection(self) -> Dict:
+    def _run_collection(self) -> dict:
         """Executa coleta de dados"""
         collector = OHLCVCollector(days_back=self.days_history)
 
@@ -136,7 +137,7 @@ class AutoLearningPipeline:
             'stats': stats
         }
 
-    def _run_dataset_generation(self) -> Dict:
+    def _run_dataset_generation(self) -> dict:
         """Executa geracao de dataset"""
         generator = DatasetGenerator()
 
@@ -155,7 +156,7 @@ class AutoLearningPipeline:
             'symbols': dataset['symbol'].nunique()
         }
 
-    def _run_training(self) -> Dict:
+    def _run_training(self) -> dict:
         """Executa treinamento"""
         trainer = ModelTrainer()
 
@@ -172,7 +173,7 @@ class AutoLearningPipeline:
 
         return metrics
 
-    def _run_validation(self, training_metrics: Dict) -> Dict:
+    def _run_validation(self, training_metrics: dict) -> dict:
         """Valida se modelo deve ser deployado"""
 
         if 'error' in training_metrics:
@@ -214,7 +215,7 @@ class AutoLearningPipeline:
 
         return result
 
-    def _print_summary(self, results: Dict):
+    def _print_summary(self, results: dict):
         """Imprime resumo do pipeline"""
 
         print("\n" + "=" * 60)
@@ -225,25 +226,25 @@ class AutoLearningPipeline:
 
         # Limpeza
         cleanup = steps.get('cleanup', {})
-        print(f"\n[Limpeza]")
+        print("\n[Limpeza]")
         print(f"  Documentos removidos: {cleanup.get('total_deleted', 0)}")
 
         # Coleta
         collection = steps.get('collection', {})
-        print(f"\n[Coleta]")
+        print("\n[Coleta]")
         print(f"  Velas coletadas: {collection.get('total_candles', 0)}")
         print(f"  Simbolos: {collection.get('symbols_collected', 0)}")
 
         # Dataset
         dataset = steps.get('dataset', {})
-        print(f"\n[Dataset]")
+        print("\n[Dataset]")
         print(f"  Amostras: {dataset.get('samples', 0)}")
         print(f"  Win Rate base: {dataset.get('win_rate', 0):.1f}%")
 
         # Treinamento
         training = steps.get('training', {})
         if 'error' not in training:
-            print(f"\n[Treinamento]")
+            print("\n[Treinamento]")
             print(f"  Accuracy: {training.get('accuracy', 0):.2%}")
             print(f"  Win Rate SEM modelo: {training.get('win_rate_without_model', 0):.1f}%")
             print(f"  Win Rate COM modelo: {training.get('win_rate_with_model', 0):.1f}%")
@@ -251,7 +252,7 @@ class AutoLearningPipeline:
 
         # Validacao
         validation = steps.get('validation', {})
-        print(f"\n[Validacao]")
+        print("\n[Validacao]")
         print(f"  Aprovado: {'SIM' if validation.get('approved') else 'NAO'}")
         print(f"  Motivo: {validation.get('reason', 'N/A')}")
 

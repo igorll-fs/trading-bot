@@ -2,34 +2,34 @@
 Rotas de Configuração do Bot.
 """
 
+
 from fastapi import APIRouter, HTTPException
-from typing import Optional
+from pydantic import BaseModel
 
 from api.models import ConfigModel
 from bot.config import BotConfig, load_bot_config, save_bot_config
-from pydantic import BaseModel
 
 router = APIRouter(tags=["Config"])
 
 
 class PartialConfigModel(BaseModel):
     """Modelo para atualização parcial de configuração."""
-    binance_api_key: Optional[str] = None
-    binance_api_secret: Optional[str] = None
-    binance_testnet: Optional[bool] = None
-    telegram_bot_token: Optional[str] = None
-    telegram_chat_id: Optional[str] = None
-    max_positions: Optional[int] = None
-    risk_percentage: Optional[float] = None
-    leverage: Optional[int] = None
-    balance_cache_ttl: Optional[float] = None
-    observation_alert_interval: Optional[float] = None
-    risk_use_position_cap: Optional[bool] = None
-    daily_drawdown_limit_pct: Optional[float] = None
-    weekly_drawdown_limit_pct: Optional[float] = None
-    selector_min_quote_volume: Optional[float] = None
-    selector_max_spread_percent: Optional[float] = None
-    strategy_min_signal_strength: Optional[int] = None
+    binance_api_key: str | None = None
+    binance_api_secret: str | None = None
+    binance_testnet: bool | None = None
+    telegram_bot_token: str | None = None
+    telegram_chat_id: str | None = None
+    max_positions: int | None = None
+    risk_percentage: float | None = None
+    leverage: int | None = None
+    balance_cache_ttl: float | None = None
+    observation_alert_interval: float | None = None
+    risk_use_position_cap: bool | None = None
+    daily_drawdown_limit_pct: float | None = None
+    weekly_drawdown_limit_pct: float | None = None
+    selector_min_quote_volume: float | None = None
+    selector_max_spread_percent: float | None = None
+    strategy_min_signal_strength: int | None = None
 
 
 def create_config_router(db, get_bot_func):
@@ -55,7 +55,7 @@ def create_config_router(db, get_bot_func):
             base["paper_trade"] = os.getenv("PAPER_TRADE", "false").lower() == "true"
             return base
         except Exception as e:
-            raise HTTPException(status_code=500, detail=str(e))
+            raise HTTPException(status_code=500, detail=str(e)) from None
 
     @router.get("/config")
     async def get_config():
@@ -71,7 +71,7 @@ def create_config_router(db, get_bot_func):
                     status_code=503,
                     detail="MongoDB não está disponível. Verifique se o serviço está rodando na porta 27017."
                 )
-            raise HTTPException(status_code=500, detail=error_str[:200])
+            raise HTTPException(status_code=500, detail=error_str[:200]) from None
     
     @router.post("/config")
     async def save_config(config: ConfigModel):
@@ -86,7 +86,7 @@ def create_config_router(db, get_bot_func):
             
             return {"status": "success", "message": "Configuration saved"}
         except Exception as e:
-            raise HTTPException(status_code=500, detail=str(e))
+            raise HTTPException(status_code=500, detail=str(e)) from None
     
     @router.patch("/config")
     async def update_config(partial_config: PartialConfigModel):
@@ -100,7 +100,7 @@ def create_config_router(db, get_bot_func):
             updates = {k: v for k, v in partial_config.model_dump().items() if v is not None}
             
             if not updates:
-                raise HTTPException(status_code=400, detail="No fields to update")
+                raise HTTPException(status_code=400, detail="No fields to update") from None
             
             current_dict.update(updates)
             
@@ -120,6 +120,6 @@ def create_config_router(db, get_bot_func):
         except HTTPException:
             raise
         except Exception as e:
-            raise HTTPException(status_code=500, detail=str(e))
+            raise HTTPException(status_code=500, detail=str(e)) from None
     
     return router

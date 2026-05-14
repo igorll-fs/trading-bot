@@ -6,11 +6,10 @@ Target: Manter uso do bot <500MB mesmo com sistema pressionado.
 """
 
 import gc
-import sys
-from typing import Any, Callable
+from collections.abc import Callable
 from functools import wraps
+
 import psutil
-from datetime import datetime
 
 
 class MemoryOptimizer:
@@ -125,7 +124,7 @@ class MemoryOptimizer:
             print(
                 f"[MEMORY] 🚨 CRÍTICO: Sistema em {status['system_ram_gb']:.2f}GB ({status['system_ram_percent']:.1%})"
             )
-            print(f"[MEMORY] 💡 Fechar Chrome ou outros apps para liberar RAM")
+            print("[MEMORY] 💡 Fechar Chrome ou outros apps para liberar RAM")
 
         elif status["status"] == "WARNING":
             print(

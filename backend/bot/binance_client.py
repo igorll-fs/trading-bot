@@ -1,7 +1,8 @@
+import logging
 import os
 import time
-import logging
-from typing import Any, Callable, Dict, Optional
+from collections.abc import Callable
+from typing import Any
 
 from binance.client import Client
 from binance.exceptions import BinanceAPIException, BinanceOrderException, BinanceRequestException
@@ -133,10 +134,10 @@ class BinanceClientManager:
         func: Callable[[], Any],
         *,
         critical: bool = False,
-        max_attempts: Optional[int] = None,
+        max_attempts: int | None = None,
     ) -> Any:
         attempts = max_attempts or self.max_retries
-        last_exc: Optional[Exception] = None
+        last_exc: Exception | None = None
 
         for attempt in range(1, attempts + 1):
             try:
@@ -256,7 +257,7 @@ class BinanceClientManager:
                 return {}
 
             symbol_set = set(symbols)
-            prices: Dict[str, float] = {}
+            prices: dict[str, float] = {}
 
             # Primeiro tenta preencher via snapshot em cache
             snapshot = self._price_cache.get("symbol_price_snapshot")
@@ -419,7 +420,7 @@ class BinanceClientManager:
         take_profit_price: float,
         stop_price: float,
         stop_limit_price: float,
-    ) -> Optional[Dict]:
+    ) -> dict | None:
         """Coloca uma ordem OCO (SELL) após compra: TP (LIMIT) + SL (STOP_LIMIT) no Binance.
 
         Para Spot BUY: OCO de venda com TP em cima e SL abaixo.

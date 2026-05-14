@@ -12,7 +12,6 @@ import logging
 import os
 from logging.handlers import RotatingFileHandler
 from pathlib import Path
-from typing import Optional
 
 # Configurações via environment
 LOG_DIR = Path(os.environ.get('LOG_DIR', Path(__file__).parent / 'logs'))
@@ -32,8 +31,8 @@ _logging_configured = False
 
 
 def setup_logging(
-    level: Optional[str] = None,
-    log_dir: Optional[Path] = None,
+    level: str | None = None,
+    log_dir: Path | None = None,
     console_output: bool = True
 ) -> None:
     """
@@ -122,7 +121,7 @@ def get_logger(name: str) -> logging.Logger:
 def log_trade_event(
     symbol: str,
     event: str,
-    details: Optional[dict] = None,
+    details: dict | None = None,
     level: str = 'INFO'
 ) -> None:
     """
@@ -150,7 +149,7 @@ def log_api_request(
     endpoint: str,
     status_code: int,
     duration_ms: float,
-    error: Optional[str] = None
+    error: str | None = None
 ) -> None:
     """
     Loga requisição API com métricas.
@@ -176,9 +175,9 @@ def log_api_request(
 
 def log_binance_call(
     operation: str,
-    symbol: Optional[str] = None,
+    symbol: str | None = None,
     success: bool = True,
-    error: Optional[str] = None,
+    error: str | None = None,
     retry_count: int = 0
 ) -> None:
     """

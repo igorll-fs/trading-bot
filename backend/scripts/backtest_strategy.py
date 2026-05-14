@@ -12,21 +12,20 @@ from __future__ import annotations
 import argparse
 import os
 from dataclasses import dataclass
-from datetime import datetime, timedelta, timezone
-from typing import Dict, List, Optional, Tuple
+from datetime import UTC, datetime, timedelta
 
 import pandas as pd
 from binance.client import Client
 
-from bot.strategy import TradingStrategy
 from bot.risk_manager import RiskManager
+from bot.strategy import TradingStrategy
 
 
 @dataclass
 class BacktestResult:
     symbol: str
     interval: str
-    confirmation_interval: Optional[str]
+    confirmation_interval: str | None
     start: datetime
     end: datetime
     initial_balance: float
@@ -38,8 +37,8 @@ class BacktestResult:
     net_profit: float
     roi: float
     max_drawdown_pct: float
-    profit_factor: Optional[float]
-    trades: List[Dict]
+    profit_factor: float | None
+    trades: list[dict]
 
 
 def parse_args() -> argparse.Namespace:
@@ -81,7 +80,7 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def _parse_datetime(value: Optional[str], fallback: datetime) -> datetime:
+def _parse_datetime(value: str | None, fallback: datetime) -> datetime:
     if not value:
         return fallback
     cleaned = value.strip()
@@ -89,12 +88,12 @@ def _parse_datetime(value: Optional[str], fallback: datetime) -> datetime:
         cleaned = cleaned[:-1]
     dt = datetime.fromisoformat(cleaned)
     if dt.tzinfo is None:
-        dt = dt.replace(tzinfo=timezone.utc)
-    return dt.astimezone(timezone.utc)
+        dt = dt.replace(tzinfo=UTC)
+    return dt.astimezone(UTC)
 
 
 def _format_ts(ts: datetime) -> str:
-    return ts.astimezone(timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC")
+    return ts.astimezone(UTC).strftime("%Y-%m-%d %H:%M:%S UTC")
 
 
 def _fetch_klines(client: Client, symbol: str, interval: str, start: datetime, end: datetime) -> pd.DataFrame:
@@ -129,7 +128,7 @@ def _fetch_klines(client: Client, symbol: str, interval: str, start: datetime, e
 
 def _first_valid_signal_index(df: pd.DataFrame) -> int:
     required = ["ema_fast", "ema_slow", "ema_50", "ema_200", "macd_hist", "rsi", "vwap"]
-    indices: List[int] = []
+    indices: list[int] = []
     for col in required:
         idx = df[col].first_valid_index()
         if idx is not None:
@@ -139,7 +138,7 @@ def _first_valid_signal_index(df: pd.DataFrame) -> int:
     return max(1, max(indices))
 
 
-def _get_higher_slice(higher_df: Optional[pd.DataFrame], current_ts: pd.Timestamp) -> Optional[pd.DataFrame]:
+def _get_higher_slice(higher_df: pd.DataFrame | None, current_ts: pd.Timestamp) -> pd.DataFrame | None:
     if higher_df is None or higher_df.empty:
         return None
     pos = higher_df["timestamp"].searchsorted(current_ts, side="right") - 1
@@ -148,7 +147,7 @@ def _get_higher_slice(higher_df: Optional[pd.DataFrame], current_ts: pd.Timestam
     return higher_df.iloc[: pos + 1]
 
 
-def _evaluate_exit(position: Dict, high_price: float, low_price: float) -> Tuple[Optional[float], Optional[str]]:
+def _evaluate_exit(position: dict, high_price: float, low_price: float) -> tuple[float | None, str | None]:
     exit_price = None
     reason = None
     if position["side"] == "BUY":
@@ -172,11 +171,11 @@ def run_backtest(
     strategy: TradingStrategy,
     risk_manager: RiskManager,
     df: pd.DataFrame,
-    higher_df: Optional[pd.DataFrame],
+    higher_df: pd.DataFrame | None,
     initial_balance: float,
     symbol: str,
     interval: str,
-    confirmation_interval: Optional[str],
+    confirmation_interval: str | None,
     allow_shorts: bool,
 ) -> BacktestResult:
     if df.empty:
@@ -197,8 +196,8 @@ def run_backtest(
     balance = initial_balance
     equity_peak = balance
     max_drawdown = 0.0
-    trades: List[Dict] = []
-    position: Optional[Dict] = None
+    trades: list[dict] = []
+    position: dict | None = None
     wins = 0
     losses = 0
 
@@ -343,7 +342,7 @@ def run_backtest(
 
 def main() -> None:
     args = parse_args()
-    now_utc = datetime.now(timezone.utc)
+    now_utc = datetime.now(UTC)
     start_default = now_utc - timedelta(days=args.days)
     start_dt = _parse_datetime(args.start, start_default)
     end_dt = _parse_datetime(args.end, now_utc)

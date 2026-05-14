@@ -12,13 +12,12 @@ Hardware Target: Dell E7450 (i5-5300U, 12GB RAM)
 """
 
 import asyncio
-import logging
 import json
-from typing import Dict, Optional, List, Tuple
-from datetime import datetime, timedelta
-from dataclasses import dataclass
-from concurrent.futures import ThreadPoolExecutor
+import logging
 import os
+from concurrent.futures import ThreadPoolExecutor
+from dataclasses import dataclass
+from datetime import datetime
 
 logger = logging.getLogger(__name__)
 
@@ -50,7 +49,7 @@ class IntelligentPositionSize:
     size_multiplier: float  # Ex: 1.5 = 150% do size base, 0.7 = 70%
     confidence_score: int  # 0-10
     reasoning: str
-    risk_flags: List[str]  # Alertas de risco
+    risk_flags: list[str]  # Alertas de risco
 
 
 @dataclass
@@ -59,7 +58,7 @@ class PreTradeAnalysis:
 
     should_enter: bool
     sentiment: str  # 'BULLISH', 'NEUTRAL', 'BEARISH', 'CAUTION'
-    risk_events: List[str]  # Eventos de risco detectados
+    risk_events: list[str]  # Eventos de risco detectados
     reasoning: str
     urgency: str  # 'IMMEDIATE', 'WAIT_1H', 'WAIT_4H', 'SKIP'
 
@@ -69,7 +68,7 @@ class SkipReasoning:
     """Explicação detalhada de por que não entrou"""
 
     primary_reason: str
-    contributing_factors: List[str]
+    contributing_factors: list[str]
     suggestion: str
     next_check_in_minutes: int
 
@@ -131,11 +130,11 @@ class LLMRiskAdvisor:
         self.executor = ThreadPoolExecutor(max_workers=1)
 
         # Cache de análises recentes
-        self.cache: Dict[str, Tuple[any, datetime]] = {}
+        self.cache: dict[str, tuple[any, datetime]] = {}
         self.cache_ttl = cache_ttl
 
         # Histórico de adaptação (últimos 20 trades)
-        self.trade_history: List[Dict] = []
+        self.trade_history: list[dict] = []
         self.max_history = 20
 
         # Métricas
@@ -156,7 +155,7 @@ class LLMRiskAdvisor:
     # ==========================================================================
 
     async def _notify_decision(
-        self, decision_type: str, symbol: str, reasoning: str, data: Optional[Dict] = None
+        self, decision_type: str, symbol: str, reasoning: str, data: dict | None = None
     ):
         """Envia decisão da IA para o Telegram (non-blocking)"""
         if not TELEGRAM_AVAILABLE:
@@ -164,7 +163,7 @@ class LLMRiskAdvisor:
 
         try:
             # Fire-and-forget (não aguarda resposta)
-            asyncio.create_task(
+            _ = asyncio.create_task(
                 telegram_notifier.notify_ai_decision_async(
                     decision_type=decision_type,
                     symbol=symbol,
@@ -566,7 +565,7 @@ JSON:
         self,
         symbol: str,
         technical_score: int,
-        filters_failed: List[str],  # Ex: ['ML_CONFIDENCE_LOW', 'VOLUME_WEAK']
+        filters_failed: list[str],  # Ex: ['ML_CONFIDENCE_LOW', 'VOLUME_WEAK']
         market_regime: str,
         current_drawdown: float,
     ) -> SkipReasoning:
@@ -853,7 +852,7 @@ FATORES ADICIONAIS:
     # MÉTODOS AUXILIARES
     # ==========================================================================
 
-    async def _call_ollama_async(self, prompt: str) -> Optional[str]:
+    async def _call_ollama_async(self, prompt: str) -> str | None:
         """Chama Ollama de forma assíncrona (non-blocking)"""
         try:
             loop = asyncio.get_event_loop()
@@ -863,7 +862,7 @@ FATORES ADICIONAIS:
             )
             self.metrics["requests_total"] += 1
             return response
-        except asyncio.TimeoutError:
+        except TimeoutError:
             logger.warning(f"[LLM Risk Advisor] Ollama timeout ({self.timeout}s)")
             self.metrics["ollama_timeouts"] += 1
             return None
@@ -892,7 +891,7 @@ FATORES ADICIONAIS:
         data = response.json()
         return data.get("response", "").strip()
 
-    def _get_from_cache(self, key: str) -> Optional[any]:
+    def _get_from_cache(self, key: str) -> any | None:
         """Busca item no cache"""
         if key in self.cache:
             value, timestamp = self.cache[key]
@@ -912,7 +911,7 @@ FATORES ADICIONAIS:
             oldest_key = min(self.cache.keys(), key=lambda k: self.cache[k][1])
             del self.cache[oldest_key]
 
-    def get_metrics(self) -> Dict:
+    def get_metrics(self) -> dict:
         """Retorna métricas de uso"""
         cache_hit_rate = (
             self.metrics["cache_hits"] / self.metrics["requests_total"] * 100

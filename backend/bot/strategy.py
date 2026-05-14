@@ -1,9 +1,10 @@
-import pandas as pd
-import numpy as np
-from binance.client import Client
-import talib
 import logging
-from typing import Dict, Optional
+
+import numpy as np
+import pandas as pd
+import talib
+from binance.client import Client
+
 from bot.market_cache import get_cache
 
 logger = logging.getLogger(__name__)
@@ -38,8 +39,8 @@ class TradingStrategy:
     _KLINES_CACHE_SIZE = 200
 
     def get_historical_data(
-        self, symbol: str, timeframe: Optional[str] = None, limit: Optional[int] = None
-    ) -> Optional[pd.DataFrame]:
+        self, symbol: str, timeframe: str | None = None, limit: int | None = None
+    ) -> pd.DataFrame | None:
         """Get historical klines data with cache support for multiple timeframes.
 
         O cache armazena sempre _KLINES_CACHE_SIZE candles. Chamadas com limit
@@ -226,7 +227,7 @@ class TradingStrategy:
             return df
 
     # Cache de correlações: {symbol: (valor, timestamp)}
-    _btc_correlation_cache: Dict[str, tuple] = {}
+    _btc_correlation_cache: dict[str, tuple] = {}
     _BTC_CORRELATION_TTL = 300  # 5 minutos — correlação muda lentamente
 
     def calculate_btc_correlation(self, symbol: str, lookback: int = 30) -> float:
@@ -276,7 +277,7 @@ class TradingStrategy:
             logger.warning("Erro ao calcular correlação BTC para %s: %s", symbol, e)
             return 0.5
 
-    def detect_market_regime(self, df: pd.DataFrame = None, symbol: str = "BTCUSDT") -> Dict:
+    def detect_market_regime(self, df: pd.DataFrame = None, symbol: str = "BTCUSDT") -> dict:
         """
         Detecta regime atual do mercado.
 
@@ -411,7 +412,7 @@ class TradingStrategy:
         signal: str = "HOLD",
         btc_correlation: float = 0.0,
         btc_bearish: bool = False,
-    ) -> Dict:
+    ) -> dict:
         """
         Calcula score unificado de 0-100 com pesos configuráveis.
 
@@ -795,8 +796,8 @@ class TradingStrategy:
             return "normal"
 
     def generate_signal(
-        self, df: pd.DataFrame, higher_df: Optional[pd.DataFrame] = None, volume_ratio: float = 1.0
-    ) -> Dict:
+        self, df: pd.DataFrame, higher_df: pd.DataFrame | None = None, volume_ratio: float = 1.0
+    ) -> dict:
         """Generate trading signal blending momentum, trend, and volume context"""
         try:
             if len(df) < 2:
@@ -1013,7 +1014,7 @@ class TradingStrategy:
             logger.error("Error generating signal: %s", e)
             return {"signal": "HOLD", "strength": 0}
 
-    def analyze_symbol(self, symbol: str) -> Optional[Dict]:
+    def analyze_symbol(self, symbol: str) -> dict | None:
         """Complete analysis of a symbol"""
         try:
             df = self.get_historical_data(symbol)

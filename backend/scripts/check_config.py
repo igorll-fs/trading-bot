@@ -1,9 +1,10 @@
 """Script para verificar e atualizar config no MongoDB."""
 import asyncio
 import os
-from datetime import datetime, timezone
-from motor.motor_asyncio import AsyncIOMotorClient
+from datetime import UTC, datetime
+
 from dotenv import load_dotenv
+from motor.motor_asyncio import AsyncIOMotorClient
 
 load_dotenv()
 
@@ -17,7 +18,7 @@ async def update_and_check():
         {'$set': {
             'strategy_min_signal_strength': 40,
             'selector_min_change_percent': 0.2,
-            'updated_at': datetime.now(timezone.utc).isoformat()
+            'updated_at': datetime.now(UTC).isoformat()
         }}
     )
     print(f"Update: matched={result.matched_count}, modified={result.modified_count}")
@@ -34,7 +35,7 @@ async def update_and_check():
         {'type': 'parameters'},
         {'$set': {
             'parameters.min_confidence_score': 0.30,
-            'timestamp': datetime.now(timezone.utc)
+            'timestamp': datetime.now(UTC)
         }},
         upsert=True
     )

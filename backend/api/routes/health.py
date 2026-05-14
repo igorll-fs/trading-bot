@@ -2,14 +2,15 @@
 Rotas de Health Check e Diagnósticos.
 """
 
-from datetime import datetime, timezone
+from datetime import UTC, datetime
+from typing import Any
+
 from fastapi import APIRouter, HTTPException
-from typing import Dict, Any
 
 router = APIRouter(tags=["Health"])
 
 
-async def get_health_status(db, get_bot_func) -> Dict[str, Any]:
+async def get_health_status(db, get_bot_func) -> dict[str, Any]:
     """
     Verifica status de saúde dos serviços.
     Retorna: MongoDB, Binance API, Bot status.
@@ -18,7 +19,7 @@ async def get_health_status(db, get_bot_func) -> Dict[str, Any]:
     
     health = {
         "status": "healthy",
-        "timestamp": datetime.now(timezone.utc).isoformat(),
+        "timestamp": datetime.now(UTC).isoformat(),
         "services": {}
     }
     
@@ -73,7 +74,7 @@ def create_health_router(db, get_bot_func, sanitize_config_func):
     @router.get("/healthz")
     async def healthz():
         """Lightweight healthcheck (não toca serviços externos)."""
-        return {"status": "ok", "timestamp": datetime.now(timezone.utc).isoformat()}
+        return {"status": "ok", "timestamp": datetime.now(UTC).isoformat()}
     
     @router.get("/diagnostics")
     async def diagnostics():
@@ -92,6 +93,6 @@ def create_health_router(db, get_bot_func, sanitize_config_func):
                 "last_risk_snapshot": getattr(bot, "last_risk_snapshot", None),
             }
         except Exception as e:
-            raise HTTPException(status_code=500, detail=str(e))
+            raise HTTPException(status_code=500, detail=str(e)) from None
     
     return router

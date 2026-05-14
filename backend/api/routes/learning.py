@@ -88,6 +88,6 @@ def create_learning_router(db, get_bot_func):
                 'is_learning': bot.is_running
             }
         except Exception as e:
-            raise HTTPException(status_code=500, detail=str(e))
+            raise HTTPException(status_code=500, detail=str(e)) from None
     
     return router

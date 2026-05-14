@@ -2,13 +2,13 @@
 import asyncio
 import os
 import sys
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 # Adicionar backend ao path
 sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 
-from motor.motor_asyncio import AsyncIOMotorClient
 from dotenv import load_dotenv
+from motor.motor_asyncio import AsyncIOMotorClient
 
 load_dotenv()
 
@@ -23,10 +23,10 @@ async def update_thresholds():
         {'type': 'bot_config'},
         {'$set': {
             'strategy_min_signal_strength': 45,
-            'updated_at': datetime.now(timezone.utc).isoformat()
+            'updated_at': datetime.now(UTC).isoformat()
         }}
     )
-    print(f"✓ strategy_min_signal_strength: 60 → 45")
+    print("✓ strategy_min_signal_strength: 60 → 45")
     print(f"  (Matched: {config_result.matched_count}, Modified: {config_result.modified_count})")
     
     # 2. Atualizar parâmetros de ML
@@ -34,11 +34,11 @@ async def update_thresholds():
         {'type': 'parameters'},
         {'$set': {
             'parameters.min_confidence_score': 0.35,
-            'timestamp': datetime.now(timezone.utc)
+            'timestamp': datetime.now(UTC)
         }},
         upsert=True
     )
-    print(f"\n✓ min_confidence_score: 0.50 → 0.35")
+    print("\n✓ min_confidence_score: 0.50 → 0.35")
     print(f"  (Matched: {ml_result.matched_count}, Modified: {ml_result.modified_count}, Upserted: {ml_result.upserted_id is not None})")
     
     # 3. Verificar valores

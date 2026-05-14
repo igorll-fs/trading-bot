@@ -16,14 +16,13 @@ Fluxo:
 """
 
 import asyncio
-import logging
 import json
+import logging
+import os
 import time
 from concurrent.futures import ThreadPoolExecutor
-from typing import Dict, Optional, Any
-from datetime import datetime
 from dataclasses import dataclass
-import os
+from typing import Any
 
 logger = logging.getLogger(__name__)
 
@@ -85,7 +84,7 @@ class LLMAnalyzer:
         self.executor = ThreadPoolExecutor(max_workers=max_workers)
 
         # Cache simples: símbolo -> (response, timestamp)
-        self.cache: Dict[str, tuple] = {}
+        self.cache: dict[str, tuple] = {}
         self.cache_ttl = cache_ttl
 
         # Métricas
@@ -98,7 +97,7 @@ class LLMAnalyzer:
         }
 
         self.loaded = False
-        self.last_error: Optional[str] = None
+        self.last_error: str | None = None
 
         if self.enabled:
             self._verify_ollama()
@@ -147,7 +146,7 @@ class LLMAnalyzer:
         """Gera chave de cache única para símbolo+preço"""
         return f"{symbol}_{price:.2f}"
 
-    def _check_cache(self, cache_key: str) -> Optional[LLMResponse]:
+    def _check_cache(self, cache_key: str) -> LLMResponse | None:
         """Verifica se há resposta em cache (válida)"""
         if cache_key not in self.cache:
             return None
@@ -164,7 +163,7 @@ class LLMAnalyzer:
             del self.cache[cache_key]
             return None
 
-    def _build_entry_prompt(self, data: Dict[str, Any]) -> str:
+    def _build_entry_prompt(self, data: dict[str, Any]) -> str:
         """Constrói prompt customizado para análise de entry"""
         symbol = data.get("symbol", "UNKNOWN")
         price = data.get("price", 0)
@@ -299,7 +298,7 @@ Exemplo: BUY - RSI oversold + MACD bullish divergence
         symbol: str,
         price: float,
         technical_score: int,
-        indicators: Dict[str, float],
+        indicators: dict[str, float],
     ) -> LLMResponse:
         """
         Analisa setup de entry de forma async (non-blocking).
@@ -389,7 +388,7 @@ Exemplo: BUY - RSI oversold + MACD bullish divergence
         price: float,
         entry_price: float,
         profit_pct: float,
-        indicators: Dict[str, float],
+        indicators: dict[str, float],
     ) -> bool:
         """
         Analisa se deve sair de posição aberta.
@@ -434,7 +433,7 @@ Responda: "SIM sair" ou "NÃO manter"?
             logger.warning("[LLM] Erro em analyze_exit: %s - mantendo posição", e)
             return False
 
-    def get_metrics(self) -> Dict[str, Any]:
+    def get_metrics(self) -> dict[str, Any]:
         """Retorna métricas de uso do LLM"""
         return {
             **self.metrics,
@@ -488,7 +487,7 @@ Responda: "SIM sair" ou "NÃO manter"?
 # Factory function para criar instância global
 # ============================================================================
 
-_llm_instance: Optional[LLMAnalyzer] = None
+_llm_instance: LLMAnalyzer | None = None
 
 
 def get_llm_analyzer(force_new: bool = False) -> LLMAnalyzer:
@@ -541,7 +540,7 @@ if __name__ == "__main__":
 
         if analyzer.enabled:
             result = await analyzer.analyze_entry(**test_data)
-            print(f"\nResultado:")
+            print("\nResultado:")
             print(f"  Opinion: {result.opinion}")
             print(f"  Confidence: {result.confidence * 100:.0f}%")
             print(f"  Score: {result.score}/100")

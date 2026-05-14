@@ -3,25 +3,25 @@ Treinador de Modelo ML
 Treina e avalia modelos para filtragem de sinais
 """
 
-import os
-import sys
 import logging
+import os
 import pickle
-from datetime import datetime, timezone
-from typing import Dict, List, Tuple, Optional
+from datetime import UTC, datetime
+
 import numpy as np
 import pandas as pd
-from pymongo import MongoClient
 from dotenv import load_dotenv
+from pymongo import MongoClient
+from sklearn.ensemble import GradientBoostingClassifier, RandomForestClassifier
+from sklearn.metrics import (
+    accuracy_score,
+    f1_score,
+    precision_score,
+    recall_score,
+)
 
 # Sklearn
-from sklearn.model_selection import train_test_split, cross_val_score, TimeSeriesSplit
-from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier
 from sklearn.preprocessing import StandardScaler
-from sklearn.metrics import (
-    accuracy_score, precision_score, recall_score, f1_score,
-    classification_report, confusion_matrix
-)
 
 load_dotenv()
 
@@ -82,7 +82,7 @@ class ModelTrainer:
 
         return df
 
-    def prepare_features(self, df: pd.DataFrame) -> Tuple[np.ndarray, np.ndarray]:
+    def prepare_features(self, df: pd.DataFrame) -> tuple[np.ndarray, np.ndarray]:
         """Prepara features e target"""
 
         # Filtrar colunas que existem
@@ -110,7 +110,7 @@ class ModelTrainer:
         X: np.ndarray,
         y: np.ndarray,
         test_size: float = 0.2
-    ) -> Tuple:
+    ) -> tuple:
         """Split temporal (ultimos X% para teste)"""
         split_idx = int(len(X) * (1 - test_size))
 
@@ -126,10 +126,10 @@ class ModelTrainer:
         dataset_name: str = 'training_data',
         model_type: str = 'random_forest',
         test_size: float = 0.2
-    ) -> Dict:
+    ) -> dict:
         """Treina modelo"""
 
-        logger.info(f"[Trainer] Iniciando treinamento...")
+        logger.info("[Trainer] Iniciando treinamento...")
 
         # Carregar dados
         df = self.load_dataset(dataset_name)
@@ -177,7 +177,7 @@ class ModelTrainer:
 
         # Avaliar
         y_pred = self.model.predict(X_test_scaled)
-        y_prob = self.model.predict_proba(X_test_scaled)[:, 1]
+        self.model.predict_proba(X_test_scaled)[:, 1]
 
         # Metricas
         self.metrics = {
@@ -191,7 +191,7 @@ class ModelTrainer:
             'win_rate_predicted': y_pred.mean(),
             'model_type': model_type,
             'features_used': len(self.feature_columns),
-            'trained_at': datetime.now(timezone.utc).isoformat()
+            'trained_at': datetime.now(UTC).isoformat()
         }
 
         # Simular PnL com modelo
@@ -217,11 +217,11 @@ class ModelTrainer:
 
         # Feature importance
         if hasattr(self.model, 'feature_importances_'):
-            importance = dict(zip(self.feature_columns, self.model.feature_importances_))
+            importance = dict(zip(self.feature_columns, self.model.feature_importances_, strict=False))
             importance = dict(sorted(importance.items(), key=lambda x: x[1], reverse=True))
             self.metrics['feature_importance'] = importance
 
-        logger.info(f"[Trainer] Treinamento concluido!")
+        logger.info("[Trainer] Treinamento concluido!")
         logger.info(f"[Trainer] Accuracy: {self.metrics['accuracy']:.2%}")
         logger.info(f"[Trainer] Win Rate com modelo: {win_rate_with_model:.1f}%")
         logger.info(f"[Trainer] Win Rate sem modelo: {win_rate_without_model:.1f}%")
@@ -246,7 +246,7 @@ class ModelTrainer:
             'scaler_bytes': scaler_bytes,
             'feature_columns': self.feature_columns,
             'metrics': self.metrics,
-            'created_at': datetime.now(timezone.utc)
+            'created_at': datetime.now(UTC)
         }
 
         # Upsert
@@ -274,7 +274,7 @@ class ModelTrainer:
         logger.info(f"[Trainer] Modelo '{name}' carregado")
         return True
 
-    def predict(self, features: Dict) -> Tuple[bool, float]:
+    def predict(self, features: dict) -> tuple[bool, float]:
         """Faz predicao para um trade"""
         if self.model is None:
             return True, 0.5  # Sem modelo, aceitar tudo
