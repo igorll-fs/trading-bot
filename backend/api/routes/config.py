@@ -14,9 +14,12 @@ router = APIRouter(tags=["Config"])
 
 class PartialConfigModel(BaseModel):
     """Modelo para atualização parcial de configuração."""
+    exchange: str | None = None
     binance_api_key: str | None = None
     binance_api_secret: str | None = None
     binance_testnet: bool | None = None
+    kraken_api_key: str | None = None
+    kraken_api_secret: str | None = None
     telegram_bot_token: str | None = None
     telegram_chat_id: str | None = None
     max_positions: int | None = None

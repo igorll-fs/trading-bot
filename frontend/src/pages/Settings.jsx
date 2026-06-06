@@ -408,6 +408,41 @@ const Settings = () => {
 
       <Form {...form}>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 stagger-children">
+
+          {/* ===== EXCHANGE SELECTOR ===== */}
+          <Card className="glass-card hover:shadow-glow-emerald transition-all duration-300">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <div className="p-2 rounded-xl bg-gradient-to-br from-emerald-500 to-emerald-600 shadow-lg shadow-emerald-500/30">
+                  <SettingsIcon size={18} className="text-white" />
+                </div>
+                <span className="text-white">Exchange</span>
+              </CardTitle>
+              <CardDescription className="text-white/50">Selecione a exchange para o bot operar</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                {['binance','kraken','coinbase','kucoin'].map((ex) => (
+                  <button
+                    key={ex}
+                    type="button"
+                    onClick={() => { setValue('exchange', ex); clearErrors('exchange'); }}
+                    className={`p-4 rounded-xl border-2 text-center font-semibold capitalize transition-all ${
+                      (watch('exchange') || 'binance') === ex
+                        ? 'border-emerald-500 bg-emerald-500/10 text-emerald-400 shadow-lg shadow-emerald-500/20'
+                        : 'border-white/10 bg-white/5 text-white/60 hover:border-white/30'
+                    }`}
+                  >
+                    {ex}
+                    {(watch('exchange') || 'binance') === ex && <span className="block text-xs mt-1 text-emerald-400">✓ Ativo</span>}
+                  </button>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* ===== EXCHANGE-SPECIFIC API CREDENTIALS ===== */}
+          {(watch('exchange') || 'binance') === 'binance' && (
           <Card data-testid="binance-config-card" className="glass-card hover:shadow-glow-violet transition-all duration-300">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -534,6 +569,45 @@ const Settings = () => {
               </div>
             </CardContent>
           </Card>
+          )}
+
+          {/* ===== KRAKEN API CARD ===== */}
+          {(watch('exchange') || 'binance') === 'kraken' && (
+          <Card className="glass-card hover:shadow-glow-violet transition-all duration-300">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <div className="p-2 rounded-xl bg-gradient-to-br from-violet-500 to-violet-600 shadow-lg shadow-violet-500/30">
+                  <Key size={18} className="text-white" />
+                </div>
+                <span className="text-white">API Kraken</span>
+              </CardTitle>
+              <CardDescription className="text-white/50">
+                Configure suas credenciais da Kraken (US-based, sem bloqueio de IP)
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <FormField control={control} name="kraken_api_key" render={({ field }) => (
+                <FormItem>
+                  <FormLabel>API Key *</FormLabel>
+                  <FormControl><Input {...field} type="text" placeholder="Cole sua API Key da Kraken" /></FormControl>
+                  <FormMessage />
+                </FormItem>
+              )} />
+              <FormField control={control} name="kraken_api_secret" render={({ field }) => (
+                <FormItem>
+                  <FormLabel>API Secret *</FormLabel>
+                  <FormControl><Input {...field} type="password" placeholder="Cole seu Secret da Kraken" /></FormControl>
+                  <FormMessage />
+                </FormItem>
+              )} />
+              <div className="p-3 rounded-lg border bg-violet-50/50 dark:bg-violet-950/20 border-violet-200 dark:border-violet-800">
+                <p className="text-sm text-violet-700 dark:text-violet-400">
+                  Gere suas chaves em: kraken.com/u/security/api
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+          )}
 
           <Card data-testid="telegram-config-card" className="glass-card hover:shadow-glow-cyan transition-all duration-300">
             <CardHeader>

@@ -31,20 +31,23 @@ async def get_health_status(db, get_bot_func) -> dict[str, Any]:
         health["services"]["mongodb"] = {"status": "error", "message": str(e)[:100]}
         health["status"] = "degraded"
     
-    # Check Binance API
+    # Check Exchange API
     try:
-        if binance_manager.client:
-            binance_manager.client.ping()
-            health["services"]["binance"] = {
+        if binance_manager.is_initialized:
+            health["services"]["exchange"] = {
                 "status": "ok", 
-                "testnet": binance_manager.use_testnet
+                "exchange": binance_manager.exchange_id,
+                "paper_trade": binance_manager._paper_trade,
             }
         else:
-            health["services"]["binance"] = {"status": "not_initialized"}
+            health["services"]["exchange"] = {"status": "not_initialized"}
             health["status"] = "degraded"
     except Exception as e:
-        health["services"]["binance"] = {"status": "error", "message": str(e)[:100]}
+        health["services"]["exchange"] = {"status": "error", "message": str(e)[:100]}
         health["status"] = "degraded"
+
+    # Keep backward compat key
+    health["services"]["binance"] = health["services"]["exchange"]
     
     # Check Bot
     try:

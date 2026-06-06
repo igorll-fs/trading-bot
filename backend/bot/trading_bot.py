@@ -365,12 +365,23 @@ class TradingBot:
                 self.config.binance_testnet,
             )
 
+            # Determine API credentials based on selected exchange
+            exchange_id = self.config.exchange
+            if exchange_id == "kraken":
+                api_key = self.config.kraken_api_key
+                api_secret = self.config.kraken_api_secret
+            else:
+                api_key = self.config.binance_api_key
+                api_secret = self.config.binance_api_secret
+
             success = binance_manager.initialize(
-                api_key=self.config.binance_api_key,
-                api_secret=self.config.binance_api_secret,
+                exchange=exchange_id,
+                api_key=api_key,
+                api_secret=api_secret,
                 testnet=self.config.binance_testnet,
+                paper_trade=self.config.paper_trade,
             )
-            logger.info("Binance initialization: %s", "Success" if success else "Failed")
+            logger.info("%s initialization: %s", exchange_id.upper(), "Success" if success else "Failed")
 
             telegram_notifier.initialize(
                 bot_token=self.config.telegram_bot_token,

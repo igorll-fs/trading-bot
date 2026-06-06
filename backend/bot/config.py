@@ -41,9 +41,16 @@ def _default_selector_symbols() -> list[str]:
 class BotConfig:
     """Represents the persisted settings required by the trading bot."""
 
+    # Exchange selection
+    exchange: str = "binance"  # binance, kraken, coinbase, kucoin
+    # Binance
     binance_api_key: str = ""
     binance_api_secret: str = ""
     binance_testnet: bool = True
+    # Kraken
+    kraken_api_key: str = ""
+    kraken_api_secret: str = ""
+    # Trading mode
     paper_trade: bool = False
     telegram_bot_token: str = ""
     telegram_chat_id: str = ""
@@ -80,9 +87,12 @@ class BotConfig:
             return cls()
 
         known_fields = {
+            "exchange",
             "binance_api_key",
             "binance_api_secret",
             "binance_testnet",
+            "kraken_api_key",
+            "kraken_api_secret",
             "paper_trade",
             "telegram_bot_token",
             "telegram_chat_id",
@@ -121,9 +131,12 @@ class BotConfig:
     def from_env(cls) -> BotConfig:
         """Create a config instance using environment defaults."""
         return cls(
+            exchange=os.getenv("EXCHANGE", "binance").strip().lower(),
             binance_api_key=os.getenv("BINANCE_API_KEY", ""),
             binance_api_secret=os.getenv("BINANCE_API_SECRET", ""),
             binance_testnet=_str_to_bool(os.getenv("BINANCE_TESTNET", "true")),
+            kraken_api_key=os.getenv("KRAKEN_API_KEY", ""),
+            kraken_api_secret=os.getenv("KRAKEN_API_SECRET", ""),
             paper_trade=_str_to_bool(os.getenv("PAPER_TRADE", "false")),
             telegram_bot_token=os.getenv("TELEGRAM_BOT_TOKEN", ""),
             telegram_chat_id=os.getenv("TELEGRAM_CHAT_ID", ""),
@@ -209,9 +222,12 @@ class BotConfig:
     def sanitized(self) -> BotConfig:
         """Return a defensive copy with normalized numeric ranges."""
         return BotConfig(
+            exchange=self.exchange.strip().lower() or "binance",
             binance_api_key=self.binance_api_key.strip(),
             binance_api_secret=self.binance_api_secret.strip(),
             binance_testnet=bool(self.binance_testnet),
+            kraken_api_key=self.kraken_api_key.strip(),
+            kraken_api_secret=self.kraken_api_secret.strip(),
             paper_trade=bool(self.paper_trade),
             telegram_bot_token=self.telegram_bot_token.strip(),
             telegram_chat_id=str(self.telegram_chat_id).strip(),

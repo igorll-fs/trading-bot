@@ -18,6 +18,7 @@ import os
 from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass
 from datetime import datetime
+from typing import Any
 
 logger = logging.getLogger(__name__)
 
@@ -891,7 +892,7 @@ FATORES ADICIONAIS:
         data = response.json()
         return data.get("response", "").strip()
 
-    def _get_from_cache(self, key: str) -> any | None:
+    def _get_from_cache(self, key: str) -> Any | None:
         """Busca item no cache"""
         if key in self.cache:
             value, timestamp = self.cache[key]
