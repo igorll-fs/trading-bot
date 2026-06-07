@@ -79,6 +79,27 @@ class BotConfig:
     risk_use_position_cap: bool = True
     daily_drawdown_limit_pct: float = 0.0
     weekly_drawdown_limit_pct: float = 0.0
+
+    # Multi-strategy engine
+    multi_strategy_enabled: bool = True
+    strategy_regime_map: str = ""  # JSON override for regime→strategy mapping
+
+    # GridDCA
+    grid_levels: int = 3
+    grid_level_spacing_pct: float = 2.0
+
+    # Breakout
+    breakout_donchian_period: int = 20
+    breakout_atr_expansion: float = 1.2
+
+    # Mean Reversion
+    meanrev_bb_squeeze_threshold: float = 3.0
+    meanrev_rsi_oversold: int = 30
+    meanrev_rsi_overbought: int = 70
+
+    # ML Primary
+    ml_confidence_threshold: float = 0.55
+    ml_retrain_interval_hours: int = 24
     extra: dict[str, Any] = field(default_factory=dict)
 
     @classmethod
@@ -121,6 +142,17 @@ class BotConfig:
             "risk_use_position_cap",
             "daily_drawdown_limit_pct",
             "weekly_drawdown_limit_pct",
+            "multi_strategy_enabled",
+            "strategy_regime_map",
+            "grid_levels",
+            "grid_level_spacing_pct",
+            "breakout_donchian_period",
+            "breakout_atr_expansion",
+            "meanrev_bb_squeeze_threshold",
+            "meanrev_rsi_oversold",
+            "meanrev_rsi_overbought",
+            "ml_confidence_threshold",
+            "ml_retrain_interval_hours",
         }
 
         kwargs = {field: data[field] for field in known_fields if field in data}
@@ -217,6 +249,17 @@ class BotConfig:
             risk_use_position_cap=_str_to_bool(os.getenv("RISK_USE_POSITION_CAP", "true")),
             daily_drawdown_limit_pct=_to_float(os.getenv("DAILY_DRAWDOWN_LIMIT_PCT", 0.0), default=0.0, minimum=0.0),
             weekly_drawdown_limit_pct=_to_float(os.getenv("WEEKLY_DRAWDOWN_LIMIT_PCT", 0.0), default=0.0, minimum=0.0),
+            # Multi-strategy engine
+            multi_strategy_enabled=_str_to_bool(os.getenv("MULTI_STRATEGY_ENABLED", "true")),
+            grid_levels=_to_int(os.getenv("GRID_LEVELS", 3), default=3, minimum=2),
+            grid_level_spacing_pct=_to_float(os.getenv("GRID_LEVEL_SPACING_PCT", 2.0), default=2.0, minimum=0.5),
+            breakout_donchian_period=_to_int(os.getenv("BREAKOUT_DONCHIAN_PERIOD", 20), default=20, minimum=5),
+            breakout_atr_expansion=_to_float(os.getenv("BREAKOUT_ATR_EXPANSION", 1.2), default=1.2, minimum=1.0),
+            meanrev_bb_squeeze_threshold=_to_float(os.getenv("MEANREV_BB_SQUEEZE_THRESHOLD", 3.0), default=3.0, minimum=1.0),
+            meanrev_rsi_oversold=_to_int(os.getenv("MEANREV_RSI_OVERSOLD", 30), default=30, minimum=10),
+            meanrev_rsi_overbought=_to_int(os.getenv("MEANREV_RSI_OVERBOUGHT", 70), default=70, minimum=50),
+            ml_confidence_threshold=_to_float(os.getenv("ML_CONFIDENCE_THRESHOLD", 0.55), default=0.55, minimum=0.4),
+            ml_retrain_interval_hours=_to_int(os.getenv("ML_RETRAIN_INTERVAL_HOURS", 24), default=24, minimum=1),
         )
 
     def sanitized(self) -> BotConfig:
@@ -256,6 +299,17 @@ class BotConfig:
             risk_use_position_cap=bool(self.risk_use_position_cap),
             daily_drawdown_limit_pct=max(0.0, float(self.daily_drawdown_limit_pct or 0.0)),
             weekly_drawdown_limit_pct=max(0.0, float(self.weekly_drawdown_limit_pct or 0.0)),
+            multi_strategy_enabled=bool(self.multi_strategy_enabled),
+            strategy_regime_map=self.strategy_regime_map.strip(),
+            grid_levels=max(2, int(self.grid_levels or 3)),
+            grid_level_spacing_pct=max(0.5, float(self.grid_level_spacing_pct or 2.0)),
+            breakout_donchian_period=max(5, int(self.breakout_donchian_period or 20)),
+            breakout_atr_expansion=max(1.0, float(self.breakout_atr_expansion or 1.2)),
+            meanrev_bb_squeeze_threshold=max(1.0, float(self.meanrev_bb_squeeze_threshold or 3.0)),
+            meanrev_rsi_oversold=max(10, min(50, int(self.meanrev_rsi_oversold or 30))),
+            meanrev_rsi_overbought=max(50, min(90, int(self.meanrev_rsi_overbought or 70))),
+            ml_confidence_threshold=max(0.4, min(0.9, float(self.ml_confidence_threshold or 0.55))),
+            ml_retrain_interval_hours=max(1, int(self.ml_retrain_interval_hours or 24)),
             extra=self.extra.copy(),
         )
 

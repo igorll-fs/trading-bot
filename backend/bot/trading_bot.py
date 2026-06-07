@@ -62,6 +62,21 @@ except ImportError:
     LLM_RISK_ADVISOR_AVAILABLE = False
     logger.warning("LLM Risk Advisor not available - using base risk management")
 
+# Multi-Strategy Engine
+try:
+    from bot.strategy_engine import StrategyEngine
+    from bot.strategies import (
+        TrendFollowingStrategy,
+        MeanReversionStrategy,
+        BreakoutStrategy,
+        GridDCAStrategy,
+        MLPrimaryStrategy,
+    )
+    STRATEGY_ENGINE_AVAILABLE = True
+except ImportError:
+    STRATEGY_ENGINE_AVAILABLE = False
+    logger.warning("Strategy Engine not available - using legacy single-strategy mode")
+
 
 class TradingBot:
     def __init__(self, db):
@@ -128,6 +143,50 @@ class TradingBot:
                 logger.info("[LLM Risk Advisor] Sistema inteligente de risco inicializado!")
             except Exception as e:
                 logger.warning("[LLM Risk Advisor] Erro ao instanciar: %s", e)
+
+        # Multi-Strategy Engine
+        self.strategy_engine = None
+        self._ml_primary_strategy = None
+        if STRATEGY_ENGINE_AVAILABLE and self.config.multi_strategy_enabled:
+            try:
+                binance_client = None  # Will be set in initialize()
+                self._ml_primary_strategy = MLPrimaryStrategy(
+                    client=None,
+                    min_score=self.config.strategy_min_signal_strength,
+                    model_confidence_threshold=self.config.ml_confidence_threshold,
+                    retrain_interval_hours=self.config.ml_retrain_interval_hours,
+                )
+                self.strategy_engine = StrategyEngine()
+                self.strategy_engine.register(TrendFollowingStrategy(
+                    client=None,
+                    min_signal_strength=self.config.strategy_min_signal_strength,
+                    confirmation_timeframe=self.config.strategy_confirmation_timeframe,
+                ))
+                self.strategy_engine.register(MeanReversionStrategy(
+                    client=None,
+                    rsi_oversold=self.config.meanrev_rsi_oversold,
+                    rsi_overbought=self.config.meanrev_rsi_overbought,
+                    bb_squeeze_threshold=self.config.meanrev_bb_squeeze_threshold,
+                ))
+                self.strategy_engine.register(BreakoutStrategy(
+                    client=None,
+                    donchian_period=self.config.breakout_donchian_period,
+                    atr_expansion_threshold=self.config.breakout_atr_expansion,
+                ))
+                self.strategy_engine.register(GridDCAStrategy(
+                    client=None,
+                    grid_levels=self.config.grid_levels,
+                    level_spacing_pct=self.config.grid_level_spacing_pct,
+                ))
+                self.strategy_engine.register(self._ml_primary_strategy)
+                logger.info(
+                    "[StrategyEngine] Multi-strategy mode — %d strategies: %s",
+                    len(self.strategy_engine.strategy_names),
+                    ", ".join(self.strategy_engine.strategy_names),
+                )
+            except Exception as e:
+                logger.warning("[StrategyEngine] Init failed, fallback to legacy: %s", e)
+                self.strategy_engine = None
 
         self.selector = None
         self.strategy = None
@@ -408,6 +467,15 @@ class TradingBot:
                     min_quote_volume=self.config.selector_min_quote_volume,
                     max_spread_percent=self.config.selector_max_spread_percent,
                 )
+
+                # Inject client into strategy engine strategies
+                if self.strategy_engine is not None:
+                    for name in self.strategy_engine.strategy_names:
+                        s = self.strategy_engine._strategies.get(name)
+                        if s is not None and s.client is None:
+                            s.client = binance_manager.client
+                    logger.info("[StrategyEngine] Client injected into %d strategies",
+                                len(self.strategy_engine.strategy_names))
 
             # Initialize Learning System
             await self.learning_system.initialize()
@@ -915,6 +983,44 @@ class TradingBot:
                 else:
                     del self._sl_cooldown[opportunity["symbol"]]
 
+            # ── Multi-Strategy Engine (new path) ──
+            if self.strategy_engine is not None:
+                symbol = opportunity["symbol"]
+                df = self.strategy.get_historical_data(symbol)
+                if df is not None and len(df) >= 50:
+                    df = self.strategy.calculate_indicators(df)
+                    signals = self.strategy_engine.analyze_symbol(symbol, df)
+
+                    if signals:
+                        best = signals[0]
+                        logger.info(
+                            "[StrategyEngine] %s: %s/%s score=%d conf=%.2f (regime=%s)",
+                            symbol, best.signal, best.strategy_name,
+                            best.score, best.confidence,
+                            best.regime.regime if best.regime else "?",
+                        )
+
+                        # Merge strategy signal into opportunity
+                        opportunity["signal"] = best.signal
+                        opportunity["unified_score"] = best.score
+                        opportunity["signal_quality"] = "excellent" if best.score >= 70 else (
+                            "good" if best.score >= 55 else "fair"
+                        )
+                        opportunity["strategy_name"] = best.strategy_name
+                        opportunity["entry_price"] = best.entry_price
+
+                        # Override SL/TP with strategy-specific levels
+                        if best.stop_loss:
+                            opportunity["stop_loss"] = best.stop_loss
+                        if best.take_profit:
+                            opportunity["take_profit"] = best.take_profit
+                    else:
+                        logger.info("[StrategyEngine] No signals from any strategy for %s", symbol)
+                        return
+                else:
+                    logger.debug("[StrategyEngine] Insufficient data for %s, using legacy scoring", symbol)
+
+            # ═══════════════════════════════════════════════════════════════
             # MELHORIA: Unified score as primary gate — must meet min_signal_strength
             unified_score = opportunity.get("unified_score", 0)
             min_required = self.strategy.min_signal_strength
