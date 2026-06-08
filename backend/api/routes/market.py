@@ -33,7 +33,7 @@ def create_market_router(db, get_bot):
             prices = {}
             
             # Buscar ticker 24h para preço e variação
-            tickers = binance_manager.client.get_ticker()
+            tickers = binance_manager.get_all_tickers()
             
             for ticker in tickers:
                 symbol = ticker.get('symbol')

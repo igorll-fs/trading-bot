@@ -101,12 +101,10 @@ class TrendFollowingStrategy(BaseStrategy):
             return None
         try:
             klines = self.client.get_klines(
-                symbol=symbol, interval=self.confirmation_timeframe, limit=100
+                symbol, timeframe=self.confirmation_timeframe, limit=100
             )
             df = pd.DataFrame(klines, columns=[
                 "timestamp", "open", "high", "low", "close", "volume",
-                "close_time", "quote_volume", "trades", "taker_buy_base",
-                "taker_buy_quote", "ignore",
             ])
             for col in ["open", "high", "low", "close", "volume"]:
                 df[col] = pd.to_numeric(df[col])
@@ -205,7 +203,7 @@ class TrendFollowingStrategy(BaseStrategy):
         if self.client is None:
             return False
         try:
-            klines = self.client.get_klines(symbol="BTCUSDT", interval="15m", limit=20)
+            klines = self.client.get_klines("BTCUSDT", timeframe="15m", limit=20)
             closes = [float(k[4]) for k in klines]
             return closes[-1] < closes[-5]
         except Exception:

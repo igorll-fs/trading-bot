@@ -450,7 +450,7 @@ class TradingBot:
 
             if binance_manager.client:
                 self.strategy = TradingStrategy(
-                    binance_manager.client,
+                    binance_manager,
                     min_signal_strength=self.config.strategy_min_signal_strength,
                     activation_threshold=self.config.strategy_activation_threshold,
                     timeframe=self.config.strategy_timeframe,
@@ -458,7 +458,7 @@ class TradingBot:
                     limit=self.config.strategy_klines_limit,
                 )
                 self.selector = CryptoSelector(
-                    binance_manager.client,
+                    binance_manager,
                     self.strategy,
                     base_symbols=self.config.selector_base_symbols,
                     trending_refresh_interval=self.config.selector_trending_refresh_interval,
