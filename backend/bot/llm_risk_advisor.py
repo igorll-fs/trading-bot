@@ -146,6 +146,13 @@ class LLMRiskAdvisor:
             "adaptations_made": 0,
         }
 
+        # 🧠 Cooldown para notificações de regime adaptation
+        # Só notifica se parâmetros MUDARAM ou após cooldown (4h)
+        self._last_notified_adaptation: dict | None = None
+        self._adaptation_notify_cooldown_hours: int = int(
+            os.getenv("REGIME_NOTIFY_COOLDOWN_HOURS", "4")
+        )
+
         logger.info(
             f"[LLM Risk Advisor] Initialized - Model: {model}, "
             f"Enabled: {self.enabled}, Cache TTL: {cache_ttl}s"
@@ -833,21 +840,81 @@ FATORES ADICIONAIS:
                 f"Stop {stop_adj:.1f}x, Size {size_adj:.1f}x | {reasoning}"
             )
 
-            # Notificar adaptações importantes no Telegram
-            await self._notify_decision(
-                decision_type="regime_adapt",
-                symbol=current_regime,  # Usando regime como "symbol"
-                reasoning=reasoning,
-                data={
-                    "win_rate": win_rate,
-                    "should_trade": should_trade,
-                    "score_adjustment": score_adj,
-                    "stop_multiplier_adjustment": stop_adj,
-                    "size_adjustment": size_adj,
-                },
-            )
+            # 🧠 Só notificar se parâmetros MUDARAM ou cooldown expirou
+            current_adaptation = {
+                "score_adj": score_adj,
+                "stop_adj": stop_adj,
+                "size_adj": size_adj,
+                "regime": current_regime,
+                "should_trade": should_trade,
+            }
+            should_notify = self._should_notify_adaptation(current_adaptation)
+
+            if should_notify:
+                # Notificar adaptações importantes no Telegram
+                await self._notify_decision(
+                    decision_type="regime_adapt",
+                    symbol=current_regime,  # Usando regime como "symbol"
+                    reasoning=reasoning,
+                    data={
+                        "win_rate": win_rate,
+                        "should_trade": should_trade,
+                        "score_adjustment": score_adj,
+                        "stop_multiplier_adjustment": stop_adj,
+                        "size_adjustment": size_adj,
+                    },
+                )
+                self._last_notified_adaptation = {
+                    **current_adaptation,
+                    "timestamp": datetime.utcnow(),
+                }
 
         return result
+
+    # ==========================================================================
+    # COOLDOWN DE NOTIFICAÇÕES DE ADAPTAÇÃO
+    # ==========================================================================
+
+    def _should_notify_adaptation(self, current: dict) -> bool:
+        """
+        Verifica se deve notificar adaptação de regime.
+        
+        Só notifica se:
+        1. É a primeira adaptação (sem notificação anterior), OU
+        2. Parâmetros MUDARAM em relação à última notificação (score_adj, stop_adj, 
+           size_adj, regime ou should_trade), OU
+        3. Cooldown expirou (padrão: 4h desde última notificação)
+        
+        Args:
+            current: Dict com parâmetros atuais da adaptação
+        
+        Returns:
+            True se deve notificar, False se deve silenciar
+        """
+        if self._last_notified_adaptation is None:
+            return True  # Primeira vez — sempre notifica
+        
+        # Check 1: Parâmetros mudaram?
+        params_changed = (
+            current.get("score_adj") != self._last_notified_adaptation.get("score_adj")
+            or current.get("stop_adj") != self._last_notified_adaptation.get("stop_adj")
+            or current.get("size_adj") != self._last_notified_adaptation.get("size_adj")
+            or current.get("regime") != self._last_notified_adaptation.get("regime")
+            or current.get("should_trade") != self._last_notified_adaptation.get("should_trade")
+        )
+        
+        if params_changed:
+            return True
+        
+        # Check 2: Cooldown expirou?
+        last_ts = self._last_notified_adaptation.get("timestamp")
+        if last_ts is not None:
+            elapsed = datetime.utcnow() - last_ts
+            cooldown_hours = self._adaptation_notify_cooldown_hours
+            if elapsed.total_seconds() >= cooldown_hours * 3600:
+                return True
+        
+        return False
 
     # ==========================================================================
     # MÉTODOS AUXILIARES

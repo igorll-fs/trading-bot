@@ -155,6 +155,19 @@ async def on_startup():
     logger.info("🪞 Self-reflection service started")
 
     logger.info("Server started successfully")
+    # Auto-start trading bot on server startup
+    if os.getenv("AUTO_START_BOT", "true").lower() == "true":
+        try:
+            bot = await get_bot(db)
+            if not bot.is_running:
+                success = await bot.start()
+                if success:
+                    logger.info("Bot auto-started successfully")
+                else:
+                    logger.warning(f"Bot auto-start failed: {bot.last_error}")
+        except Exception as e:
+            logger.warning(f"Bot auto-start error: {e}")
+
 
 
 @app.on_event("shutdown")

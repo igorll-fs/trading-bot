@@ -94,6 +94,7 @@ class ExchangeManager:
         self.exchange_id: str = ""
         self._ccxt_client: Any = None
         self._paper_trade: bool = False
+        self._testnet: bool = False
         self._price_cache = get_price_cache()
         self.max_retries: int = 5
         self.retry_backoff: float = 0.5
@@ -126,6 +127,7 @@ class ExchangeManager:
 
             self.exchange_id = exchange
             self._paper_trade = paper_trade
+            self._testnet = testnet
             ccxt_id = EXCHANGE_CCXT_ID.get(exchange, exchange)
 
             # Build ccxt exchange instance
@@ -184,6 +186,10 @@ class ExchangeManager:
     @property
     def is_initialized(self) -> bool:
         return self._ccxt_client is not None
+
+    @property
+    def use_testnet(self) -> bool:
+        return self._testnet
 
     # ── Standardized symbol (ccxt uses XXXX/YYYY format) ─────────────
 
@@ -412,6 +418,55 @@ class ExchangeManager:
         except Exception as e:
             logger.warning("Error canceling order %s: %s", order_id, e)
             return False
+
+    # ── Binance-compat shims (used by strategy/selector) ─────────────────
+
+    def get_orderbook_ticker(self, symbol: str) -> dict | None:
+        """Binance-compat: returns {symbol, bidPrice, bidQty, askPrice, askQty} via order book."""
+        if not self._ccxt_client:
+            return None
+        try:
+            ccxt_sym = self._to_ccxt_symbol(symbol)
+            ob = self._execute_with_retry(
+                f"fetch_order_book:{symbol}",
+                lambda: self._ccxt_client.fetch_order_book(ccxt_sym, limit=1),
+            )
+            bid = ob["bids"][0] if ob.get("bids") else [0, 0]
+            ask = ob["asks"][0] if ob.get("asks") else [0, 0]
+            return {
+                "symbol": symbol,
+                "bidPrice": str(bid[0]),
+                "bidQty": str(bid[1]),
+                "askPrice": str(ask[0]),
+                "askQty": str(ask[1]),
+            }
+        except Exception as e:
+            logger.warning("Error fetching order book ticker for %s: %s", symbol, e)
+            return None
+
+    def get_all_tickers(self) -> list[dict]:
+        """Binance-compat: returns list of {symbol, priceChangePercent, quoteVolume, lastPrice, bidPrice, askPrice}."""
+        if not self._ccxt_client:
+            return []
+        try:
+            all_tickers = self._execute_with_retry(
+                "fetch_tickers",
+                lambda: self._ccxt_client.fetch_tickers(),
+            )
+            result = []
+            for ccxt_sym, ticker in all_tickers.items():
+                result.append({
+                    "symbol": self._from_ccxt_symbol(ccxt_sym),
+                    "priceChangePercent": str(ticker.get("percentage", 0) or 0),
+                    "quoteVolume": str(ticker.get("quoteVolume", 0) or 0),
+                    "lastPrice": str(ticker.get("last", 0) or 0),
+                    "bidPrice": str(ticker.get("bid", 0) or 0),
+                    "askPrice": str(ticker.get("ask", 0) or 0),
+                })
+            return result
+        except Exception as e:
+            logger.warning("Error fetching all tickers: %s", e)
+            return []
 
     def get_klines(self, symbol: str, timeframe: str = "15m", limit: int = 200) -> list:
         """Get OHLCV candles."""

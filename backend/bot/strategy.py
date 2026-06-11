@@ -61,7 +61,7 @@ class TradingStrategy:
             # Cache miss - buscar da API com tamanho máximo
             fetch_limit = max(requested_limit, self._KLINES_CACHE_SIZE)
             logger.debug("Cache MISS para %s - buscando da API (limit=%d)", symbol, fetch_limit)
-            klines = self.client.get_klines(symbol=symbol, interval=timeframe, limit=fetch_limit)
+            klines = self.client.get_klines(symbol, timeframe=timeframe, limit=fetch_limit)
 
             df = pd.DataFrame(
                 klines,
@@ -72,12 +72,6 @@ class TradingStrategy:
                     "low",
                     "close",
                     "volume",
-                    "close_time",
-                    "quote_volume",
-                    "trades",
-                    "taker_buy_base",
-                    "taker_buy_quote",
-                    "ignore",
                 ],
             )
 

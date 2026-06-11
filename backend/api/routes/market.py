@@ -32,8 +32,16 @@ def create_market_router(db, get_bot):
             
             prices = {}
             
-            # Buscar ticker 24h para preço e variação
-            tickers = binance_manager.client.get_ticker()
+            # Buscar ticker 24h para preço e variação (com timeout)
+            import asyncio
+            try:
+                loop = asyncio.get_event_loop()
+                tickers = await asyncio.wait_for(
+                    loop.run_in_executor(None, binance_manager.get_all_tickers),
+                    timeout=5.0
+                )
+            except (asyncio.TimeoutError, Exception):
+                return {'prices': {}, 'count': 0, 'cached': True}
             
             for ticker in tickers:
                 symbol = ticker.get('symbol')
@@ -72,8 +80,12 @@ def create_market_router(db, get_bot):
             
             signals = []
             
-            # Analisar todos os símbolos monitorados
+            # Analisar todos os símbolos monitorados (max 5s total)
+            import asyncio, time as _time
+            _start = _time.time()
             for symbol in bot.selector.symbols[:15]:  # Limitar a 15 para performance
+                if _time.time() - _start > 5.0:
+                    break  # Timeout de segurança
                 if symbol in excluded:
                     continue
                 
@@ -121,8 +133,16 @@ def create_market_router(db, get_bot):
             if not bot.strategy:
                 return {'healthy': True, 'trend': 'unknown', 'correlation_warning': False}
             
-            # Analisar BTC
-            btc_analysis = bot.strategy.analyze_symbol('BTCUSDT')
+            # Analisar BTC (com timeout)
+            import asyncio
+            try:
+                loop = asyncio.get_event_loop()
+                btc_analysis = await asyncio.wait_for(
+                    loop.run_in_executor(None, bot.strategy.analyze_symbol, 'BTCUSDT'),
+                    timeout=5.0
+                )
+            except (asyncio.TimeoutError, Exception):
+                return {'healthy': True, 'trend': 'unknown', 'correlation_warning': False, 'cached': True}
             
             if not btc_analysis:
                 return {'healthy': True, 'trend': 'unknown', 'correlation_warning': False}
@@ -161,7 +181,15 @@ def create_market_router(db, get_bot):
                 return {'regime': 'unknown', 'description': 'Bot não inicializado'}
             
             # Analisar BTC como proxy do mercado
-            df = bot.strategy.get_historical_data('BTCUSDT', limit=50)
+            import asyncio
+            try:
+                loop = asyncio.get_event_loop()
+                df = await asyncio.wait_for(
+                    loop.run_in_executor(None, bot.strategy.get_historical_data, 'BTCUSDT', 50),
+                    timeout=5.0
+                )
+            except (asyncio.TimeoutError, Exception):
+                return {'regime': 'unknown', 'description': 'Exchange timeout', 'cached': True}
             
             if df is None or len(df) < 30:
                 return {'regime': 'unknown', 'description': 'Dados insuficientes'}

@@ -325,7 +325,10 @@ class AdvancedLearningSystem:
             if not self.observe_only:
                 await self._optimize_parameters()
 
-            # Salvar
+            # 🧠 CORRIGIDO: Sempre salvar análise do trade, mesmo após threshold de otimização
+            await self._save_analysis(trade)
+
+            # Salvar estado (parâmetros)
             await self._save_state(trade)
 
         except Exception as e:
@@ -541,8 +544,9 @@ class AdvancedLearningSystem:
         try:
             record = {
                 "type": "parameters",
-                "params": self.params.copy(),
+                "parameters": self.params.copy(),
                 "metrics": self.metrics.copy(),
+                "total_adjustments": self.metrics.get("total_trades", 0),
                 "trigger": {
                     "symbol": trigger_trade.get("symbol"),
                     "pnl": trigger_trade.get("pnl"),
@@ -550,7 +554,7 @@ class AdvancedLearningSystem:
                 "timestamp": datetime.now(UTC),
             }
 
-            await self.db.advanced_learning.insert_one(record)
+            await self.db.learning_data.insert_one(record)
             logger.info("[ML] Estado salvo no MongoDB")
 
         except Exception as e:
@@ -559,17 +563,23 @@ class AdvancedLearningSystem:
     async def _save_analysis(self, trade: dict):
         """Salva análise do trade"""
         try:
+            pnl_val = trade.get("pnl", 0)
+            ml_score_val = trade.get("ml_score", trade.get("confidence_score", 0.0))
             analysis = {
                 "type": "trade_analysis",
+                "trade_id": trade.get("_id"),  # 🧠 CORRIGIDO: link com trade original
                 "symbol": trade.get("symbol"),
                 "side": trade.get("side"),
-                "pnl": trade.get("pnl"),
+                "pnl": pnl_val,
                 "roe": trade.get("roe"),
+                "won": pnl_val > 0,
+                "ml_score": ml_score_val,
+                "confidence_score": ml_score_val,
                 "patterns": self.pattern_analyzer._extract_patterns(trade),
                 "timestamp": datetime.now(UTC),
             }
 
-            await self.db.advanced_learning.insert_one(analysis)
+            await self.db.learning_data.insert_one(analysis)
 
         except Exception as e:
             logger.error(f"Erro ao salvar análise: {e}")

@@ -37,24 +37,27 @@ class MarketDataCache:
             
         entry = self.cache[key]
         
-        # Verificar se expirou
-        if time.time() - entry['timestamp'] > self.ttl:
+        # Verificar se expirou (usa TTL por entrada ou global)
+        entry_ttl = entry.get('ttl', self.ttl)
+        if time.time() - entry['timestamp'] > entry_ttl:
             del self.cache[key]
             return None
             
         return entry['value']
     
-    def set(self, key: str, value: Any) -> None:
+    def set(self, key: str, value: Any, ttl: int | None = None) -> None:
         """
         Armazenar valor no cache
         
         Args:
             key: Chave do cache
             value: Valor a armazenar
+            ttl: TTL específico para esta entrada (opcional, usa o TTL global se None)
         """
         self.cache[key] = {
             'value': value,
-            'timestamp': time.time()
+            'timestamp': time.time(),
+            'ttl': ttl if ttl is not None else self.ttl,
         }
     
     def get_or_set(self, key: str, fetch_func) -> Any | None:
@@ -90,7 +93,7 @@ class MarketDataCache:
         now = time.time()
         expired_keys = [
             key for key, entry in self.cache.items()
-            if now - entry['timestamp'] > self.ttl
+            if now - entry['timestamp'] > entry.get('ttl', self.ttl)
         ]
         
         for key in expired_keys:
@@ -111,7 +114,7 @@ class MarketDataCache:
         now = time.time()
         valid_entries = sum(
             1 for entry in self.cache.values()
-            if now - entry['timestamp'] <= self.ttl
+            if now - entry['timestamp'] <= entry.get('ttl', self.ttl)
         )
         
         return {

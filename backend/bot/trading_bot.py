@@ -62,6 +62,21 @@ except ImportError:
     LLM_RISK_ADVISOR_AVAILABLE = False
     logger.warning("LLM Risk Advisor not available - using base risk management")
 
+# Multi-Strategy Engine
+try:
+    from bot.strategy_engine import StrategyEngine
+    from bot.strategies import (
+        TrendFollowingStrategy,
+        MeanReversionStrategy,
+        BreakoutStrategy,
+        GridDCAStrategy,
+        MLPrimaryStrategy,
+    )
+    STRATEGY_ENGINE_AVAILABLE = True
+except ImportError:
+    STRATEGY_ENGINE_AVAILABLE = False
+    logger.warning("Strategy Engine not available - using legacy single-strategy mode")
+
 
 class TradingBot:
     def __init__(self, db):
@@ -129,6 +144,50 @@ class TradingBot:
             except Exception as e:
                 logger.warning("[LLM Risk Advisor] Erro ao instanciar: %s", e)
 
+        # Multi-Strategy Engine
+        self.strategy_engine = None
+        self._ml_primary_strategy = None
+        if STRATEGY_ENGINE_AVAILABLE and self.config.multi_strategy_enabled:
+            try:
+                binance_client = None  # Will be set in initialize()
+                self._ml_primary_strategy = MLPrimaryStrategy(
+                    client=None,
+                    min_score=self.config.strategy_min_signal_strength,
+                    model_confidence_threshold=self.config.ml_confidence_threshold,
+                    retrain_interval_hours=self.config.ml_retrain_interval_hours,
+                )
+                self.strategy_engine = StrategyEngine()
+                self.strategy_engine.register(TrendFollowingStrategy(
+                    client=None,
+                    min_signal_strength=self.config.strategy_min_signal_strength,
+                    confirmation_timeframe=self.config.strategy_confirmation_timeframe,
+                ))
+                self.strategy_engine.register(MeanReversionStrategy(
+                    client=None,
+                    rsi_oversold=self.config.meanrev_rsi_oversold,
+                    rsi_overbought=self.config.meanrev_rsi_overbought,
+                    bb_squeeze_threshold=self.config.meanrev_bb_squeeze_threshold,
+                ))
+                self.strategy_engine.register(BreakoutStrategy(
+                    client=None,
+                    donchian_period=self.config.breakout_donchian_period,
+                    atr_expansion_threshold=self.config.breakout_atr_expansion,
+                ))
+                self.strategy_engine.register(GridDCAStrategy(
+                    client=None,
+                    grid_levels=self.config.grid_levels,
+                    level_spacing_pct=self.config.grid_level_spacing_pct,
+                ))
+                self.strategy_engine.register(self._ml_primary_strategy)
+                logger.info(
+                    "[StrategyEngine] Multi-strategy mode — %d strategies: %s",
+                    len(self.strategy_engine.strategy_names),
+                    ", ".join(self.strategy_engine.strategy_names),
+                )
+            except Exception as e:
+                logger.warning("[StrategyEngine] Init failed, fallback to legacy: %s", e)
+                self.strategy_engine = None
+
         self.selector = None
         self.strategy = None
         self.check_interval = self.config.loop_interval_seconds
@@ -189,7 +248,7 @@ class TradingBot:
                 self.api_latency_threshold,
                 getattr(func, "__name__", str(func)),
             )
-            self._record_failure()
+            # Latencia alta = aviso, NAO falha — nao aciona circuit breaker
         # Reset do circuit breaker é feito explicitamente em _get_balance e
         # _get_price_map — operações que medem saúde real da exchange.
         # Não resetar aqui para evitar que chamadas auxiliares (get_symbol_precision,
@@ -247,7 +306,7 @@ class TradingBot:
                 self._record_failure()
                 self.metrics["binance_errors"] += 1
                 await telegram_notifier.send_message_async(
-                    "Erro critico ao consultar saldo na Binance. Verifique credenciais ou limite de API."
+                    f"Erro critico ao consultar saldo na {self.config.exchange.upper()}. Verifique credenciais ou limite de API."
                 )
                 return None
 
@@ -275,7 +334,7 @@ class TradingBot:
             self._record_failure()
             self.metrics["binance_errors"] += 1
             await telegram_notifier.send_message_async(
-                "Erro critico ao buscar precos na Binance. Cheque as credenciais ou status da API."
+                f"Erro critico ao buscar precos na {self.config.exchange.upper()}. Cheque as credenciais ou status da API."
             )
             return {}
 
@@ -391,7 +450,7 @@ class TradingBot:
 
             if binance_manager.client:
                 self.strategy = TradingStrategy(
-                    binance_manager.client,
+                    binance_manager,
                     min_signal_strength=self.config.strategy_min_signal_strength,
                     activation_threshold=self.config.strategy_activation_threshold,
                     timeframe=self.config.strategy_timeframe,
@@ -399,7 +458,7 @@ class TradingBot:
                     limit=self.config.strategy_klines_limit,
                 )
                 self.selector = CryptoSelector(
-                    binance_manager.client,
+                    binance_manager,
                     self.strategy,
                     base_symbols=self.config.selector_base_symbols,
                     trending_refresh_interval=self.config.selector_trending_refresh_interval,
@@ -408,6 +467,19 @@ class TradingBot:
                     min_quote_volume=self.config.selector_min_quote_volume,
                     max_spread_percent=self.config.selector_max_spread_percent,
                 )
+
+                # Inject strategy_engine into selector for multi-strategy candidate filtering
+                if self.strategy_engine is not None:
+                    self.selector.strategy_engine = self.strategy_engine
+
+                # Inject client into strategy engine strategies
+                if self.strategy_engine is not None:
+                    for name in self.strategy_engine.strategy_names:
+                        s = self.strategy_engine._strategies.get(name)
+                        if s is not None and s.client is None:
+                            s.client = binance_manager.client
+                    logger.info("[StrategyEngine] Client injected into %d strategies",
+                                len(self.strategy_engine.strategy_names))
 
             # Initialize Learning System
             await self.learning_system.initialize()
@@ -454,12 +526,12 @@ class TradingBot:
                 return False
 
             if not binance_manager.client:
-                logger.error("Binance client not initialized")
-                self.last_error = "Binance client not initialized"
+                logger.error(f"Exchange client ({self.config.exchange}) not initialized")
+                self.last_error = f"Exchange client ({self.config.exchange}) not initialized"
                 return False
 
             # VERIFICACAO E LIMPEZA INICIAL
-            logger.info("Verificando posicoes existentes na Binance antes de iniciar...")
+            logger.info(f"Verificando posicoes existentes na {self.config.exchange.upper()} antes de iniciar...")
             await telegram_notifier.send_message_async("Verificando posicoes abertas na conta...")
 
             cleanup_result = await self._cleanup_existing_positions()
@@ -555,7 +627,7 @@ class TradingBot:
                     await telegram_notifier.send_message_async(
                         f"⚠️ ATENÇÃO: {len(failed_positions)} posições não foram fechadas!\n"
                         f"Símbolos: {', '.join(symbols)}\n"
-                        f"Verifique manualmente na Binance."
+                        f"Verifique manualmente na {self.config.exchange.upper()}."
                     )
                 else:
                     logger.info("All positions closed safely")
@@ -915,6 +987,44 @@ class TradingBot:
                 else:
                     del self._sl_cooldown[opportunity["symbol"]]
 
+            # ── Multi-Strategy Engine (new path) ──
+            if self.strategy_engine is not None:
+                symbol = opportunity["symbol"]
+                df = self.strategy.get_historical_data(symbol)
+                if df is not None and len(df) >= 50:
+                    df = self.strategy.calculate_indicators(df)
+                    signals = self.strategy_engine.analyze_symbol(symbol, df)
+
+                    if signals:
+                        best = signals[0]
+                        logger.info(
+                            "[StrategyEngine] %s: %s/%s score=%d conf=%.2f (regime=%s)",
+                            symbol, best.signal, best.strategy_name,
+                            best.score, best.confidence,
+                            best.regime.regime if best.regime else "?",
+                        )
+
+                        # Merge strategy signal into opportunity
+                        opportunity["signal"] = best.signal
+                        opportunity["unified_score"] = best.score
+                        opportunity["signal_quality"] = "excellent" if best.score >= 70 else (
+                            "good" if best.score >= 55 else "fair"
+                        )
+                        opportunity["strategy_name"] = best.strategy_name
+                        opportunity["entry_price"] = best.entry_price
+
+                        # Override SL/TP with strategy-specific levels
+                        if best.stop_loss:
+                            opportunity["stop_loss"] = best.stop_loss
+                        if best.take_profit:
+                            opportunity["take_profit"] = best.take_profit
+                    else:
+                        logger.info("[StrategyEngine] No signals from any strategy for %s", symbol)
+                        return
+                else:
+                    logger.debug("[StrategyEngine] Insufficient data for %s, using legacy scoring", symbol)
+
+            # ═══════════════════════════════════════════════════════════════
             # MELHORIA: Unified score as primary gate — must meet min_signal_strength
             unified_score = opportunity.get("unified_score", 0)
             min_required = self.strategy.min_signal_strength
@@ -947,8 +1057,20 @@ class TradingBot:
                         self._signals_last_hour.popleft()
                     recent_signals_count = len(self._signals_last_hour)
 
+                    # 🧠 Detectar regime de mercado se não definido na opportunity
+                    current_regime = opportunity.get("market_regime")
+                    if not current_regime or current_regime == "unknown":
+                        try:
+                            if self.strategy and hasattr(self.strategy, 'detect_market_regime'):
+                                regime_data = self.strategy.detect_market_regime(symbol="BTCUSDT")
+                                current_regime = regime_data.get("regime", "unknown") if isinstance(regime_data, dict) else "unknown"
+                            else:
+                                current_regime = "unknown"
+                        except Exception:
+                            current_regime = "unknown"
+
                     regime_adaptation = await self.risk_advisor.get_regime_adaptation(
-                        current_regime=opportunity.get("market_regime", "unknown"),
+                        current_regime=current_regime,
                         recent_signals_count=recent_signals_count,
                     )
 
@@ -1542,7 +1664,7 @@ class TradingBot:
                 await telegram_notifier.send_message_async(
                     f"Falha temporaria ao executar ordem para {opportunity['symbol']}. Tentaremos novamente no proximo ciclo."
                 )
-                await self._notify_observing("Erro temporario na Binance - aguardando novo ciclo.")
+                await self._notify_observing(f"Erro temporario na {self.config.exchange.upper()} - aguardando novo ciclo.")
                 return
             except BinanceCriticalError as exc:
                 logger.error(
@@ -1554,10 +1676,10 @@ class TradingBot:
                 )
                 self.metrics["binance_errors"] += 1
                 await telegram_notifier.send_message_async(
-                    f"Binance rejeitou ordem para {opportunity['symbol']}: {exc}"
+                    f"{self.config.exchange.upper()} rejeitou ordem para {opportunity['symbol']}: {exc}"
                 )
                 await self._notify_observing(
-                    "Ordem rejeitada pela Binance - aguardando nova configuracao."
+                    f"Ordem rejeitada pela {self.config.exchange.upper()} - aguardando nova configuracao."
                 )
                 return
             except Exception as exc:
@@ -2118,7 +2240,7 @@ class TradingBot:
                 }
 
             if not open_orders:
-                logger.info("Nenhuma ordem aberta na Binance. Conta limpa!")
+                logger.info("Nenhuma ordem aberta na exchange. Conta limpa!")
                 await telegram_notifier.send_message_async("Conta limpa - Nenhuma ordem aberta")
 
                 # Limpar MongoDB tambem (caso tenha lixo)
@@ -2242,19 +2364,39 @@ class TradingBot:
             balance = 0
             
             if paper_trade:
-                # Paper mode: use configured paper balance from env
-                balance = float(os.getenv("PAPER_TRADE_BALANCE", 1000.0))
+                # Paper mode: compute real equity from trades
+                paper_initial = float(os.getenv("PAPER_TRADE_BALANCE", 1000.0))
+                invested = sum(p.get("position_size", 0) for p in self.positions)
+                try:
+                    pipeline = [{"$group": {"_id": None, "total": {"$sum": "$pnl"}}}]
+                    result = await self.db.trades.aggregate(pipeline).to_list(length=1)
+                    total_pnl = result[0]["total"] if result else 0.0
+                except Exception:
+                    total_pnl = 0.0
+                equity = paper_initial + total_pnl
+                available = equity - invested
+                balance = available
             elif binance_manager.client:
                 # Live mode: fetch real balance from Binance
                 cached_balance = await self._get_account_balance()
                 balance = cached_balance if cached_balance is not None else 0
+                equity = balance
+                available = balance
+                invested = sum(p.get("position_size", 0) for p in self.positions)
+                total_pnl = 0.0
+                paper_initial = 0.0
 
             # Sanitize positions to convert ObjectId to string
             sanitized_positions = self._sanitize_positions(self.positions)
 
             return {
                 "is_running": self.is_running,
-                "balance": balance,
+                "balance": round(balance, 2),
+                "equity": round(equity, 2),
+                "available": round(available, 2),
+                "invested": round(invested, 2),
+                "total_pnl": round(total_pnl, 2),
+                "paper_initial": paper_initial,
                 "open_positions": len(self.positions),
                 "max_positions": self.risk_manager.max_positions,
                 "positions": sanitized_positions,
@@ -2311,7 +2453,7 @@ class TradingBot:
                 f"⚠️ CIRCUIT BREAKER ATIVADO\n"
                 f"Falhas consecutivas: {self._consecutive_failures}\n"
                 f"Pausando operações por {self._circuit_breaker_cooldown // 60} minutos.\n"
-                f"Verifique conexão com Binance."
+                f"Verifique conexao com {self.config.exchange.upper()}."
             )
         )
 

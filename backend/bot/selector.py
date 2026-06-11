@@ -44,6 +44,7 @@ class CryptoSelector:
         self._stats_cache = get_stats_cache()
         self._price_cache = get_price_cache()
         self.strategy = strategy
+        self.strategy_engine = getattr(strategy, '_engine', None)  # set externally
 
         # Base universe (alta liquidez)
         self.base_symbols = list(base_symbols or DEFAULT_SELECTOR_BASE_SYMBOLS)
@@ -65,7 +66,7 @@ class CryptoSelector:
             return
 
         try:
-            tickers = self._stats_cache.get_or_set("ticker_24h_snapshot", self.client.get_ticker)
+            tickers = self._stats_cache.get_or_set("ticker_24h_snapshot", self.client.get_all_tickers)
             if not tickers:
                 raise ValueError("ticker snapshot vazio")
             snapshot: dict[str, tuple[float, float]] = {}
@@ -73,16 +74,21 @@ class CryptoSelector:
             for ticker in tickers:
                 symbol = ticker.get("symbol")
                 if symbol not in self.base_symbols:
+                    if symbol and any(s in str(symbol) for s in self.base_symbols[:3]):
+                        logger.debug("[Trending] %s not in base_symbols (len=%d)", symbol, len(self.base_symbols))
                     continue
                 try:
                     change = float(ticker.get("priceChangePercent", 0.0))
                     quote_volume = float(ticker.get("quoteVolume", 0.0))
                 except (TypeError, ValueError):
+                    logger.debug("[Trending] %s couldn't parse change/volume", symbol)
                     continue
 
                 if change < self.min_change_percent:
+                    logger.debug("[Trending] %s change=%.4f < min=%.2f — skipped", symbol, change, self.min_change_percent)
                     continue
 
+                logger.debug("[Trending] %s PASS: change=%.4f vol=%.0f", symbol, change, quote_volume)
                 snapshot[symbol] = (change, quote_volume)
 
             if snapshot:
@@ -136,13 +142,48 @@ class CryptoSelector:
 
     def _analyze_candidate(self, symbol: str) -> dict | None:
         """Analisa um único símbolo; retorna None se filtrado ou HOLD."""
-        if not self._passes_liquidity_filters(symbol):
-            logger.info("%s filtrado por spread/volume insuficiente", symbol)
-            return None
+        # SKIP liquidity filter temporarily — let strategy decide
+        # if not self._passes_liquidity_filters(symbol):
+        #     logger.info("%s filtrado por spread/volume insuficiente", symbol)
+        #     return None
 
         analysis = self.strategy.analyze_symbol(symbol)
         if not analysis or analysis["signal"] == "HOLD":
-            return None
+            # Fallback: try StrategyEngine for non-trending strategies
+            if self.strategy_engine is not None:
+                try:
+                    df = self.strategy.get_historical_data(symbol)
+                    if df is not None and len(df) >= 50:
+                        df = self.strategy.calculate_indicators(df)
+                        signals = self.strategy_engine.analyze_symbol(symbol, df)
+                        if signals:
+                            best = signals[0]
+                            analysis = {
+                                "symbol": symbol,
+                                "signal": best.signal,
+                                "strength": int(best.score * 10),
+                                "unified_score": int(best.score),
+                                "signal_quality": "good" if best.confidence > 0.5 else "fair",
+                                "strategy": best.strategy_name,
+                                "strategy_name": best.strategy_name,
+                                "price": best.entry_price,
+                                "entry_price": best.entry_price,
+                                "stop_loss": best.stop_loss,
+                                "take_profit": best.take_profit,
+                                "confidence": best.confidence,
+                                "volume_ratio": 1.0,
+                                "volatility": 1.0,
+                                "score": best.score,
+                            }
+                            logger.info(
+                                "[MultiStrat] %s: Signal=%s via %s (score=%.1f, conf=%.2f)",
+                                symbol, best.signal, best.strategy_name, best.score, best.confidence,
+                            )
+                            # Don't return None — fall through to score calculation
+                except Exception as e:
+                    logger.debug("[MultiStrat] Fallback failed for %s: %s", symbol, e)
+            if not analysis or analysis.get("signal") == "HOLD":
+                return None
 
         if "unified_score" in analysis:
             score = analysis["unified_score"]
@@ -230,6 +271,13 @@ class CryptoSelector:
         Em alta volatilidade, permite spreads maiores (mercado mais volátil = spreads maiores).
         """
         try:
+            # Skip symbols not available on this exchange
+            if hasattr(self.client, '_ccxt_client') and self.client._ccxt_client:
+                ccxt_sym = self.client._to_ccxt_symbol(symbol)
+                if ccxt_sym not in self.client._ccxt_client.markets:
+                    logger.warning("[Liquidity] %s (%s) NOT in kraken markets — skipping", symbol, ccxt_sym)
+                    return False
+
             # MELHORIA: Detectar regime de mercado para ajustar filtros
             regime = self.strategy.detect_market_regime()
             volatility_multiplier = 1.0
@@ -265,16 +313,17 @@ class CryptoSelector:
                         )
                         return False
 
-            # Volume no timeframe configurado (quote volume)
+            # Volume no timeframe configurado (quote volume estimado via close * volume)
             df = self.strategy.get_historical_data(
                 symbol, timeframe=self.strategy.timeframe, limit=30
             )
             if df is None or df.empty:
                 return False
 
-            # quote_volume já vem como string; garantir numérico
+            # ccxt OHLCV só tem 6 colunas — estimar quote_volume = close * volume
             try:
-                quote_volume = pd.to_numeric(df["quote_volume"]).tail(8).sum()
+                df["quote_volume"] = pd.to_numeric(df["close"]) * pd.to_numeric(df["volume"])
+                quote_volume = df["quote_volume"].tail(8).sum()
             except Exception:
                 quote_volume = 0
 

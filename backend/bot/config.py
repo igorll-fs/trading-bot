@@ -63,7 +63,7 @@ class BotConfig:
     strategy_timeframe: str = "15m"
     strategy_confirmation_timeframe: str = "1h"
     strategy_klines_limit: int = 200
-    strategy_min_signal_strength: int = 80  # CORREÇÃO: Aumentado de 60 para 80
+    strategy_min_signal_strength: int = 55  # OTIMIZADO: Equilíbrio entre seletividade e oportunidades
     strategy_activation_threshold: float = 9.0  # Raw score threshold for signal activation
     selector_base_symbols: list[str] = field(default_factory=_default_selector_symbols)
     selector_trending_refresh_interval: int = 120
@@ -71,14 +71,35 @@ class BotConfig:
     selector_trending_pool_size: int = 10
     selector_min_quote_volume: float = 100_000.0  # CORREÇÃO: Aumentado de 50k para 100k (liquidez)
     selector_max_spread_percent: float = DEFAULT_SELECTOR_MAX_SPREAD_PERCENT
-    risk_stop_loss_percentage: float = 1.2  # CORREÇÃO: Reduzido de 1.5 para 1.2 (stops mais apertados)
-    risk_reward_ratio: float = 2.5  # CORREÇÃO: Aumentado de 2.0 para 2.5 (melhor R/R)
-    risk_trailing_activation: float = 0.75
-    risk_trailing_step: float = 0.5
+    risk_stop_loss_percentage: float = 0.8  # OTIMIZADO: Stops mais apertados para reduzir perdas no TIME_STOP
+    risk_reward_ratio: float = 2.0  # OTIMIZADO: TP mais realista para aumentar taxa de acerto
+    risk_trailing_activation: float = 0.30  # OTIMIZADO: Ativa trailing mais rápido
+    risk_trailing_step: float = 0.3  # OTIMIZADO: Trailing mais granular
     loop_interval_seconds: float = 15.0
     risk_use_position_cap: bool = True
     daily_drawdown_limit_pct: float = 0.0
     weekly_drawdown_limit_pct: float = 0.0
+
+    # Multi-strategy engine
+    multi_strategy_enabled: bool = True
+    strategy_regime_map: str = ""  # JSON override for regime→strategy mapping
+
+    # GridDCA
+    grid_levels: int = 3
+    grid_level_spacing_pct: float = 2.0
+
+    # Breakout
+    breakout_donchian_period: int = 20
+    breakout_atr_expansion: float = 1.2
+
+    # Mean Reversion
+    meanrev_bb_squeeze_threshold: float = 3.0
+    meanrev_rsi_oversold: int = 30
+    meanrev_rsi_overbought: int = 70
+
+    # ML Primary
+    ml_confidence_threshold: float = 0.58  # OTIMIZADO: Mais seletivo (dados mostram ML>=0.65 perde menos)
+    ml_retrain_interval_hours: int = 24
     extra: dict[str, Any] = field(default_factory=dict)
 
     @classmethod
@@ -121,6 +142,17 @@ class BotConfig:
             "risk_use_position_cap",
             "daily_drawdown_limit_pct",
             "weekly_drawdown_limit_pct",
+            "multi_strategy_enabled",
+            "strategy_regime_map",
+            "grid_levels",
+            "grid_level_spacing_pct",
+            "breakout_donchian_period",
+            "breakout_atr_expansion",
+            "meanrev_bb_squeeze_threshold",
+            "meanrev_rsi_oversold",
+            "meanrev_rsi_overbought",
+            "ml_confidence_threshold",
+            "ml_retrain_interval_hours",
         }
 
         kwargs = {field: data[field] for field in known_fields if field in data}
@@ -154,8 +186,8 @@ class BotConfig:
             strategy_confirmation_timeframe=os.getenv("STRATEGY_CONFIRMATION_TIMEFRAME", "1h"),
             strategy_klines_limit=_to_int(os.getenv("STRATEGY_KLINES_LIMIT", 200), default=200, minimum=10),
             strategy_min_signal_strength=_to_int(
-                os.getenv("STRATEGY_MIN_SIGNAL_STRENGTH", 60),
-                default=60,
+                os.getenv("STRATEGY_MIN_SIGNAL_STRENGTH", 55),
+                default=55,
                 minimum=0,
             ),
             strategy_activation_threshold=_to_float(
@@ -171,7 +203,7 @@ class BotConfig:
             ),
             selector_min_change_percent=_to_float(
                 os.getenv("SELECTOR_MIN_CHANGE_PERCENT", 0.5),
-                default=0.5,
+                default=0.3,
                 minimum=0.0,
             ),
             selector_trending_pool_size=_to_int(
@@ -190,8 +222,8 @@ class BotConfig:
                 minimum=0.0,
             ),
             risk_stop_loss_percentage=_to_float(
-                os.getenv("RISK_STOP_LOSS_PERCENTAGE", 1.5),
-                default=1.5,
+                os.getenv("RISK_STOP_LOSS_PERCENTAGE", 0.8),
+                default=0.8,
                 minimum=0.1,
             ),
             risk_reward_ratio=_to_float(
@@ -200,13 +232,13 @@ class BotConfig:
                 minimum=0.5,
             ),
             risk_trailing_activation=_to_float(
-                os.getenv("RISK_TRAILING_ACTIVATION", 0.75),
-                default=0.75,
+                os.getenv("RISK_TRAILING_ACTIVATION", 0.30),
+                default=0.30,
                 minimum=0.0,
             ),
             risk_trailing_step=_to_float(
-                os.getenv("RISK_TRAILING_STEP", 0.5),
-                default=0.5,
+                os.getenv("RISK_TRAILING_STEP", 0.3),
+                default=0.3,
                 minimum=0.0,
             ),
             loop_interval_seconds=_to_float(
@@ -217,6 +249,17 @@ class BotConfig:
             risk_use_position_cap=_str_to_bool(os.getenv("RISK_USE_POSITION_CAP", "true")),
             daily_drawdown_limit_pct=_to_float(os.getenv("DAILY_DRAWDOWN_LIMIT_PCT", 0.0), default=0.0, minimum=0.0),
             weekly_drawdown_limit_pct=_to_float(os.getenv("WEEKLY_DRAWDOWN_LIMIT_PCT", 0.0), default=0.0, minimum=0.0),
+            # Multi-strategy engine
+            multi_strategy_enabled=_str_to_bool(os.getenv("MULTI_STRATEGY_ENABLED", "true")),
+            grid_levels=_to_int(os.getenv("GRID_LEVELS", 3), default=3, minimum=2),
+            grid_level_spacing_pct=_to_float(os.getenv("GRID_LEVEL_SPACING_PCT", 2.0), default=2.0, minimum=0.5),
+            breakout_donchian_period=_to_int(os.getenv("BREAKOUT_DONCHIAN_PERIOD", 20), default=20, minimum=5),
+            breakout_atr_expansion=_to_float(os.getenv("BREAKOUT_ATR_EXPANSION", 1.2), default=1.2, minimum=1.0),
+            meanrev_bb_squeeze_threshold=_to_float(os.getenv("MEANREV_BB_SQUEEZE_THRESHOLD", 3.0), default=3.0, minimum=1.0),
+            meanrev_rsi_oversold=_to_int(os.getenv("MEANREV_RSI_OVERSOLD", 30), default=30, minimum=10),
+            meanrev_rsi_overbought=_to_int(os.getenv("MEANREV_RSI_OVERBOUGHT", 70), default=70, minimum=50),
+            ml_confidence_threshold=_to_float(os.getenv("ML_CONFIDENCE_THRESHOLD", 0.58), default=0.58, minimum=0.4),
+            ml_retrain_interval_hours=_to_int(os.getenv("ML_RETRAIN_INTERVAL_HOURS", 24), default=24, minimum=1),
         )
 
     def sanitized(self) -> BotConfig:
@@ -256,6 +299,17 @@ class BotConfig:
             risk_use_position_cap=bool(self.risk_use_position_cap),
             daily_drawdown_limit_pct=max(0.0, float(self.daily_drawdown_limit_pct or 0.0)),
             weekly_drawdown_limit_pct=max(0.0, float(self.weekly_drawdown_limit_pct or 0.0)),
+            multi_strategy_enabled=bool(self.multi_strategy_enabled),
+            strategy_regime_map=self.strategy_regime_map.strip(),
+            grid_levels=max(2, int(self.grid_levels or 3)),
+            grid_level_spacing_pct=max(0.5, float(self.grid_level_spacing_pct or 2.0)),
+            breakout_donchian_period=max(5, int(self.breakout_donchian_period or 20)),
+            breakout_atr_expansion=max(1.0, float(self.breakout_atr_expansion or 1.2)),
+            meanrev_bb_squeeze_threshold=max(1.0, float(self.meanrev_bb_squeeze_threshold or 3.0)),
+            meanrev_rsi_oversold=max(10, min(50, int(self.meanrev_rsi_oversold or 30))),
+            meanrev_rsi_overbought=max(50, min(90, int(self.meanrev_rsi_overbought or 70))),
+            ml_confidence_threshold=max(0.4, min(0.9, float(self.ml_confidence_threshold or 0.55))),
+            ml_retrain_interval_hours=max(1, int(self.ml_retrain_interval_hours or 24)),
             extra=self.extra.copy(),
         )
 
