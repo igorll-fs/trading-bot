@@ -24,7 +24,7 @@
 
 ## 📌 What Is This?
 
-An **end-to-end automated trading system** connected to Binance, composed of:
+An **end-to-end automated trading system** connected to Kraken (via ccxt multi-exchange), composed of:
 
 | Layer              | Technology                  | Responsibility                              |
 | ------------------ | --------------------------- | ------------------------------------------- |
@@ -33,7 +33,7 @@ An **end-to-end automated trading system** connected to Binance, composed of:
 | **Database**       | MongoDB (async Motor)       | Trade history, ML models, reflections       |
 | **AI / LLM**       | Ollama + Mistral 7B         | Contextual risk analysis (optional)         |
 | **ML**             | Scikit-Learn (RF + GBM)     | Signal filtering + auto-training pipeline   |
-| **Integration**    | Binance API + Telegram Bot  | Order execution + real-time alerts          |
+| **Integration**    | Kraken + ccxt + Telegram    | Multi-exchange support + real-time alerts   |
 
 ---
 
@@ -121,7 +121,7 @@ Glassmorphism UI (dark mode) with Server-Sent Events (SSE):
        │              │              │
 ┌──────▼──────┐ ┌─────▼─────┐ ┌────▼────────────────────────┐
 │  TRADING    │ │    ML     │ │        INTEGRATIONS           │
-│  ENGINE     │ │ PIPELINE  │ │  Binance API (Testnet/Main)   │
+│  ENGINE     │ │ PIPELINE  │ │  Kraken + ccxt (multi-exch)   │
 │             │ │           │ │  Telegram Bot                 │
 │ Strategy    │ │ Collector │ │  Ollama LLM (Mistral 7B)      │
 │ Risk Mgr    │ │ Trainer   │ │  MongoDB (Motor Async)        │
@@ -134,15 +134,15 @@ Glassmorphism UI (dark mode) with Server-Sent Events (SSE):
 ### Trading Cycle (15-second loop)
 
 ```
-1. SCAN      → Fetches prices for ~50 pairs (5s TTL cache, -70% API calls)
+1. SCAN      → Fetches prices for 11 pairs via ccxt (5s TTL cache, -70% API calls)
 2. STRATEGY  → Applies RSI, MACD, BB, EMA, ATR, ADX, VWAP
-3. ML FILTER → RandomForest validates signal (min_confidence=0.70)
-4. LLM CHECK → Mistral 7B analyzes context (only if technical score ≥ threshold)
+3. ML FILTER → RandomForest validates signal (min_confidence=0.50)
+4. LLM CHECK → Mistral 7B analyzes context (disabled — strategy+ML suffice)
 5. RISK CALC → Kelly Criterion calculates position size
-6. EXECUTE   → Opens position on Binance
+6. EXECUTE   → Simulates order (Paper Trading mode)
 7. MONITOR   → Tracks stop-loss / take-profit / trailing stop
 8. CLOSE     → Closes when target or stop is hit
-9. LEARN     → Records outcome → feeds next ML training cycle
+9. LEARN     → Records outcome → feeds next ML training cycle (after 5 trades)
 ```
 
 ---
@@ -154,14 +154,14 @@ Glassmorphism UI (dark mode) with Server-Sent Events (SSE):
 - Python 3.11+
 - Node.js 18+
 - MongoDB 7.0+
-- Binance Spot Testnet account ([testnet.binance.vision](https://testnet.binance.vision))
-- Ollama (optional — for LLM analysis)
+- Kraken account + API keys (ccxt multi-exchange ready)
+- Ollama (optional — for LLM analysis, disabled by default)
 
 ### Installation
 
 ```bash
 # 1. Clone
-git clone https://github.com/igordev30-ops/trading-bot.git
+git clone https://github.com/igorll-fs/trading-bot.git
 cd trading-bot
 
 # 2. Backend
@@ -170,7 +170,7 @@ python3 -m venv .venv
 
 # 3. Configure environment
 cp backend/.env.example backend/.env
-# Edit: BINANCE_API_KEY, BINANCE_API_SECRET, TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID
+# Edit: EXCHANGE=kraken, KRAKEN_API_KEY, KRAKEN_API_SECRET, TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID
 
 # 4. Frontend
 cd frontend && npm install
