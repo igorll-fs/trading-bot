@@ -1,0 +1,101 @@
+"""
+Rotas de Health Check e Diagnósticos.
+"""
+
+from datetime import UTC, datetime
+from typing import Any
+
+from fastapi import APIRouter, HTTPException
+
+router = APIRouter(tags=["Health"])
+
+
+async def get_health_status(db, get_bot_func) -> dict[str, Any]:
+    """
+    Verifica status de saúde dos serviços.
+    Retorna: MongoDB, Binance API, Bot status.
+    """
+    from bot.binance_client import binance_manager
+    
+    health = {
+        "status": "healthy",
+        "timestamp": datetime.now(UTC).isoformat(),
+        "services": {}
+    }
+    
+    # Check MongoDB
+    try:
+        await db.command("ping")
+        health["services"]["mongodb"] = {"status": "ok"}
+    except Exception as e:
+        health["services"]["mongodb"] = {"status": "error", "message": str(e)[:100]}
+        health["status"] = "degraded"
+    
+    # Check Exchange API
+    try:
+        if binance_manager.is_initialized:
+            health["services"]["exchange"] = {
+                "status": "ok", 
+                "exchange": binance_manager.exchange_id,
+                "paper_trade": binance_manager._paper_trade,
+            }
+        else:
+            health["services"]["exchange"] = {"status": "not_initialized"}
+            health["status"] = "degraded"
+    except Exception as e:
+        health["services"]["exchange"] = {"status": "error", "message": str(e)[:100]}
+        health["status"] = "degraded"
+
+    # Keep backward compat key
+    health["services"]["binance"] = health["services"]["exchange"]
+    
+    # Check Bot
+    try:
+        bot = await get_bot_func(db)
+        health["services"]["bot"] = {
+            "status": "ok",
+            "is_running": bot.is_running,
+            "open_positions": len(bot.positions),
+        }
+    except Exception as e:
+        health["services"]["bot"] = {"status": "error", "message": str(e)[:100]}
+        health["status"] = "degraded"
+    
+    return health
+
+
+def create_health_router(db, get_bot_func, sanitize_config_func):
+    """Factory function para criar router com dependências injetadas."""
+    
+    @router.get("/health")
+    async def health_check():
+        """
+        Health check completo com verificação de todos os serviços.
+        """
+        return await get_health_status(db, get_bot_func)
+    
+    @router.get("/healthz")
+    async def healthz():
+        """Lightweight healthcheck (não toca serviços externos)."""
+        return {"status": "ok", "timestamp": datetime.now(UTC).isoformat()}
+    
+    @router.get("/diagnostics")
+    async def diagnostics():
+        """Snapshot de configuração (sem segredos), posições e último sizing."""
+        from bot.config import load_bot_config
+        
+        try:
+            config = await load_bot_config(db)
+            bot = await get_bot_func(db)
+            status = await bot.get_status()
+            return {
+                "config": sanitize_config_func(config),
+                "positions_open": len(status.get("positions", []) if isinstance(status, dict) else []),
+                "is_running": status.get("is_running") if isinstance(status, dict) else False,
+                "balance": status.get("balance") if isinstance(status, dict) else 0,
+                "last_risk_snapshot": getattr(bot, "last_risk_snapshot", None),
+            }
+        except Exception as e:
+            raise HTTPException(status_code=500, detail=str(e)) from None
+    
+    return router

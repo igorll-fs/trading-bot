@@ -1,0 +1,392 @@
+from __future__ import annotations
+
+import os
+from collections.abc import Mapping
+from dataclasses import asdict, dataclass, field
+from datetime import UTC, datetime
+from typing import Any
+
+"""Centralized configuration helpers for the trading bot."""
+
+CONFIG_COLLECTION = "configs"
+CONFIG_DOCUMENT_FILTER = {"type": "bot_config"}
+DEFAULT_SELECTOR_BASE_SYMBOLS = [
+    "BTCUSDT",
+    "ETHUSDT",
+    "BNBUSDT",
+    "SOLUSDT",
+    "XRPUSDT",
+    "ADAUSDT",
+    "DOGEUSDT",
+    "AVAXUSDT",
+    "DOTUSDT",
+    "POLUSDT",
+    "LINKUSDT",
+    "ATOMUSDT",
+    "LTCUSDT",
+    "UNIUSDT",
+    "NEARUSDT",
+]
+
+# Limiares de liquidez (spread/volume)
+DEFAULT_SELECTOR_MIN_QUOTE_VOLUME = 50_000.0  # volume mínimo no timeframe configurado (USDT)
+DEFAULT_SELECTOR_MAX_SPREAD_PERCENT = 0.25     # spread máximo aceitável (percentual)
+
+
+def _default_selector_symbols() -> list[str]:
+    return DEFAULT_SELECTOR_BASE_SYMBOLS.copy()
+
+
+@dataclass
+class BotConfig:
+    """Represents the persisted settings required by the trading bot."""
+
+    # Exchange selection
+    exchange: str = "binance"  # binance, kraken, coinbase, kucoin
+    # Binance
+    binance_api_key: str = ""
+    binance_api_secret: str = ""
+    binance_testnet: bool = True
+    # Kraken
+    kraken_api_key: str = ""
+    kraken_api_secret: str = ""
+    # Trading mode
+    paper_trade: bool = False
+    telegram_bot_token: str = ""
+    telegram_chat_id: str = ""
+    telegram_verify_ssl: bool = True
+    max_positions: int = 2  # CORREÇÃO: Reduzido de 3 para 2 (mais conservador)
+    risk_percentage: float = 1.5  # CORREÇÃO: Reduzido de 2.0 para 1.5 (arriscar menos por trade)
+    leverage: int = 1
+    balance_cache_ttl: float = 30.0
+    observation_alert_interval: float = 300.0
+    strategy_timeframe: str = "15m"
+    strategy_confirmation_timeframe: str = "1h"
+    strategy_klines_limit: int = 200
+    strategy_min_signal_strength: int = 55  # OTIMIZADO: Equilíbrio entre seletividade e oportunidades
+    strategy_activation_threshold: float = 9.0  # Raw score threshold for signal activation
+    selector_base_symbols: list[str] = field(default_factory=_default_selector_symbols)
+    selector_trending_refresh_interval: int = 120
+    selector_min_change_percent: float = 1.0  # CORREÇÃO: Aumentado de 0.5 para 1.0 (mais momentum)
+    selector_trending_pool_size: int = 10
+    selector_min_quote_volume: float = 100_000.0  # CORREÇÃO: Aumentado de 50k para 100k (liquidez)
+    selector_max_spread_percent: float = DEFAULT_SELECTOR_MAX_SPREAD_PERCENT
+    risk_stop_loss_percentage: float = 0.8  # OTIMIZADO: Stops mais apertados para reduzir perdas no TIME_STOP
+    risk_reward_ratio: float = 2.0  # OTIMIZADO: TP mais realista para aumentar taxa de acerto
+    risk_trailing_activation: float = 0.30  # OTIMIZADO: Ativa trailing mais rápido
+    risk_trailing_step: float = 0.3  # OTIMIZADO: Trailing mais granular
+    loop_interval_seconds: float = 15.0
+    risk_use_position_cap: bool = True
+    daily_drawdown_limit_pct: float = 0.0
+    weekly_drawdown_limit_pct: float = 0.0
+
+    # Multi-strategy engine
+    multi_strategy_enabled: bool = True
+    strategy_regime_map: str = ""  # JSON override for regime→strategy mapping
+
+    # GridDCA
+    grid_levels: int = 3
+    grid_level_spacing_pct: float = 2.0
+
+    # Breakout
+    breakout_donchian_period: int = 20
+    breakout_atr_expansion: float = 1.2
+
+    # Mean Reversion
+    meanrev_bb_squeeze_threshold: float = 3.0
+    meanrev_rsi_oversold: int = 30
+    meanrev_rsi_overbought: int = 70
+
+    # ML Primary
+    ml_confidence_threshold: float = 0.58  # OTIMIZADO: Mais seletivo (dados mostram ML>=0.65 perde menos)
+    ml_retrain_interval_hours: int = 24
+    extra: dict[str, Any] = field(default_factory=dict)
+
+    @classmethod
+    def from_mapping(cls, data: Mapping[str, Any] | None) -> BotConfig:
+        if not data:
+            return cls()
+
+        known_fields = {
+            "exchange",
+            "binance_api_key",
+            "binance_api_secret",
+            "binance_testnet",
+            "kraken_api_key",
+            "kraken_api_secret",
+            "paper_trade",
+            "telegram_bot_token",
+            "telegram_chat_id",
+            "max_positions",
+            "risk_percentage",
+            "leverage",
+            "balance_cache_ttl",
+            "observation_alert_interval",
+            "telegram_verify_ssl",
+            "strategy_timeframe",
+            "strategy_confirmation_timeframe",
+            "strategy_klines_limit",
+            "strategy_min_signal_strength",
+            "strategy_activation_threshold",
+            "selector_base_symbols",
+            "selector_trending_refresh_interval",
+            "selector_min_change_percent",
+            "selector_trending_pool_size",
+            "selector_min_quote_volume",
+            "selector_max_spread_percent",
+            "risk_stop_loss_percentage",
+            "risk_reward_ratio",
+            "risk_trailing_activation",
+            "risk_trailing_step",
+            "loop_interval_seconds",
+            "risk_use_position_cap",
+            "daily_drawdown_limit_pct",
+            "weekly_drawdown_limit_pct",
+            "multi_strategy_enabled",
+            "strategy_regime_map",
+            "grid_levels",
+            "grid_level_spacing_pct",
+            "breakout_donchian_period",
+            "breakout_atr_expansion",
+            "meanrev_bb_squeeze_threshold",
+            "meanrev_rsi_oversold",
+            "meanrev_rsi_overbought",
+            "ml_confidence_threshold",
+            "ml_retrain_interval_hours",
+        }
+
+        kwargs = {field: data[field] for field in known_fields if field in data}
+        extras = {key: value for key, value in data.items() if key not in known_fields}
+        return cls(**kwargs, extra=extras)
+
+    @classmethod
+    def from_env(cls) -> BotConfig:
+        """Create a config instance using environment defaults."""
+        return cls(
+            exchange=os.getenv("EXCHANGE", "binance").strip().lower(),
+            binance_api_key=os.getenv("BINANCE_API_KEY", ""),
+            binance_api_secret=os.getenv("BINANCE_API_SECRET", ""),
+            binance_testnet=_str_to_bool(os.getenv("BINANCE_TESTNET", "true")),
+            kraken_api_key=os.getenv("KRAKEN_API_KEY", ""),
+            kraken_api_secret=os.getenv("KRAKEN_API_SECRET", ""),
+            paper_trade=_str_to_bool(os.getenv("PAPER_TRADE", "false")),
+            telegram_bot_token=os.getenv("TELEGRAM_BOT_TOKEN", ""),
+            telegram_chat_id=os.getenv("TELEGRAM_CHAT_ID", ""),
+            telegram_verify_ssl=_str_to_bool(os.getenv("TELEGRAM_VERIFY_SSL", "true")),
+            max_positions=_to_int(os.getenv("MAX_POSITIONS", 3), default=3, minimum=1),
+            risk_percentage=_to_float(os.getenv("RISK_PERCENTAGE", 2.0), default=2.0, minimum=0.1),
+            leverage=_to_int(os.getenv("LEVERAGE", 1), default=1, minimum=1),
+            balance_cache_ttl=_to_float(os.getenv("BALANCE_CACHE_TTL", 30.0), default=30.0, minimum=1.0),
+            observation_alert_interval=_to_float(
+                os.getenv("OBSERVATION_ALERT_INTERVAL", 300.0),
+                default=300.0,
+                minimum=30.0,
+            ),
+            strategy_timeframe=os.getenv("STRATEGY_TIMEFRAME", "15m"),
+            strategy_confirmation_timeframe=os.getenv("STRATEGY_CONFIRMATION_TIMEFRAME", "1h"),
+            strategy_klines_limit=_to_int(os.getenv("STRATEGY_KLINES_LIMIT", 200), default=200, minimum=10),
+            strategy_min_signal_strength=_to_int(
+                os.getenv("STRATEGY_MIN_SIGNAL_STRENGTH", 55),
+                default=55,
+                minimum=0,
+            ),
+            strategy_activation_threshold=_to_float(
+                os.getenv("STRATEGY_ACTIVATION_THRESHOLD", 9.0),
+                default=9.0,
+                minimum=3.0,
+            ),
+            selector_base_symbols=_parse_symbol_list(os.getenv("SELECTOR_BASE_SYMBOLS")),
+            selector_trending_refresh_interval=_to_int(
+                os.getenv("SELECTOR_TRENDING_REFRESH_INTERVAL", 120),
+                default=120,
+                minimum=30,
+            ),
+            selector_min_change_percent=_to_float(
+                os.getenv("SELECTOR_MIN_CHANGE_PERCENT", 0.5),
+                default=0.3,
+                minimum=0.0,
+            ),
+            selector_trending_pool_size=_to_int(
+                os.getenv("SELECTOR_TRENDING_POOL_SIZE", 10),
+                default=10,
+                minimum=1,
+            ),
+            selector_min_quote_volume=_to_float(
+                os.getenv("SELECTOR_MIN_QUOTE_VOLUME", DEFAULT_SELECTOR_MIN_QUOTE_VOLUME),
+                default=DEFAULT_SELECTOR_MIN_QUOTE_VOLUME,
+                minimum=0.0,
+            ),
+            selector_max_spread_percent=_to_float(
+                os.getenv("SELECTOR_MAX_SPREAD_PERCENT", DEFAULT_SELECTOR_MAX_SPREAD_PERCENT),
+                default=DEFAULT_SELECTOR_MAX_SPREAD_PERCENT,
+                minimum=0.0,
+            ),
+            risk_stop_loss_percentage=_to_float(
+                os.getenv("RISK_STOP_LOSS_PERCENTAGE", 0.8),
+                default=0.8,
+                minimum=0.1,
+            ),
+            risk_reward_ratio=_to_float(
+                os.getenv("RISK_REWARD_RATIO", 2.0),
+                default=2.0,
+                minimum=0.5,
+            ),
+            risk_trailing_activation=_to_float(
+                os.getenv("RISK_TRAILING_ACTIVATION", 0.30),
+                default=0.30,
+                minimum=0.0,
+            ),
+            risk_trailing_step=_to_float(
+                os.getenv("RISK_TRAILING_STEP", 0.3),
+                default=0.3,
+                minimum=0.0,
+            ),
+            loop_interval_seconds=_to_float(
+                os.getenv("LOOP_INTERVAL_SECONDS", 15.0),
+                default=15.0,
+                minimum=5.0,
+            ),
+            risk_use_position_cap=_str_to_bool(os.getenv("RISK_USE_POSITION_CAP", "true")),
+            daily_drawdown_limit_pct=_to_float(os.getenv("DAILY_DRAWDOWN_LIMIT_PCT", 0.0), default=0.0, minimum=0.0),
+            weekly_drawdown_limit_pct=_to_float(os.getenv("WEEKLY_DRAWDOWN_LIMIT_PCT", 0.0), default=0.0, minimum=0.0),
+            # Multi-strategy engine
+            multi_strategy_enabled=_str_to_bool(os.getenv("MULTI_STRATEGY_ENABLED", "true")),
+            grid_levels=_to_int(os.getenv("GRID_LEVELS", 3), default=3, minimum=2),
+            grid_level_spacing_pct=_to_float(os.getenv("GRID_LEVEL_SPACING_PCT", 2.0), default=2.0, minimum=0.5),
+            breakout_donchian_period=_to_int(os.getenv("BREAKOUT_DONCHIAN_PERIOD", 20), default=20, minimum=5),
+            breakout_atr_expansion=_to_float(os.getenv("BREAKOUT_ATR_EXPANSION", 1.2), default=1.2, minimum=1.0),
+            meanrev_bb_squeeze_threshold=_to_float(os.getenv("MEANREV_BB_SQUEEZE_THRESHOLD", 3.0), default=3.0, minimum=1.0),
+            meanrev_rsi_oversold=_to_int(os.getenv("MEANREV_RSI_OVERSOLD", 30), default=30, minimum=10),
+            meanrev_rsi_overbought=_to_int(os.getenv("MEANREV_RSI_OVERBOUGHT", 70), default=70, minimum=50),
+            ml_confidence_threshold=_to_float(os.getenv("ML_CONFIDENCE_THRESHOLD", 0.58), default=0.58, minimum=0.4),
+            ml_retrain_interval_hours=_to_int(os.getenv("ML_RETRAIN_INTERVAL_HOURS", 24), default=24, minimum=1),
+        )
+
+    def sanitized(self) -> BotConfig:
+        """Return a defensive copy with normalized numeric ranges."""
+        return BotConfig(
+            exchange=self.exchange.strip().lower() or "binance",
+            binance_api_key=self.binance_api_key.strip(),
+            binance_api_secret=self.binance_api_secret.strip(),
+            binance_testnet=bool(self.binance_testnet),
+            kraken_api_key=self.kraken_api_key.strip(),
+            kraken_api_secret=self.kraken_api_secret.strip(),
+            paper_trade=bool(self.paper_trade),
+            telegram_bot_token=self.telegram_bot_token.strip(),
+            telegram_chat_id=str(self.telegram_chat_id).strip(),
+            telegram_verify_ssl=bool(self.telegram_verify_ssl),
+            max_positions=max(1, int(self.max_positions or 1)),
+            risk_percentage=max(0.1, float(self.risk_percentage or 0.1)),
+            leverage=max(1, int(self.leverage or 1)),
+            balance_cache_ttl=max(1.0, float(self.balance_cache_ttl or 30.0)),
+            observation_alert_interval=max(30.0, float(self.observation_alert_interval or 300.0)),
+            strategy_timeframe=str(self.strategy_timeframe or "15m"),
+            strategy_confirmation_timeframe=str(self.strategy_confirmation_timeframe or "1h"),
+            strategy_klines_limit=max(10, int(self.strategy_klines_limit or 200)),
+            strategy_min_signal_strength=max(0, min(100, int(self.strategy_min_signal_strength or 60))),
+            strategy_activation_threshold=max(3.0, float(self.strategy_activation_threshold or 9.0)),
+            selector_base_symbols=_sanitize_symbol_list(self.selector_base_symbols),
+            selector_trending_refresh_interval=max(30, int(self.selector_trending_refresh_interval or 120)),
+            selector_min_change_percent=max(0.0, float(self.selector_min_change_percent or 0.0)),
+            selector_trending_pool_size=max(1, int(self.selector_trending_pool_size or 10)),
+            selector_min_quote_volume=max(0.0, float(self.selector_min_quote_volume or DEFAULT_SELECTOR_MIN_QUOTE_VOLUME)),
+            selector_max_spread_percent=max(0.0, float(self.selector_max_spread_percent or DEFAULT_SELECTOR_MAX_SPREAD_PERCENT)),
+            risk_stop_loss_percentage=max(0.1, float(self.risk_stop_loss_percentage or 1.5)),
+            risk_reward_ratio=max(0.5, float(self.risk_reward_ratio or 2.0)),
+            risk_trailing_activation=max(0.0, float(self.risk_trailing_activation or 0.0)),
+            risk_trailing_step=max(0.0, float(self.risk_trailing_step or 0.0)),
+            loop_interval_seconds=max(5.0, float(self.loop_interval_seconds or 15.0)),
+            risk_use_position_cap=bool(self.risk_use_position_cap),
+            daily_drawdown_limit_pct=max(0.0, float(self.daily_drawdown_limit_pct or 0.0)),
+            weekly_drawdown_limit_pct=max(0.0, float(self.weekly_drawdown_limit_pct or 0.0)),
+            multi_strategy_enabled=bool(self.multi_strategy_enabled),
+            strategy_regime_map=self.strategy_regime_map.strip(),
+            grid_levels=max(2, int(self.grid_levels or 3)),
+            grid_level_spacing_pct=max(0.5, float(self.grid_level_spacing_pct or 2.0)),
+            breakout_donchian_period=max(5, int(self.breakout_donchian_period or 20)),
+            breakout_atr_expansion=max(1.0, float(self.breakout_atr_expansion or 1.2)),
+            meanrev_bb_squeeze_threshold=max(1.0, float(self.meanrev_bb_squeeze_threshold or 3.0)),
+            meanrev_rsi_oversold=max(10, min(50, int(self.meanrev_rsi_oversold or 30))),
+            meanrev_rsi_overbought=max(50, min(90, int(self.meanrev_rsi_overbought or 70))),
+            ml_confidence_threshold=max(0.4, min(0.9, float(self.ml_confidence_threshold or 0.55))),
+            ml_retrain_interval_hours=max(1, int(self.ml_retrain_interval_hours or 24)),
+            extra=self.extra.copy(),
+        )
+
+    def to_document(self) -> dict[str, Any]:
+        sanitized = self.sanitized()
+        payload = asdict(sanitized)
+        payload.update(self.extra)
+        payload.update(CONFIG_DOCUMENT_FILTER)
+        payload["updated_at"] = datetime.now(UTC).isoformat()
+        payload.pop("extra", None)
+        return payload
+
+    def to_public_dict(self) -> dict[str, Any]:
+        data = asdict(self)
+        data.pop("extra", None)
+        data.update(self.extra)
+        return data
+
+
+async def load_bot_config(db) -> BotConfig:
+    """Fetch configuration from MongoDB, falling back to environment defaults."""
+    document = await db[CONFIG_COLLECTION].find_one(CONFIG_DOCUMENT_FILTER, {"_id": 0})
+    if document:
+        return BotConfig.from_mapping(document).sanitized()
+    return BotConfig.from_env()
+
+
+async def save_bot_config(db, config: BotConfig) -> None:
+    """Persist configuration to MongoDB."""
+    await db[CONFIG_COLLECTION].update_one(
+        CONFIG_DOCUMENT_FILTER,
+        {"$set": config.to_document()},
+        upsert=True,
+    )
+
+
+def _str_to_bool(value: Any) -> bool:
+    if isinstance(value, bool):
+        return value
+    return str(value).strip().lower() in {"1", "true", "yes", "y", "on"}
+
+
+def _to_int(value: Any, *, default: int, minimum: int) -> int:
+    try:
+        return max(minimum, int(value))
+    except (TypeError, ValueError):
+        return default
+
+
+def _to_float(value: Any, *, default: float, minimum: float) -> float:
+    try:
+        return max(minimum, float(value))
+    except (TypeError, ValueError):
+        return default
+
+
+def _parse_symbol_list(value: Any) -> list[str]:
+    if value is None or value == "":
+        return _default_selector_symbols()
+    if isinstance(value, list):
+        candidates = value
+    else:
+        candidates = str(value).split(",")
+    cleaned = [
+        token.strip().upper()
+        for token in candidates
+        if isinstance(token, str) and token.strip()
+    ]
+    return cleaned or _default_selector_symbols()
+
+
+def _sanitize_symbol_list(symbols: Any) -> list[str]:
+    if isinstance(symbols, list):
+        cleaned = [
+            str(sym).strip().upper()
+            for sym in symbols
+            if str(sym).strip()
+        ]
+        return cleaned or _default_selector_symbols()
+    return _default_selector_symbols()
